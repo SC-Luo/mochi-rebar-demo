@@ -9,71 +9,143 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --canvas: #010102;
-      --surface-1: #0f1011;
-      --surface-2: #141516;
-      --surface-3: #18191a;
-      --hairline: #23252a;
-      --hairline-strong: #34343a;
-      --ink: #f7f8f8;
-      --ink-muted: #d0d6e0;
-      --ink-subtle: #8a8f98;
-      --primary: #5e6ad2;
-      --primary-hover: #828fff;
-      --semantic-success: #27a644;
-      --semantic-warning: #f59e0b;
+    /* Theme Definitions */
+    .theme-stripe {
+      --bg-page: #f6f9fc;
+      --bg-card: #ffffff;
+      --bg-header: #ffffff;
+      --border-color: #e3e8ee;
+      --border-subtle: #edf2f7;
+      --text-main: #0d253d;
+      --text-muted: #64748d;
+      --text-subtle: #8798ad;
+      --primary: #533afd;
+      --primary-hover: #4434d4;
+      --badge-confirmed-bg: #e6f7ef;
+      --badge-confirmed-text: #00875a;
+      --badge-confirmed-border: #b8e8d2;
+      --badge-inferred-bg: #fff7ed;
+      --badge-inferred-text: #c2410c;
+      --badge-inferred-border: #ffedd5;
+      --table-header-bg: #f8fafc;
+      --table-row-hover: #f1f5f9;
+      --shadow-card: 0 1px 3px rgba(0, 37, 61, 0.06), 0 1px 2px rgba(0, 37, 61, 0.04);
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif;
     }
+
+    .theme-cal {
+      --bg-page: #ffffff;
+      --bg-card: #f8f9fa;
+      --bg-header: #ffffff;
+      --border-color: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --text-main: #111111;
+      --text-muted: #4b5563;
+      --text-subtle: #9ca3af;
+      --primary: #111111;
+      --primary-hover: #262626;
+      --badge-confirmed-bg: #ecfdf5;
+      --badge-confirmed-text: #059669;
+      --badge-confirmed-border: #a7f3d0;
+      --badge-inferred-bg: #fef3c7;
+      --badge-inferred-text: #b45309;
+      --badge-inferred-border: #fde68a;
+      --table-header-bg: #f3f4f6;
+      --table-row-hover: #f9fafb;
+      --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+    }
+
+    .theme-notion {
+      --bg-page: #fafaf9;
+      --bg-card: #ffffff;
+      --bg-header: #ffffff;
+      --border-color: #e5e3df;
+      --border-subtle: #f0eeec;
+      --text-main: #37352f;
+      --text-muted: #5d5b54;
+      --text-subtle: #a4a097;
+      --primary: #5645d4;
+      --primary-hover: #4534b3;
+      --badge-confirmed-bg: #edf7ed;
+      --badge-confirmed-text: #1e7e34;
+      --badge-confirmed-border: #c8e6c9;
+      --badge-inferred-bg: #fff4e5;
+      --badge-inferred-text: #b26a00;
+      --badge-inferred-border: #ffe0b2;
+      --table-header-bg: #f7f6f3;
+      --table-row-hover: #f4f3f0;
+      --shadow-card: 0 1px 2px rgba(55, 53, 47, 0.04);
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+    }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
-      background-color: var(--canvas);
-      color: var(--ink);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
     .mono { font-family: 'JetBrains Mono', monospace; }
-    .hairline-border { border-color: var(--hairline); }
-    .glow-subtle { box-shadow: 0 0 20px -5px rgba(94, 106, 210, 0.15); }
   </style>
 </head>
-<body class="min-h-screen antialiased flex flex-col selection:bg-[#5e6ad2]/30 selection:text-[#f7f8f8]">
+<body class="theme-stripe min-h-screen antialiased flex flex-col">
 
-  <!-- Top App Navigation (Linear Hairline Header) -->
-  <header class="border-b hairline-border bg-[#0f1011]/80 backdrop-blur sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
+  <!-- Top App Navigation -->
+  <header class="border-b sticky top-0 z-40 px-6 py-3 flex items-center justify-between transition-colors"
+          style="background-color: var(--bg-header); border-color: var(--border-color); box-shadow: var(--shadow-card);">
     <div class="flex items-center space-x-4">
       <div class="flex items-center space-x-2.5">
-        <div class="w-7 h-7 rounded bg-[#5e6ad2] flex items-center justify-center font-bold text-xs text-white shadow-sm shadow-[#5e6ad2]/40">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-white shadow-sm"
+             style="background-color: var(--primary);">
           M
         </div>
         <div class="flex items-center space-x-2">
-          <span class="font-semibold text-sm tracking-tight text-[#f7f8f8]">麻糬鋼筋算量</span>
-          <span class="text-[10px] text-[#8a8f98] mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#141516] border hairline-border">ENGINE v1.0</span>
+          <span class="font-bold text-sm tracking-tight" style="color: var(--text-main);">麻糬鋼筋算量</span>
+          <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border"
+                style="color: var(--text-muted); border-color: var(--border-color); background-color: var(--bg-page);">
+            ENGINE v1.0
+          </span>
         </div>
       </div>
 
-      <div class="h-3.5 w-px bg-[#23252a]"></div>
+      <div class="h-4 w-px" style="background-color: var(--border-color);"></div>
 
       <!-- Multi-case Project Switcher -->
       <div class="flex items-center space-x-2">
-        <span class="text-xs text-[#8a8f98] font-medium hidden sm:inline">工程案件切換：</span>
+        <span class="text-xs font-medium hidden sm:inline" style="color: var(--text-muted);">工程案件：</span>
         <div class="relative">
-          <select id="projectSelector" onchange="switchProject(this.value)" class="bg-[#141516] hover:bg-[#18191a] text-[#f7f8f8] border hairline-border rounded px-3 py-1.5 text-xs font-medium focus:outline-none focus:border-[#5e6ad2] transition-colors cursor-pointer appearance-none pr-8">
+          <select id="projectSelector" onchange="switchProject(this.value)"
+                  class="rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors cursor-pointer appearance-none pr-8 focus:outline-none"
+                  style="background-color: var(--bg-card); color: var(--text-main); border-color: var(--border-color);">
             <option value="youai">【案例一】友愛街 3F梁版往上（已揭盲驗證 · 515 筆 · 20,922 kg）</option>
             <option value="131210c">【案例二】131210C 梁配筋全棟（盲測新案 · 421 筆 · 16,847 kg）</option>
           </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#8a8f98]">
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2" style="color: var(--text-muted);">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Right Actions -->
+    <!-- Right Actions: Theme Selector & Download Excel -->
     <div class="flex items-center space-x-3">
-      <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#27a644]/10 text-[#27a644] border border-[#27a644]/20 mono">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#27a644] mr-1.5 animate-pulse"></span>
+      
+      <!-- Live Theme Selector -->
+      <div class="hidden md:flex items-center space-x-1 border rounded-lg p-0.5" style="border-color: var(--border-color); background-color: var(--bg-page);">
+        <button onclick="setGlobalTheme('stripe')" id="btn-theme-stripe" class="px-2 py-1 rounded text-[11px] font-bold bg-white text-[#0d253d] shadow-xs">💎 Stripe 淺色</button>
+        <button onclick="setGlobalTheme('cal')" id="btn-theme-cal" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">⚡ Cal 極簡</button>
+        <button onclick="setGlobalTheme('notion')" id="btn-theme-notion" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">📄 Notion 暖白</button>
+      </div>
+
+      <span class="inline-flex items-center px-2.5 py-1 rounded text-[11px] font-semibold border mono"
+            style="background-color: var(--badge-confirmed-bg); color: var(--badge-confirmed-text); border-color: var(--badge-confirmed-border);">
+        <span class="w-1.5 h-1.5 rounded-full mr-1.5" style="background-color: var(--badge-confirmed-text);"></span>
         <span id="caseModeBadge">揭盲對帳完成</span>
       </span>
+
       <a id="downloadExcelBtn" href="友愛街_3F以上_DWG直出鋼筋算量_v1.xlsx" download
-         class="inline-flex items-center space-x-1.5 text-xs bg-[#5e6ad2] hover:bg-[#828fff] text-white font-medium px-3 py-1.5 rounded transition-colors shadow-sm">
+         class="inline-flex items-center space-x-1.5 text-xs font-semibold px-3.5 py-1.5 rounded-lg text-white shadow-sm transition-colors"
+         style="background-color: var(--primary);">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
         </svg>
@@ -82,144 +154,163 @@
     </div>
   </header>
 
-  <!-- Sub-header Breadcrumb / Case Meta -->
-  <div class="border-b hairline-border bg-[#0f1011]/40 px-6 py-2.5 flex flex-wrap items-center justify-between text-xs text-[#8a8f98]">
-    <div class="flex items-center space-x-2 py-1">
-      <span class="text-[#d0d6e0]">目前讀取圖檔：</span>
-      <code id="metaFileName" class="mono text-[#f7f8f8] bg-[#141516] px-1.5 py-0.5 rounded border hairline-border">友愛街 3F梁版以上 114.08.28.dwg</code>
-      <span class="text-[#62666d]">·</span>
-      <span class="mono text-[11px] text-[#62666d]">SHA-256: <span id="metaSha" class="text-[#8a8f98]">6370425e...</span></span>
+  <!-- Sub-header Meta Bar -->
+  <div class="border-b px-6 py-2.5 flex flex-wrap items-center justify-between text-xs"
+       style="background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-muted);">
+    <div class="flex items-center space-x-2 py-0.5">
+      <span>目前圖檔：</span>
+      <code id="metaFileName" class="mono font-semibold px-2 py-0.5 rounded border text-xs"
+            style="color: var(--text-main); background-color: var(--bg-page); border-color: var(--border-color);">
+        友愛街 3F梁版以上 114.08.28.dwg
+      </code>
+      <span>·</span>
+      <span class="mono text-[11px]">SHA-256: <span id="metaSha" style="color: var(--text-subtle);">6370425e...</span></span>
     </div>
-    <div class="flex items-center space-x-4 py-1">
-      <span class="flex items-center text-[#8a8f98]">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#5e6ad2] mr-1.5"></span>
-        圖元身分證：<strong id="metaHandleRatio" class="mono text-[#f7f8f8] font-normal ml-1">100% (515/515)</strong>
+    <div class="flex items-center space-x-4 py-0.5">
+      <span class="flex items-center">
+        <span class="w-1.5 h-1.5 rounded-full mr-1.5" style="background-color: var(--primary);"></span>
+        圖元身分證：<strong id="metaHandleRatio" class="mono font-bold ml-1" style="color: var(--text-main);">100% (515/515)</strong>
       </span>
-      <span class="text-[#62666d]">·</span>
-      <span id="metaCadType" class="mono text-[11px] text-[#8a8f98]">圖面拓撲：Type A (CCM 圖塊屬性)</span>
+      <span>·</span>
+      <span id="metaCadType" class="mono text-[11px]">圖面拓撲：Type A (CCM 圖塊屬性)</span>
     </div>
   </div>
 
-  <!-- Main Content Layout -->
+  <!-- Main Content Area -->
   <main class="flex-1 px-6 py-6 max-w-[1600px] w-full mx-auto space-y-6">
 
     <!-- KPI Metric Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
       <!-- Card 1: Total Weight -->
-      <div class="bg-[#0f1011] border hairline-border rounded-lg p-4 flex flex-col justify-between">
-        <div class="flex items-center justify-between text-xs text-[#8a8f98]">
+      <div class="rounded-xl p-4 border flex flex-col justify-between"
+           style="background-color: var(--bg-card); border-color: var(--border-color); box-shadow: var(--shadow-card);">
+        <div class="flex items-center justify-between text-xs" style="color: var(--text-muted);">
           <span>DWG 直出計算總重量</span>
-          <span class="mono text-[10px] px-1.5 py-0.5 rounded bg-[#141516] text-[#828fff] border hairline-border">G*H*I/100</span>
+          <span class="mono text-[10px] px-1.5 py-0.5 rounded border" style="border-color: var(--border-color); background-color: var(--bg-page); color: var(--primary);">
+            G*H*I/100
+          </span>
         </div>
         <div class="my-3">
           <div class="flex items-baseline space-x-1.5">
-            <span id="kpiTotalWeight" class="text-2xl font-bold mono text-[#f7f8f8] tracking-tight">20,922.40</span>
-            <span class="text-xs text-[#8a8f98] font-medium">kg</span>
+            <span id="kpiTotalWeight" class="text-3xl font-bold mono tracking-tight" style="color: var(--text-main);">20,922.40</span>
+            <span class="text-xs font-semibold" style="color: var(--text-muted);">kg</span>
           </div>
-          <div class="text-[11px] text-[#8a8f98] mt-1 flex items-center space-x-1">
+          <div class="text-[11px] mt-1 flex items-center space-x-1" style="color: var(--text-subtle);">
             <span>約合</span>
-            <strong id="kpiTotalTon" class="mono text-[#d0d6e0] font-semibold">20.92</strong>
+            <strong id="kpiTotalTon" class="mono font-bold" style="color: var(--text-main);">20.92</strong>
             <span>噸（由圖面原生線長與標籤推算）</span>
           </div>
         </div>
-        <div class="pt-2 border-t hairline-border flex items-center justify-between text-[11px]">
-          <span class="text-[#8a8f98]">與歷史答案差異：</span>
-          <span id="kpiDiffBadge" class="mono text-[#27a644] font-medium">-10.84 kg (-0.05%)</span>
+        <div class="pt-2 border-t flex items-center justify-between text-[11px]" style="border-color: var(--border-subtle);">
+          <span style="color: var(--text-muted);">與歷史答案差異：</span>
+          <span id="kpiDiffBadge" class="mono font-semibold" style="color: var(--badge-confirmed-text);">-10.84 kg (-0.05%)</span>
         </div>
       </div>
 
       <!-- Card 2: Validated Records -->
-      <div class="bg-[#0f1011] border hairline-border rounded-lg p-4 flex flex-col justify-between">
-        <div class="flex items-center justify-between text-xs text-[#8a8f98]">
+      <div class="rounded-xl p-4 border flex flex-col justify-between"
+           style="background-color: var(--bg-card); border-color: var(--border-color); box-shadow: var(--shadow-card);">
+        <div class="flex items-center justify-between text-xs" style="color: var(--text-muted);">
           <span>結構化構件明細</span>
-          <span class="mono text-[10px] px-1.5 py-0.5 rounded bg-[#141516] text-[#8a8f98] border hairline-border">100% DWG</span>
+          <span class="mono text-[10px] px-1.5 py-0.5 rounded border" style="border-color: var(--border-color); background-color: var(--bg-page);">
+            100% DWG
+          </span>
         </div>
         <div class="my-3">
           <div class="flex items-baseline space-x-1.5">
-            <span id="kpiRecordCount" class="text-2xl font-bold mono text-[#f7f8f8] tracking-tight">515</span>
-            <span class="text-xs text-[#8a8f98] font-medium">筆料件</span>
+            <span id="kpiRecordCount" class="text-3xl font-bold mono tracking-tight" style="color: var(--text-main);">515</span>
+            <span class="text-xs font-semibold" style="color: var(--text-muted);">筆料件</span>
           </div>
-          <div id="kpiSubtext" class="text-[11px] text-[#8a8f98] mt-1">涵蓋 3F、4F、5F、RF 梁版與柱牆</div>
+          <div id="kpiSubtext" class="text-[11px] mt-1" style="color: var(--text-subtle);">涵蓋 3F、4F、5F、RF 梁版與柱牆</div>
         </div>
-        <div class="pt-2 border-t hairline-border flex items-center justify-between text-[11px]">
-          <span class="text-[#8a8f98]">未決工程待核：</span>
-          <span id="kpiInferredCount" class="mono text-[#f59e0b] font-medium">2 項 (間隔筋/彎鉤)</span>
+        <div class="pt-2 border-t flex items-center justify-between text-[11px]" style="border-color: var(--border-subtle);">
+          <span style="color: var(--text-muted);">未決工程待核：</span>
+          <span id="kpiInferredCount" class="mono font-semibold" style="color: var(--badge-inferred-text);">2 項 (間隔筋/彎鉤)</span>
         </div>
       </div>
 
       <!-- Card 3: Column Rebar Match Rate -->
-      <div class="bg-[#0f1011] border hairline-border rounded-lg p-4 flex flex-col justify-between">
-        <div class="flex items-center justify-between text-xs text-[#8a8f98]">
+      <div class="rounded-xl p-4 border flex flex-col justify-between"
+           style="background-color: var(--bg-card); border-color: var(--border-color); box-shadow: var(--shadow-card);">
+        <div class="flex items-center justify-between text-xs" style="color: var(--text-muted);">
           <span id="kpiCard3Title">關鍵柱筋自動匹配率</span>
-          <span class="mono text-[10px] px-1.5 py-0.5 rounded bg-[#27a644]/10 text-[#27a644] border border-[#27a644]/30">CONFIRMED</span>
+          <span class="mono text-[10px] px-1.5 py-0.5 rounded border font-semibold"
+                style="background-color: var(--badge-confirmed-bg); color: var(--badge-confirmed-text); border-color: var(--badge-confirmed-border);">
+            CONFIRMED
+          </span>
         </div>
         <div class="my-3">
           <div class="flex items-baseline space-x-1.5">
-            <span id="kpiCard3Val" class="text-2xl font-bold mono text-[#27a644] tracking-tight">100.0%</span>
-            <span class="text-xs text-[#8a8f98] font-medium">零誤差</span>
+            <span id="kpiCard3Val" class="text-3xl font-bold mono tracking-tight" style="color: var(--badge-confirmed-text);">100.0%</span>
+            <span class="text-xs font-semibold" style="color: var(--badge-confirmed-text);">零誤差</span>
           </div>
-          <div id="kpiCard3Sub" class="text-[11px] text-[#8a8f98] mt-1">3F(6/6) & 4F(11/11) 柱筋數量重量完全吻合</div>
+          <div id="kpiCard3Sub" class="text-[11px] mt-1" style="color: var(--text-subtle);">3F(6/6) & 4F(11/11) 柱筋數量重量完全吻合</div>
         </div>
-        <div class="pt-2 border-t hairline-border flex items-center justify-between text-[11px]">
-          <span class="text-[#8a8f98]">柱主筋重量差：</span>
-          <span id="kpiCard3Foot" class="mono text-[#27a644] font-medium">0.00 kg</span>
+        <div class="pt-2 border-t flex items-center justify-between text-[11px]" style="border-color: var(--border-subtle);">
+          <span style="color: var(--text-muted);">柱主筋重量差：</span>
+          <span id="kpiCard3Foot" class="mono font-semibold" style="color: var(--badge-confirmed-text);">0.00 kg</span>
         </div>
       </div>
 
       <!-- Card 4: DWG Traceability Safety Gate -->
-      <div class="bg-[#0f1011] border hairline-border rounded-lg p-4 flex flex-col justify-between">
-        <div class="flex items-center justify-between text-xs text-[#8a8f98]">
+      <div class="rounded-xl p-4 border flex flex-col justify-between"
+           style="background-color: var(--bg-card); border-color: var(--border-color); box-shadow: var(--shadow-card);">
+        <div class="flex items-center justify-between text-xs" style="color: var(--text-muted);">
           <span>AutoCAD 原生物件追溯</span>
-          <span class="mono text-[10px] px-1.5 py-0.5 rounded bg-[#141516] text-[#8a8f98] border hairline-border">_HANDENT</span>
+          <span class="mono text-[10px] px-1.5 py-0.5 rounded border" style="border-color: var(--border-color); background-color: var(--bg-page);">
+            _HANDENT
+          </span>
         </div>
         <div class="my-3">
           <div class="flex items-baseline space-x-1.5">
-            <span id="kpiCard4Val" class="text-2xl font-bold mono text-[#f7f8f8] tracking-tight">10,575</span>
-            <span class="text-xs text-[#8a8f98] font-medium">圖元已解析</span>
+            <span id="kpiCard4Val" class="text-3xl font-bold mono tracking-tight" style="color: var(--text-main);">10,575</span>
+            <span class="text-xs font-semibold" style="color: var(--text-muted);">圖元已解析</span>
           </div>
-          <div id="kpiCard4Sub" class="text-[11px] text-[#8a8f98] mt-1">無遺漏實體圖元，可追溯至 AutoCAD 座標</div>
+          <div id="kpiCard4Sub" class="text-[11px] mt-1" style="color: var(--text-subtle);">無遺漏實體圖元，可追溯至 AutoCAD 座標</div>
         </div>
-        <div class="pt-2 border-t hairline-border flex items-center justify-between text-[11px]">
-          <span class="text-[#8a8f98]">查核保證：</span>
-          <span class="text-[#828fff] font-medium">100% 明細綁定 Handle</span>
+        <div class="pt-2 border-t flex items-center justify-between text-[11px]" style="border-color: var(--border-subtle);">
+          <span style="color: var(--text-muted);">查核保證：</span>
+          <span class="font-semibold" style="color: var(--primary);">100% 明細綁定 Handle</span>
         </div>
       </div>
 
     </div>
 
-    <!-- Engineering Heuristic Toggles (Rule Tuning Section) -->
-    <div class="bg-[#0f1011] border hairline-border rounded-lg p-4">
-      <div class="flex items-center justify-between pb-3 border-b hairline-border">
+    <!-- Engineering Heuristic Toggles -->
+    <div class="rounded-xl p-5 border"
+         style="background-color: var(--bg-card); border-color: var(--border-color); box-shadow: var(--shadow-card);">
+      <div class="flex items-center justify-between pb-3 border-b" style="border-color: var(--border-subtle);">
         <div class="flex items-center space-x-2">
-          <svg class="w-4 h-4 text-[#828fff]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-          <span class="text-xs font-semibold text-[#f7f8f8] tracking-wide">工程啟發式規則調校 (Heuristic Policy Engine)</span>
-          <span class="text-[10px] text-[#8a8f98] px-1.5 py-0.5 rounded bg-[#141516] border hairline-border">即時連動計算</span>
+          <svg class="w-4 h-4" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+          <span class="text-xs font-bold" style="color: var(--text-main);">工程啟發式規則調校 (Heuristic Policy Engine)</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded border" style="border-color: var(--border-color); background-color: var(--bg-page); color: var(--text-muted);">即時連動計算</span>
         </div>
-        <span class="text-xs text-[#8a8f98]">切換後上方總重與明細公式自動連動重算</span>
+        <span class="text-xs" style="color: var(--text-muted);">切換後上方總重與明細公式自動連動重算</span>
       </div>
 
-      <!-- Container for Dynamic Rules -->
       <div id="rulesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 text-xs">
-        <!-- Injected via JS depending on case -->
+        <!-- Rendered by JS -->
       </div>
     </div>
 
     <!-- Interactive Data Table Container -->
-    <div class="bg-[#0f1011] border hairline-border rounded-lg overflow-hidden flex flex-col">
+    <div class="rounded-xl border overflow-hidden flex flex-col"
+         style="background-color: var(--bg-card); border-color: var(--border-color); box-shadow: var(--shadow-card);">
       
       <!-- Table Filters Header -->
-      <div class="p-3.5 border-b hairline-border flex flex-wrap items-center justify-between gap-3 bg-[#141516]/50">
+      <div class="p-4 border-b flex flex-wrap items-center justify-between gap-3"
+           style="background-color: var(--table-header-bg); border-color: var(--border-color);">
         <div class="flex flex-wrap items-center gap-2">
           
-          <!-- Floor Filter Buttons -->
-          <div class="flex items-center space-x-1 bg-[#0f1011] p-1 rounded border hairline-border text-xs" id="floor-filters">
-            <!-- Dynamic Floor Buttons -->
+          <!-- Floor Filters -->
+          <div class="flex items-center space-x-1 p-1 rounded-lg border text-xs"
+               style="background-color: var(--bg-card); border-color: var(--border-color);" id="floor-filters">
           </div>
 
-          <!-- Category Filter Buttons -->
-          <div class="flex items-center space-x-1 bg-[#0f1011] p-1 rounded border hairline-border text-xs" id="cat-filters">
-            <!-- Dynamic Category Buttons -->
+          <!-- Category Filters -->
+          <div class="flex items-center space-x-1 p-1 rounded-lg border text-xs"
+               style="background-color: var(--bg-card); border-color: var(--border-color);" id="cat-filters">
           </div>
 
         </div>
@@ -227,8 +318,9 @@
         <!-- Search Bar -->
         <div class="relative min-w-[240px]">
           <input type="text" id="searchInput" oninput="searchTable()" placeholder="搜尋 Handle、規格 #、部位、備註..."
-                 class="w-full bg-[#0f1011] text-xs text-[#f7f8f8] placeholder-[#8a8f98] border hairline-border rounded pl-8 pr-3 py-1.5 focus:outline-none focus:border-[#5e6ad2] transition-colors">
-          <svg class="w-3.5 h-3.5 text-[#8a8f98] absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                 class="w-full text-xs rounded-lg pl-8 pr-3 py-1.5 border focus:outline-none transition-colors"
+                 style="background-color: var(--bg-card); color: var(--text-main); border-color: var(--border-color);">
+          <svg class="w-3.5 h-3.5 absolute left-2.5 top-2" style="color: var(--text-muted);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         </div>
       </div>
 
@@ -236,37 +328,43 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs border-collapse">
           <thead>
-            <tr class="border-b hairline-border bg-[#0f1011] text-[#8a8f98] font-medium">
-              <th class="py-2.5 px-3.5">工作表 / 構件</th>
-              <th class="py-2.5 px-3">樓層</th>
-              <th class="py-2.5 px-3">類別</th>
-              <th class="py-2.5 px-3">細項</th>
-              <th class="py-2.5 px-3">規格</th>
-              <th class="py-2.5 px-3 text-right">長度 (cm)</th>
-              <th class="py-2.5 px-3 text-right">數量 (支)</th>
-              <th class="py-2.5 px-3 text-right">單位重 (kg/m)</th>
-              <th class="py-2.5 px-3.5 text-right text-[#d0d6e0]">重量 (kg)</th>
-              <th class="py-2.5 px-3 text-center">推論狀態</th>
-              <th class="py-2.5 px-3.5">DWG Handle</th>
-              <th class="py-2.5 px-3">CAD 圖層</th>
+            <tr class="border-b font-semibold"
+                style="border-color: var(--border-color); background-color: var(--table-header-bg); color: var(--text-muted);">
+              <th class="py-3 px-3.5">工作表 / 構件</th>
+              <th class="py-3 px-3">樓層</th>
+              <th class="py-3 px-3">類別</th>
+              <th class="py-3 px-3">細項</th>
+              <th class="py-3 px-3">規格</th>
+              <th class="py-3 px-3 text-right">長度 (cm)</th>
+              <th class="py-3 px-3 text-right">數量 (支)</th>
+              <th class="py-3 px-3 text-right">單位重</th>
+              <th class="py-3 px-3.5 text-right font-bold" style="color: var(--text-main);">重量 (kg)</th>
+              <th class="py-3 px-3 text-center">推論狀態</th>
+              <th class="py-3 px-3.5">DWG Handle</th>
+              <th class="py-3 px-3">CAD 圖層</th>
             </tr>
           </thead>
-          <tbody id="tableBody" class="divide-y divide-[#23252a]/60">
+          <tbody id="tableBody" class="divide-y" style="border-color: var(--border-subtle);">
             <!-- Rendered by JS -->
           </tbody>
         </table>
       </div>
 
-      <!-- Table Footer / Count -->
-      <div class="px-4 py-2.5 border-t hairline-border bg-[#0f1011] flex items-center justify-between text-xs text-[#8a8f98]">
+      <!-- Table Footer -->
+      <div class="px-4 py-3 border-t flex items-center justify-between text-xs"
+           style="border-color: var(--border-color); background-color: var(--table-header-bg); color: var(--text-muted);">
         <div>
-          顯示 <span id="showingCount" class="text-[#f7f8f8] mono font-semibold">0</span> 筆直出明細（點擊任一列可展開 AutoCAD 原生物件座標與 Handle 檢驗）
+          顯示 <span id="showingCount" class="font-bold mono" style="color: var(--text-main);">0</span> 筆直出明細（點擊任意列可呼叫 AutoCAD Handle 檢驗視窗）
         </div>
-        <div class="flex items-center space-x-2">
-          <span class="w-2 h-2 rounded-full bg-[#27a644]"></span>
-          <span>綠色代表與圖面文字完全一致（Confirmed）</span>
-          <span class="w-2 h-2 rounded-full bg-[#f59e0b] ml-2"></span>
-          <span>橘色代表幾何規則推論（Inferred）</span>
+        <div class="flex items-center space-x-3">
+          <span class="flex items-center space-x-1">
+            <span class="w-2 h-2 rounded-full" style="background-color: var(--badge-confirmed-text);"></span>
+            <span>Confirmed: 圖面原生事實</span>
+          </span>
+          <span class="flex items-center space-x-1">
+            <span class="w-2 h-2 rounded-full" style="background-color: var(--badge-inferred-text);"></span>
+            <span>Inferred: 工程幾何推論</span>
+          </span>
         </div>
       </div>
 
@@ -275,101 +373,98 @@
   </main>
 
   <!-- Modal: AutoCAD Entity Handle Inspector -->
-  <div id="inspectorModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-[#0f1011] border hairline-border rounded-xl max-w-lg w-full overflow-hidden shadow-2xl">
-      <div class="p-4 border-b hairline-border flex items-center justify-between bg-[#141516]/80">
+  <div id="inspectorModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border"
+         style="background-color: var(--bg-card); border-color: var(--border-color);">
+      <div class="p-4 border-b flex items-center justify-between"
+           style="background-color: var(--table-header-bg); border-color: var(--border-color);">
         <div class="flex items-center space-x-2">
-          <div class="w-2.5 h-2.5 rounded-full bg-[#5e6ad2]"></div>
-          <span class="text-sm font-semibold text-[#f7f8f8]">AutoCAD 原生物件身分證檢驗</span>
+          <div class="w-2.5 h-2.5 rounded-full" style="background-color: var(--primary);"></div>
+          <span class="text-sm font-bold" style="color: var(--text-main);">AutoCAD 原生物件身分證檢驗</span>
         </div>
-        <button onclick="closeInspector()" class="text-[#8a8f98] hover:text-[#f7f8f8] text-base p-1">✕</button>
+        <button onclick="closeInspector()" class="text-slate-400 hover:text-slate-700 text-base p-1">✕</button>
       </div>
       <div class="p-5 space-y-4 text-xs">
         <div>
-          <label class="text-[#8a8f98] block mb-1">AutoCAD Entity Handle (圖元唯一代碼)</label>
-          <div class="flex items-center justify-between bg-[#010102] border hairline-border rounded p-2">
-            <code id="modalHandle" class="mono text-[#828fff] text-sm font-semibold tracking-wider">3B82</code>
-            <button onclick="copyHandle()" class="px-2 py-1 rounded bg-[#141516] hover:bg-[#18191a] text-[#d0d6e0] border hairline-border text-[11px]">複製指令</button>
+          <label class="block mb-1 font-semibold" style="color: var(--text-muted);">AutoCAD Entity Handle (唯一識別碼)</label>
+          <div class="flex items-center justify-between p-2.5 rounded-lg border font-mono"
+               style="background-color: var(--bg-page); border-color: var(--border-color);">
+            <code id="modalHandle" class="font-bold text-sm" style="color: var(--primary);">3B82</code>
+            <button onclick="copyHandle()" class="px-2.5 py-1 rounded border text-[11px] font-semibold transition-colors bg-white hover:bg-slate-50"
+                    style="border-color: var(--border-color); color: var(--text-main);">
+              複製指令
+            </button>
           </div>
-          <p class="text-[11px] text-[#8a8f98] mt-1">在 AutoCAD 指令列輸入 <code class="mono text-[#d0d6e0]">_HANDENT [Handle]</code> 可直接飛至該鋼筋幾何位置。</p>
+          <p class="text-[11px] mt-1" style="color: var(--text-subtle);">在 AutoCAD 終端輸入 <code class="font-mono font-semibold" style="color: var(--text-main);">_HANDENT [Handle]</code> 可直接放大定位至該圖元。</p>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-[#8a8f98] block mb-1">所屬圖層 (Layer)</label>
-            <div id="modalLayer" class="mono bg-[#010102] border hairline-border rounded p-2 text-[#d0d6e0]">CCM_柱筋</div>
+            <label class="block mb-1 font-semibold" style="color: var(--text-muted);">所屬圖層 (Layer)</label>
+            <div id="modalLayer" class="mono p-2 rounded-lg border font-semibold"
+                 style="background-color: var(--bg-page); border-color: var(--border-color); color: var(--text-main);">CCM_柱筋</div>
           </div>
           <div>
-            <label class="text-[#8a8f98] block mb-1">計算公式</label>
-            <div id="modalFormula" class="mono bg-[#010102] border hairline-border rounded p-2 text-[#27a644] font-medium">G*H*I/100</div>
+            <label class="block mb-1 font-semibold" style="color: var(--text-muted);">Excel 計算公式</label>
+            <div id="modalFormula" class="mono p-2 rounded-lg border font-semibold"
+                 style="background-color: var(--bg-page); border-color: var(--border-color); color: var(--badge-confirmed-text);">G*H*I/100</div>
           </div>
         </div>
         <div>
-          <label class="text-[#8a8f98] block mb-1">原始圖面文字標籤 / 圖塊屬性</label>
-          <div id="modalNote" class="bg-[#010102] border hairline-border rounded p-2.5 text-[#f7f8f8] mono leading-relaxed">
+          <label class="block mb-1 font-semibold" style="color: var(--text-muted);">原始圖面文字標籤 / 圖塊屬性</label>
+          <div id="modalNote" class="p-3 rounded-lg border mono leading-relaxed font-semibold"
+               style="background-color: var(--bg-page); border-color: var(--border-color); color: var(--text-main);">
             CCM_柱筋 #8x10 LEN=340
           </div>
         </div>
       </div>
-      <div class="p-3 border-t hairline-border bg-[#141516]/50 flex justify-end">
-        <button onclick="closeInspector()" class="px-4 py-1.5 rounded bg-[#5e6ad2] text-white font-medium hover:bg-[#828fff] transition-colors text-xs">
+      <div class="p-3 border-t flex justify-end" style="border-color: var(--border-subtle); background-color: var(--table-header-bg);">
+        <button onclick="closeInspector()" class="px-4 py-1.5 rounded-lg text-white font-semibold text-xs shadow-sm transition-colors"
+                style="background-color: var(--primary);">
           關閉檢驗視窗
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Page Bottom Disclaimer -->
-  <footer class="border-t hairline-border py-4 px-6 text-center text-xs text-[#8a8f98] bg-[#0f1011]">
+  <!-- Page Footer -->
+  <footer class="border-t py-4 px-6 text-center text-xs"
+          style="background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-muted);">
     <div class="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-      <span>麻糬鐵工技術團隊 · AutoCAD DWG 原生解析引擎 v1.0</span>
-      <span class="text-[11px] text-[#62666d]">
+      <span>麻糬鐵工工程團隊 · AutoCAD DWG 原生解析引擎 v1.0</span>
+      <span class="text-[11px]" style="color: var(--text-subtle);">
         嚴格遵循 Confirmed / Inferred / Unknown 工程證據邊界 · 成果僅供工程覆核
       </span>
     </div>
   </footer>
 
   <script>
-    // -------------------------------------------------------------
-    // DATASETS
-    // -------------------------------------------------------------
-
-    // Case 1: 友愛街 (515 records sample)
     const youaiData = [
-      // 3F Columns
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '主筋', member: '3F C1(60x70)', spec: 8, len: 340, qty: 116, unit: 3.98, wt: 1570.51, status: 'confirmed', handle: '3B82', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=340' },
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '箍筋', member: '3F C1(60x70)', spec: 4, len: 326, qty: 35, unit: 0.994, wt: 113.415, status: 'confirmed', handle: '3B83', layer: 'CCM_柱筋', note: 'CCM_箍筋 326cm' },
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '箍筋', member: '3F C1(60x70)', spec: 4, len: 226, qty: 175, unit: 0.994, wt: 393.127, status: 'confirmed', handle: '3B84', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm' },
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 116, qty: 68, unit: 0.994, wt: 78.407, status: 'confirmed', handle: '3B85', layer: 'CCM_柱筋', note: 'CCM_繫筋 116cm' },
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 86, qty: 476, unit: 0.994, wt: 406.884, status: 'confirmed', handle: '3B86', layer: 'CCM_柱筋', note: 'CCM_繫筋 86cm' },
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 66, qty: 340, unit: 0.994, wt: 222.258, status: 'confirmed', handle: '3B87', layer: 'CCM_柱筋', note: 'CCM_繫筋 66cm' },
-      // 3F Wall Spacers
       { sheet: '02', floor: '3F', cat: '牆間隔筋', kind: '間隔筋', member: '3F 牆 00W1', spec: 3, len: 55, qty: 80, unit: 0.56, wt: 24.64, status: 'inferred', handle: 'E7B2', layer: '00W1', note: 'DWG #3x80 原生文字標註' },
-      // 4F Columns
       { sheet: '04', floor: '4F', cat: '柱筋', kind: '主筋', member: '4F C1(60x70)', spec: 7, len: 320, qty: 96, unit: 3.04, wt: 933.888, status: 'confirmed', handle: '11C40', layer: 'CCM_柱筋', note: 'CCM_柱筋 #7x8 LEN=320' },
       { sheet: '04', floor: '4F', cat: '柱筋', kind: '主筋', member: '4F C2(60x70)', spec: 8, len: 320, qty: 20, unit: 3.98, wt: 254.72, status: 'confirmed', handle: '11C41', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=320' },
       { sheet: '04', floor: '4F', cat: '柱筋', kind: '箍筋', member: '4F C1(60x70)', spec: 4, len: 326, qty: 33, unit: 0.994, wt: 106.934, status: 'confirmed', handle: '11C42', layer: 'CCM_柱筋', note: 'CCM_箍筋 326cm' },
       { sheet: '04', floor: '4F', cat: '柱筋', kind: '箍筋', member: '4F C1(60x70)', spec: 4, len: 226, qty: 165, unit: 0.994, wt: 370.663, status: 'confirmed', handle: '11C43', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm' },
       { sheet: '04', floor: '4F', cat: '柱筋', kind: '繫筋', member: '4F C1(60x70)', spec: 4, len: 86, qty: 444, unit: 0.994, wt: 379.549, status: 'confirmed', handle: '11C44', layer: 'CCM_柱筋', note: 'CCM_繫筋 86cm' },
-      // 5F Columns
       { sheet: '06', floor: '5F', cat: '柱筋', kind: '主筋', member: '5F C1(60x70)', spec: 7, len: 231, qty: 24, unit: 3.04, wt: 168.538, status: 'inferred', handle: '19EFB', layer: 'CCM_柱筋', note: 'CCM_柱筋 原生LEN=231' },
       { sheet: '06', floor: '5F', cat: '柱筋', kind: '主筋', member: '5F C1(60x70)', spec: 7, len: 151, qty: 24, unit: 3.04, wt: 110.179, status: 'inferred', handle: '19F04', layer: 'CCM_柱筋', note: 'CCM_柱筋 原生LEN=151' },
       { sheet: '06', floor: '5F', cat: '柱筋', kind: '箍筋', member: '5F C1(60x70)', spec: 4, len: 226, qty: 165, unit: 0.994, wt: 370.663, status: 'confirmed', handle: '19F05', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm' },
-      // 3F Beams
       { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-1-101(30x60)', spec: 8, len: 260, qty: 6, unit: 3.98, wt: 62.088, status: 'confirmed', handle: '1DFF', layer: '樑主', note: '圖塊 3F-1-101｜#8-260x2' },
       { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-1-101(30x60)', spec: 8, len: 460, qty: 6, unit: 3.98, wt: 109.848, status: 'confirmed', handle: '1E0D', layer: '樑主', note: '圖塊 3F-1-101｜#8-460x3' },
       { sheet: '01', floor: '3F', cat: '樑箍筋', kind: '箍筋', member: '3F-1-101(30x60)', spec: 4, len: 205, qty: 45, unit: 0.994, wt: 91.697, status: 'inferred', handle: '1D92', layer: '樑箍', note: '圖塊 3F-1-101｜#4(30x60)=45' },
       { sheet: '01', floor: '3F', cat: '樑工作筋', kind: '工作筋', member: '3F-1-101(30x60)', spec: 8, len: 60, qty: 3, unit: 3.98, wt: 7.164, status: 'confirmed', handle: '1D94', layer: '樑工', note: '圖塊 3F-1-101｜#8-60x3' },
       { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-12-112(35x60)', spec: 6, len: 300, qty: 2, unit: 2.25, wt: 13.5, status: 'confirmed', handle: '1831', layer: '樑主', note: '圖塊 3F-12-112｜#6-300x2' },
-      // 4F Beams
       { sheet: '03', floor: '4F', cat: '樑筋', kind: '主筋', member: '4F-2-102(30x60)', spec: 8, len: 450, qty: 8, unit: 3.98, wt: 143.28, status: 'confirmed', handle: '22A1', layer: '樑主', note: '圖塊 4F-2-102｜#8-450x4' },
       { sheet: '03', floor: '4F', cat: '樑箍筋', kind: '箍筋', member: '4F-2-102(30x60)', spec: 4, len: 205, qty: 38, unit: 0.994, wt: 77.432, status: 'inferred', handle: '22A5', layer: '樑箍', note: '圖塊 4F-2-102｜#4(30x60)=38' },
-      // RF Beams
       { sheet: '07', floor: 'RF', cat: '樑筋', kind: '主筋', member: 'RF-1-101(30x60)', spec: 6, len: 360, qty: 4, unit: 2.25, wt: 32.4, status: 'confirmed', handle: '3A12', layer: '樑主', note: '圖塊 RF-1-101｜#6-360x2' }
     ];
 
-    // Case 2: 131210C 梁配筋圖 (421 records sample)
     const c131210Data = [
-      // Foundation FB0 / FB1 / FB2
       { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 4, unit: 3.04, wt: 58.37, status: 'confirmed', handle: 'FD', layer: '主筋文字', note: '標註 4-#7｜FB0(40x140)' },
       { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 3, unit: 3.04, wt: 43.78, status: 'confirmed', handle: 'FF', layer: '主筋文字', note: '標註 3-#7｜FB0(40x140)' },
       { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '下筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 3, unit: 3.04, wt: 43.78, status: 'confirmed', handle: 'F7', layer: '主筋文字', note: '標註 3-#7｜FB0(40x140)' },
@@ -378,29 +473,39 @@
       { sheet: '梁配筋', floor: '基礎/1F', cat: '梁扭力筋', kind: '側腰筋', member: 'FB0(40x140)', spec: 3, len: 420, qty: 6, unit: 0.56, wt: 14.11, status: 'inferred', handle: '142', layer: '扭力筋文字', note: '標註 2x3-#3 E.F.｜雙向配置' },
       { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB1(45x140)', spec: 7, len: 480, qty: 5, unit: 3.04, wt: 72.96, status: 'confirmed', handle: '164', layer: '主筋文字', note: '標註 5-#7｜FB1(45x140)' },
       { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '下筋', member: 'FB1(45x140)', spec: 7, len: 480, qty: 4, unit: 3.04, wt: 58.37, status: 'confirmed', handle: '15E', layer: '主筋文字', note: '標註 4-#7｜FB1(45x140)' },
-      // 2FL B1 / B2
       { sheet: '梁配筋', floor: '2FL', cat: '梁筋', kind: '上筋', member: '2FL B1(45x60)', spec: 7, len: 480, qty: 6, unit: 3.04, wt: 87.55, status: 'confirmed', handle: '4BC', layer: '主筋文字', note: '標註 6-#7｜2FL B1(45x60)' },
       { sheet: '梁配筋', floor: '2FL', cat: '梁筋', kind: '下筋', member: '2FL B1(45x60)', spec: 7, len: 480, qty: 5, unit: 3.04, wt: 72.96, status: 'confirmed', handle: '4C6', layer: '主筋文字', note: '標註 5-#7｜2FL B1(45x60)' },
       { sheet: '梁配筋', floor: '2FL', cat: '梁箍筋', kind: '箍筋', member: '2FL B1(45x60)', spec: 3, len: 208, qty: 15, unit: 0.56, wt: 17.47, status: 'inferred', handle: '4D2', layer: 'STIRRUP-TXT', note: '箍筋 15-#3@12｜45x60cm 周長 208cm' },
-      // 3FL B1 / B2
       { sheet: '梁配筋', floor: '3FL', cat: '梁筋', kind: '上筋', member: '3FL B1(45x60)', spec: 7, len: 480, qty: 6, unit: 3.04, wt: 87.55, status: 'confirmed', handle: '460', layer: '主筋文字', note: '標註 6-#7｜3FL B1(45x60)' },
       { sheet: '梁配筋', floor: '3FL', cat: '梁筋', kind: '下筋', member: '3FL B1(45x60)', spec: 7, len: 480, qty: 5, unit: 3.04, wt: 72.96, status: 'confirmed', handle: '46A', layer: '主筋文字', note: '標註 5-#7｜3FL B1(45x60)' },
-      // 4FL B1 / B2
       { sheet: '梁配筋', floor: '4FL', cat: '梁筋', kind: '上筋', member: '4FL B1(45x60)', spec: 6, len: 480, qty: 6, unit: 2.25, wt: 64.80, status: 'confirmed', handle: '404', layer: '主筋文字', note: '標註 6-#6｜4FL B1(45x60)' },
       { sheet: '梁配筋', floor: '4FL', cat: '梁筋', kind: '下筋', member: '4FL B1(45x60)', spec: 6, len: 480, qty: 5, unit: 2.25, wt: 54.00, status: 'confirmed', handle: '40E', layer: '主筋文字', note: '標註 5-#6｜4FL B1(45x60)' },
-      // RFL / PRFL
       { sheet: '梁配筋', floor: 'RFL', cat: '梁筋', kind: '上筋', member: 'RFL B1(45x60)', spec: 6, len: 480, qty: 5, unit: 2.25, wt: 54.00, status: 'confirmed', handle: '3B4', layer: '主筋文字', note: '標註 5-#6｜RFL B1(45x60)' },
       { sheet: '梁配筋', floor: 'PRFL', cat: '梁筋', kind: '上筋', member: 'PRFL B1(45x60)', spec: 6, len: 480, qty: 4, unit: 2.25, wt: 43.20, status: 'confirmed', handle: '504', layer: '主筋文字', note: '標註 4-#6｜PRFL B1(45x60)' }
     ];
 
-    // Current State
     let currentCase = 'youai';
     let currentData = youaiData;
     let currentFloor = 'ALL';
     let currentCat = 'ALL';
     let currentSearch = '';
 
-    // Switch Project Handler
+    function setGlobalTheme(themeName) {
+      document.body.className = `theme-${themeName} min-h-screen antialiased flex flex-col`;
+      ['stripe', 'cal', 'notion'].forEach(t => {
+        const b = document.getElementById(`btn-theme-${t}`);
+        if (b) {
+          if (t === themeName) {
+            b.className = 'px-2 py-1 rounded text-[11px] font-bold bg-white shadow-xs text-slate-900 border border-slate-300';
+          } else {
+            b.className = 'px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900';
+          }
+        }
+      });
+      renderFilterButtons();
+      renderTable();
+    }
+
     function switchProject(caseKey) {
       currentCase = caseKey;
       currentFloor = 'ALL';
@@ -419,7 +524,6 @@
         document.getElementById('kpiTotalWeight').textContent = '20,922.40';
         document.getElementById('kpiTotalTon').textContent = '20.92';
         document.getElementById('kpiDiffBadge').textContent = '-10.84 kg (-0.05%)';
-        document.getElementById('kpiDiffBadge').className = 'mono text-[#27a644] font-medium';
         document.getElementById('kpiRecordCount').textContent = '515';
         document.getElementById('kpiSubtext').textContent = '涵蓋 3F、4F、5F、RF 梁版與柱牆';
         document.getElementById('kpiInferredCount').textContent = '2 項 (間隔筋/彎鉤)';
@@ -445,7 +549,6 @@
         document.getElementById('kpiTotalWeight').textContent = '16,847.27';
         document.getElementById('kpiTotalTon').textContent = '16.85';
         document.getElementById('kpiDiffBadge').textContent = '待提供料單揭盲比對';
-        document.getElementById('kpiDiffBadge').className = 'mono text-[#8a8f98] font-medium';
         document.getElementById('kpiRecordCount').textContent = '421';
         document.getElementById('kpiSubtext').textContent = '全棟 74 跨梁（主筋 294、箍筋 121、腰筋 6）';
         document.getElementById('kpiInferredCount').textContent = '規範自動套算中';
@@ -467,92 +570,88 @@
       renderTable();
     }
 
-    // Render Rule Controls based on currentCase
     function renderRuleControls() {
       const container = document.getElementById('rulesContainer');
       if (currentCase === 'youai') {
         container.innerHTML = `
-          <!-- Rule 1: 3F Spacer -->
-          <div class="bg-[#141516] border hairline-border rounded p-3 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium text-[#d0d6e0]">規則一：3F 牆間隔筋數量判定</span>
-              <span id="spacer-diff-badge" class="font-medium mono text-[#f7f8f8]">-12.30 kg (圖面標 80 支)</span>
+          <div class="p-3.5 rounded-lg border flex flex-col justify-between"
+               style="background-color: var(--bg-page); border-color: var(--border-color);">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold" style="color: var(--text-main);">規則一：3F 牆間隔筋數量判定</span>
+              <span id="spacer-diff-badge" class="font-mono font-bold" style="color: var(--badge-inferred-text);">-12.30 kg (圖面標 80 支)</span>
             </div>
-            <p class="text-[11px] text-[#8a8f98] mb-3">DWG 圖面原標文字為 <code class="mono text-[#d0d6e0]">#3x80</code>，歷史料單為 120 支。</p>
+            <p class="text-[11px] mb-3" style="color: var(--text-subtle);">DWG 圖面原標文字為 <code class="mono font-bold">#3x80</code>，歷史料單為 120 支。</p>
             <div class="flex items-center space-x-2">
-              <button id="btn-rule-spacer-80" onclick="setSpacerRule(80)" class="px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium">圖面原標 80 支 (預設事實)</button>
-              <button id="btn-rule-spacer-120" onclick="setSpacerRule(120)" class="px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]">經驗推估 120 支</button>
+              <button id="btn-rule-spacer-80" onclick="setSpacerRule(80)" class="px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs" style="background-color: var(--primary);">圖面原標 80 支 (客觀事實)</button>
+              <button id="btn-rule-spacer-120" onclick="setSpacerRule(120)" class="px-2.5 py-1 rounded-md text-xs border font-medium bg-white" style="border-color: var(--border-color); color: var(--text-muted);">經驗推估 120 支</button>
             </div>
           </div>
-          <!-- Rule 2: 5F Hook -->
-          <div class="bg-[#141516] border hairline-border rounded p-3 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium text-[#d0d6e0]">規則二：5F 柱主筋幾何長度折算</span>
-              <span id="hook-diff-badge" class="font-medium mono text-[#f7f8f8]">+1.46 kg (DWG 原生 231/151)</span>
+          <div class="p-3.5 rounded-lg border flex flex-col justify-between"
+               style="background-color: var(--bg-page); border-color: var(--border-color);">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold" style="color: var(--text-main);">規則二：5F 柱主筋幾何長度折算</span>
+              <span id="hook-diff-badge" class="font-mono font-bold" style="color: var(--badge-inferred-text);">+1.46 kg (DWG 原生 231/151)</span>
             </div>
-            <p class="text-[11px] text-[#8a8f98] mb-3">DWG 屬性為 <code class="mono text-[#d0d6e0]">LEN=231/151</code>，歷史料單取標稱整數 230/150。</p>
+            <p class="text-[11px] mb-3" style="color: var(--text-subtle);">DWG 屬性為 <code class="mono font-bold">LEN=231/151</code>，歷史料單取標稱整數 230/150。</p>
             <div class="flex items-center space-x-2">
-              <button id="btn-rule-hook-exact" onclick="setHookRule('exact')" class="px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium">DWG 精確值 (預設)</button>
-              <button id="btn-rule-hook-nominal" onclick="setHookRule('nominal')" class="px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]">標稱整數 230/150</button>
+              <button id="btn-rule-hook-exact" onclick="setHookRule('exact')" class="px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs" style="background-color: var(--primary);">DWG 精確值 (預設)</button>
+              <button id="btn-rule-hook-nominal" onclick="setHookRule('nominal')" class="px-2.5 py-1 rounded-md text-xs border font-medium bg-white" style="border-color: var(--border-color); color: var(--text-muted);">標稱整數 230/150</button>
             </div>
           </div>
         `;
       } else {
         container.innerHTML = `
-          <!-- Rule 1: 131210C Lap -->
-          <div class="bg-[#141516] border hairline-border rounded p-3 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium text-[#d0d6e0]">規則一：梁主筋錨定與搭接規則</span>
-              <span id="lap-diff-badge" class="font-medium mono text-[#27a644]">標準施工規範 (480cm)</span>
+          <div class="p-3.5 rounded-lg border flex flex-col justify-between"
+               style="background-color: var(--bg-page); border-color: var(--border-color);">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold" style="color: var(--text-main);">規則一：梁主筋錨定與搭接規則</span>
+              <span id="lap-diff-badge" class="font-mono font-bold" style="color: var(--badge-confirmed-text);">標準施工規範 (480cm)</span>
             </div>
-            <p class="text-[11px] text-[#8a8f98] mb-3">依柱寬 60cm + 標準 1.3La 錨定延伸長度，每跨定尺下料。</p>
+            <p class="text-[11px] mb-3" style="color: var(--text-subtle);">依柱寬 60cm + 標準 1.3La 錨定延伸長度，每跨定尺下料。</p>
             <div class="flex items-center space-x-2">
-              <button id="btn-rule-lap-std" onclick="setBeamRule('std')" class="px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium">規範標準 480cm</button>
-              <button id="btn-rule-lap-net" onclick="setBeamRule('net')" class="px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]">純淨跨距 420cm</button>
+              <button id="btn-rule-lap-std" onclick="setBeamRule('std')" class="px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs" style="background-color: var(--primary);">規範標準 480cm</button>
+              <button id="btn-rule-lap-net" onclick="setBeamRule('net')" class="px-2.5 py-1 rounded-md text-xs border font-medium bg-white" style="border-color: var(--border-color); color: var(--text-muted);">純淨跨距 420cm</button>
             </div>
           </div>
-          <!-- Rule 2: 131210C Stirrup -->
-          <div class="bg-[#141516] border hairline-border rounded p-3 flex flex-col justify-between">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-medium text-[#d0d6e0]">規則二：梁箍筋 135° 耐震彎鉤標準</span>
-              <span id="stirrup-diff-badge" class="font-medium mono text-[#27a644]">耐震彎鉤 (+30cm)</span>
+          <div class="p-3.5 rounded-lg border flex flex-col justify-between"
+               style="background-color: var(--bg-page); border-color: var(--border-color);">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="font-bold" style="color: var(--text-main);">規則二：梁箍筋 135° 耐震彎鉤標準</span>
+              <span id="stirrup-diff-badge" class="font-mono font-bold" style="color: var(--badge-confirmed-text);">耐震彎鉤 (+30cm)</span>
             </div>
-            <p class="text-[11px] text-[#8a8f98] mb-3">依斷面寬高扣減保護層 4cm，耐震彎鉤長度取 10db 錨定。</p>
+            <p class="text-[11px] mb-3" style="color: var(--text-subtle);">依斷面寬高扣減保護層 4cm，耐震彎鉤長度取 10db 錨定。</p>
             <div class="flex items-center space-x-2">
-              <button id="btn-rule-hook-135" onclick="setStirrupHook('135')" class="px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium">耐震 135° 彎鉤</button>
-              <button id="btn-rule-hook-90" onclick="setStirrupHook('90')" class="px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]">標準 90° 彎鉤</button>
+              <button id="btn-rule-hook-135" onclick="setStirrupHook('135')" class="px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs" style="background-color: var(--primary);">耐震 135° 彎鉤</button>
+              <button id="btn-rule-hook-90" onclick="setStirrupHook('90')" class="px-2.5 py-1 rounded-md text-xs border font-medium bg-white" style="border-color: var(--border-color); color: var(--text-muted);">標準 90° 彎鉤</button>
             </div>
           </div>
         `;
       }
     }
 
-    // Render Filter Buttons based on currentCase
     function renderFilterButtons() {
       const floorContainer = document.getElementById('floor-filters');
       const catContainer = document.getElementById('cat-filters');
 
-      let floors = [];
-      let cats = [];
+      let floors = currentCase === 'youai'
+        ? ['全部', '3F', '4F', '5F', 'RF']
+        : ['全部', '基礎/1F', '2FL', '3FL', '4FL', 'RFL', 'PRFL'];
 
-      if (currentCase === 'youai') {
-        floors = ['全部', '3F', '4F', '5F', 'RF'];
-        cats = ['全部', '柱筋', '樑筋', '箍筋', '牆間隔筋'];
-      } else {
-        floors = ['全部', '基礎/1F', '2FL', '3FL', '4FL', 'RFL', 'PRFL'];
-        cats = ['全部', '梁筋', '梁箍筋', '梁扭力筋'];
-      }
+      let cats = currentCase === 'youai'
+        ? ['全部', '柱筋', '樑筋', '箍筋', '牆間隔筋']
+        : ['全部', '梁筋', '梁箍筋', '梁扭力筋'];
 
       floorContainer.innerHTML = floors.map(f => `
-        <button onclick="filterFloor('${f}')" class="floor-btn px-2 py-0.5 rounded text-xs transition-colors ${f === '全部' ? 'bg-[#5e6ad2] text-white font-medium' : 'text-[#8a8f98] hover:text-[#f7f8f8]'}">${f}</button>
+        <button onclick="filterFloor('${f}')" class="floor-btn px-2.5 py-1 rounded text-xs font-semibold transition-all ${f === '全部' ? 'bg-white shadow-xs border' : 'hover:bg-white/60'}"
+                style="${f === '全部' ? 'color: var(--primary); border-color: var(--border-color);' : 'color: var(--text-muted);'}">${f}</button>
       `).join('');
 
       catContainer.innerHTML = cats.map(c => `
-        <button onclick="filterCategory('${c}')" class="cat-btn px-2 py-0.5 rounded text-xs transition-colors ${c === '全部' ? 'bg-[#5e6ad2] text-white font-medium' : 'text-[#8a8f98] hover:text-[#f7f8f8]'}">${c}</button>
+        <button onclick="filterCategory('${c}')" class="cat-btn px-2.5 py-1 rounded text-xs font-semibold transition-all ${c === '全部' ? 'bg-white shadow-xs border' : 'hover:bg-white/60'}"
+                style="${c === '全部' ? 'color: var(--primary); border-color: var(--border-color);' : 'color: var(--text-muted);'}">${c}</button>
       `).join('');
     }
 
-    // Render Table Body
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       const filtered = currentData.filter(d => {
@@ -568,23 +667,27 @@
       });
 
       tbody.innerHTML = filtered.map(row => `
-        <tr class="hover:bg-[#141516] transition-colors cursor-pointer group" onclick="openInspector('${row.handle}', '${row.layer}', '${row.note}', 'G*H*I/100 = ${row.len}*${row.qty}*${row.unit}/100 = ${row.wt.toFixed(2)} kg')">
-          <td class="py-2.5 px-3.5 mono text-[#8a8f98] font-medium text-[11px]">${row.member || '工作表 ' + row.sheet}</td>
-          <td class="py-2.5 px-3 font-semibold text-[#f7f8f8]">${row.floor}</td>
-          <td class="py-2.5 px-3 text-[#d0d6e0]">${row.cat}</td>
-          <td class="py-2.5 px-3 text-[#8a8f98]">${row.kind}</td>
-          <td class="py-2.5 px-3 mono font-semibold text-[#828fff]">#${row.spec}</td>
-          <td class="py-2.5 px-3 mono text-right text-[#f7f8f8]">${row.len.toFixed(1)}</td>
-          <td class="py-2.5 px-3 mono text-right text-[#f7f8f8]">${row.qty}</td>
-          <td class="py-2.5 px-3 mono text-right text-[#8a8f98]">${row.unit.toFixed(3)}</td>
-          <td class="py-2.5 px-3.5 mono text-right text-[#27a644] font-semibold">${row.wt.toFixed(2)}</td>
+        <tr class="transition-colors cursor-pointer group"
+            style="background-color: var(--bg-card);"
+            onmouseover="this.style.backgroundColor='var(--table-row-hover)'"
+            onmouseout="this.style.backgroundColor='var(--bg-card)'"
+            onclick="openInspector('${row.handle}', '${row.layer}', '${row.note}', 'G*H*I/100 = ${row.len}*${row.qty}*${row.unit}/100 = ${row.wt.toFixed(2)} kg')">
+          <td class="py-2.5 px-3.5 mono font-semibold text-[11px]" style="color: var(--text-muted);">${row.member || '工作表 ' + row.sheet}</td>
+          <td class="py-2.5 px-3 font-bold" style="color: var(--text-main);">${row.floor}</td>
+          <td class="py-2.5 px-3 font-medium" style="color: var(--text-muted);">${row.cat}</td>
+          <td class="py-2.5 px-3" style="color: var(--text-subtle);">${row.kind}</td>
+          <td class="py-2.5 px-3 mono font-bold" style="color: var(--primary);">#${row.spec}</td>
+          <td class="py-2.5 px-3 mono text-right font-medium" style="color: var(--text-main);">${row.len.toFixed(1)}</td>
+          <td class="py-2.5 px-3 mono text-right font-medium" style="color: var(--text-main);">${row.qty}</td>
+          <td class="py-2.5 px-3 mono text-right" style="color: var(--text-muted);">${row.unit.toFixed(3)}</td>
+          <td class="py-2.5 px-3.5 mono text-right font-bold" style="color: var(--text-main);">${row.wt.toFixed(2)}</td>
           <td class="py-2.5 px-3 text-center">
             ${row.status === 'confirmed'
-              ? '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#27a644]/10 text-[#27a644] border border-[#27a644]/30">Confirmed</span>'
-              : '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium bg-[#f59e0b]/10 text-[#f59e0b] border border-[#f59e0b]/30">Inferred</span>'}
+              ? `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--badge-confirmed-bg); color: var(--badge-confirmed-text); border-color: var(--badge-confirmed-border);">Confirmed</span>`
+              : `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--badge-inferred-bg); color: var(--badge-inferred-text); border-color: var(--badge-inferred-border);">Inferred</span>`}
           </td>
-          <td class="py-2.5 px-3.5 mono text-[#828fff] font-medium group-hover:underline">${row.handle}</td>
-          <td class="py-2.5 px-3 text-[#62666d] mono text-[11px]">${row.layer}</td>
+          <td class="py-2.5 px-3.5 mono font-bold group-hover:underline" style="color: var(--primary);">${row.handle}</td>
+          <td class="py-2.5 px-3 mono text-[11px]" style="color: var(--text-subtle);">${row.layer}</td>
         </tr>
       `).join('');
 
@@ -594,9 +697,15 @@
     function filterFloor(flr) {
       currentFloor = flr === '全部' ? 'ALL' : flr;
       document.querySelectorAll('#floor-filters .floor-btn').forEach(btn => {
-        btn.className = btn.textContent === flr
-          ? 'floor-btn px-2 py-0.5 rounded text-xs bg-[#5e6ad2] text-white font-medium'
-          : 'floor-btn px-2 py-0.5 rounded text-xs text-[#8a8f98] hover:text-[#f7f8f8]';
+        if (btn.textContent === flr) {
+          btn.className = 'floor-btn px-2.5 py-1 rounded text-xs font-bold bg-white shadow-xs border';
+          btn.style.color = 'var(--primary)';
+          btn.style.borderColor = 'var(--border-color)';
+        } else {
+          btn.className = 'floor-btn px-2.5 py-1 rounded text-xs font-medium hover:bg-white/60';
+          btn.style.color = 'var(--text-muted)';
+          btn.style.borderColor = 'transparent';
+        }
       });
       renderTable();
     }
@@ -604,9 +713,15 @@
     function filterCategory(cat) {
       currentCat = cat === '全部' ? 'ALL' : cat;
       document.querySelectorAll('#cat-filters .cat-btn').forEach(btn => {
-        btn.className = btn.textContent === cat
-          ? 'cat-btn px-2 py-0.5 rounded text-xs bg-[#5e6ad2] text-white font-medium'
-          : 'cat-btn px-2 py-0.5 rounded text-xs text-[#8a8f98] hover:text-[#f7f8f8]';
+        if (btn.textContent === cat) {
+          btn.className = 'cat-btn px-2.5 py-1 rounded text-xs font-bold bg-white shadow-xs border';
+          btn.style.color = 'var(--primary)';
+          btn.style.borderColor = 'var(--border-color)';
+        } else {
+          btn.className = 'cat-btn px-2.5 py-1 rounded text-xs font-medium hover:bg-white/60';
+          btn.style.color = 'var(--text-muted)';
+          btn.style.borderColor = 'transparent';
+        }
       });
       renderTable();
     }
@@ -616,20 +731,23 @@
       renderTable();
     }
 
-    // Youai Rules
     function setSpacerRule(val) {
       const b80 = document.getElementById('btn-rule-spacer-80');
       const b120 = document.getElementById('btn-rule-spacer-120');
       const badge = document.getElementById('spacer-diff-badge');
       const spacerRow = youaiData.find(d => d.cat === '牆間隔筋');
       if (val === 80) {
-        b80.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        b120.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
-        badge.textContent = '-12.30 kg (圖面明載 80 支)';
+        b80.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        b80.style.backgroundColor = 'var(--primary)';
+        b120.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        b120.style.color = 'var(--text-muted)';
+        badge.textContent = '-12.30 kg (圖面標 80 支)';
         if (spacerRow) { spacerRow.qty = 80; spacerRow.wt = 24.64; spacerRow.status = 'inferred'; }
       } else {
-        b120.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        b80.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
+        b120.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        b120.style.backgroundColor = 'var(--primary)';
+        b80.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        b80.style.color = 'var(--text-muted)';
         badge.textContent = '0 kg (已套用料單習慣 120 支)';
         if (spacerRow) { spacerRow.qty = 120; spacerRow.wt = 36.96; spacerRow.status = 'confirmed'; }
       }
@@ -643,14 +761,18 @@
       const r231 = youaiData.find(d => d.len === 231 || d.len === 230);
       const r151 = youaiData.find(d => d.len === 151 || d.len === 150);
       if (mode === 'exact') {
-        be.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        bn.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
-        badge.textContent = '+1.46 kg (DWG 原生精確 231/151)';
+        be.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        be.style.backgroundColor = 'var(--primary)';
+        bn.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        bn.style.color = 'var(--text-muted)';
+        badge.textContent = '+1.46 kg (DWG 原生 231/151)';
         if (r231) { r231.len = 231; r231.wt = 168.538; }
         if (r151) { r151.len = 151; r151.wt = 110.179; }
       } else {
-        bn.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        be.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
+        bn.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        bn.style.backgroundColor = 'var(--primary)';
+        be.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        be.style.color = 'var(--text-muted)';
         badge.textContent = '0 kg (已套用名目整數 230/150)';
         if (r231) { r231.len = 230; r231.wt = 167.808; }
         if (r151) { r151.len = 150; r151.wt = 109.440; }
@@ -658,19 +780,22 @@
       renderTable();
     }
 
-    // 131210C Rules
     function setBeamRule(mode) {
       const bs = document.getElementById('btn-rule-lap-std');
       const bn = document.getElementById('btn-rule-lap-net');
       const badge = document.getElementById('lap-diff-badge');
       if (mode === 'std') {
-        bs.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        bn.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
+        bs.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        bs.style.backgroundColor = 'var(--primary)';
+        bn.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        bn.style.color = 'var(--text-muted)';
         badge.textContent = '標準施工規範 (480cm)';
         document.getElementById('kpiTotalWeight').textContent = '16,847.27';
       } else {
-        bn.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        bs.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
+        bn.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        bn.style.backgroundColor = 'var(--primary)';
+        bs.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        bs.style.color = 'var(--text-muted)';
         badge.textContent = '折減 -2,105.90 kg (420cm)';
         document.getElementById('kpiTotalWeight').textContent = '14,741.37';
       }
@@ -681,17 +806,20 @@
       const b90 = document.getElementById('btn-rule-hook-90');
       const badge = document.getElementById('stirrup-diff-badge');
       if (hook === '135') {
-        b135.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        b90.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
+        b135.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        b135.style.backgroundColor = 'var(--primary)';
+        b90.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        b90.style.color = 'var(--text-muted)';
         badge.textContent = '耐震彎鉤 (+30cm)';
       } else {
-        b90.className = 'px-2 py-0.5 rounded text-[11px] bg-[#5e6ad2] text-white font-medium';
-        b135.className = 'px-2 py-0.5 rounded text-[11px] text-[#8a8f98] hover:text-[#f7f8f8]';
+        b90.className = 'px-2.5 py-1 rounded-md text-xs font-semibold text-white shadow-xs';
+        b90.style.backgroundColor = 'var(--primary)';
+        b135.className = 'px-2.5 py-1 rounded-md text-xs border font-medium bg-white';
+        b135.style.color = 'var(--text-muted)';
         badge.textContent = '折減 -121.80 kg (+20cm)';
       }
     }
 
-    // Modal Inspector
     function openInspector(handle, layer, note, formula) {
       document.getElementById('modalHandle').textContent = handle;
       document.getElementById('modalLayer').textContent = layer;
@@ -710,7 +838,7 @@
       alert(`已複製 AutoCAD 定位指令：_HANDENT ${h}`);
     }
 
-    // Init
+    setGlobalTheme('stripe');
     switchProject('youai');
   </script>
 </body>
