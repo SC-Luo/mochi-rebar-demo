@@ -88,7 +88,7 @@
     .mono { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
-<body class="theme-stripe min-h-screen antialiased flex flex-col">
+<body class="theme-cal min-h-screen antialiased flex flex-col">
 
   <!-- Top App Navigation -->
   <header class="border-b sticky top-0 z-40 px-6 py-3 flex items-center justify-between transition-colors"
@@ -132,8 +132,8 @@
       
       <!-- Live Theme Selector -->
       <div class="hidden md:flex items-center space-x-1 border rounded-lg p-0.5" style="border-color: var(--border-color); background-color: var(--bg-page);">
-        <button onclick="setGlobalTheme('stripe')" id="btn-theme-stripe" class="px-2 py-1 rounded text-[11px] font-bold bg-white text-[#0d253d] shadow-xs">💎 Stripe 淺色</button>
-        <button onclick="setGlobalTheme('cal')" id="btn-theme-cal" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">⚡ Cal 極簡</button>
+        <button onclick="setGlobalTheme('cal')" id="btn-theme-cal" class="px-2 py-1 rounded text-[11px] font-bold bg-white text-slate-900 shadow-xs border border-slate-300">⚡ Cal 極簡 (預設)</button>
+        <button onclick="setGlobalTheme('stripe')" id="btn-theme-stripe" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">💎 Stripe 淺色</button>
         <button onclick="setGlobalTheme('notion')" id="btn-theme-notion" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">📄 Notion 暖白</button>
       </div>
 
@@ -838,7 +838,7 @@
       alert(`已複製 AutoCAD 定位指令：_HANDENT ${h}`);
     }
 
-    setGlobalTheme('stripe');
+    setGlobalTheme('cal');
     switchProject('youai');
   </script>
 </body>
