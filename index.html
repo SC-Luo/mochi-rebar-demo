@@ -146,13 +146,6 @@
           <span id="caseModeBadge">與料單吻合</span>
         </span>
 
-        <!-- Desktop Theme Selector -->
-        <div class="hidden lg:flex items-center space-x-1 border rounded-lg p-0.5" style="border-color: var(--border-color); background-color: var(--bg-page);">
-          <button onclick="setGlobalTheme('cal')" id="btn-theme-cal" class="px-2 py-1 rounded text-[11px] font-bold bg-white text-slate-900 shadow-xs border border-slate-300">⚡ 極簡</button>
-          <button onclick="setGlobalTheme('stripe')" id="btn-theme-stripe" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">💎 淺藍</button>
-          <button onclick="setGlobalTheme('notion')" id="btn-theme-notion" class="px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900">📄 暖白</button>
-        </div>
-
         <!-- Desktop Download Button -->
         <a id="downloadExcelBtn" href="友愛街_3F以上_DWG直出鋼筋算量_v1.xlsx" download
            class="hidden md:inline-flex items-center space-x-1.5 text-xs font-semibold px-3.5 py-1.5 rounded-lg text-white shadow-xs transition-colors shrink-0"
@@ -187,7 +180,7 @@
   </div>
 
   <!-- Main Content Area -->
-  <main class="flex-1 px-3 sm:px-6 py-3.5 sm:py-6 max-w-[1600px] w-full mx-auto space-y-3.5 sm:space-y-6">
+  <main class="flex-1 px-3 sm:px-6 py-3.5 sm:py-6 pb-8 sm:pb-12 max-w-[1600px] w-full mx-auto space-y-3.5 sm:space-y-6">
 
     <!-- KPI Metric Cards Grid (2x2 on mobile, 4 columns on desktop) -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
@@ -424,22 +417,6 @@
     </div>
   </div>
 
-  <!-- Page Footer -->
-  <footer class="border-t py-4 px-3 sm:px-6 text-xs transition-colors"
-          style="background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-muted);">
-    <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
-      <span>麻糬鋼筋自動算量 · 由 AutoCAD 工程圖直接計算，供工務覆核與叫料參考</span>
-      <div class="flex items-center space-x-2 text-[11px]">
-        <span class="text-slate-400">風格：</span>
-        <button onclick="setGlobalTheme('cal')" class="hover:underline font-semibold">⚡ 極簡</button>
-        <span>·</span>
-        <button onclick="setGlobalTheme('stripe')" class="hover:underline">💎 淺藍</button>
-        <span>·</span>
-        <button onclick="setGlobalTheme('notion')" class="hover:underline">📄 暖白</button>
-      </div>
-    </div>
-  </footer>
-
   <script>
     const youaiData = [
       { sheet: '02', floor: '3F', cat: '柱筋', kind: '主筋', member: '3F C1(60x70)', spec: 8, len: 340, qty: 116, unit: 3.98, wt: 1570.51, status: 'confirmed', handle: '3B82', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=340' },
@@ -493,18 +470,21 @@
     let currentCat = 'ALL';
     let currentSearch = '';
 
+    function updateToggleButtons(activeBtn, inactiveBtn) {
+      if (!activeBtn || !inactiveBtn) return;
+      activeBtn.style.backgroundColor = 'var(--primary)';
+      activeBtn.style.color = '#ffffff';
+      activeBtn.style.borderColor = 'var(--primary)';
+      activeBtn.className = 'py-1.5 px-2 rounded-md text-xs font-bold shadow-xs text-center border cursor-pointer transition-all';
+
+      inactiveBtn.style.backgroundColor = '#ffffff';
+      inactiveBtn.style.color = 'var(--text-main)';
+      inactiveBtn.style.borderColor = 'var(--border-color)';
+      inactiveBtn.className = 'py-1.5 px-2 rounded-md text-xs font-medium text-center border cursor-pointer transition-all hover:bg-slate-50';
+    }
+
     function setGlobalTheme(themeName) {
       document.body.className = `theme-${themeName} min-h-screen antialiased flex flex-col overflow-x-hidden`;
-      ['stripe', 'cal', 'notion'].forEach(t => {
-        const b = document.getElementById(`btn-theme-${t}`);
-        if (b) {
-          if (t === themeName) {
-            b.className = 'px-2 py-1 rounded text-[11px] font-bold bg-white shadow-xs text-slate-900 border border-slate-300';
-          } else {
-            b.className = 'px-2 py-1 rounded text-[11px] font-medium text-slate-500 hover:text-slate-900';
-          }
-        }
-      });
       renderFilterButtons();
       renderTable();
     }
@@ -589,8 +569,16 @@
             </div>
             <p class="text-[11px] mb-2.5" style="color: var(--text-subtle);">圖面標註 <code class="mono font-bold">#3x80</code>，工務料單通常抓 120 支。</p>
             <div class="grid grid-cols-2 gap-2">
-              <button id="btn-rule-spacer-80" onclick="setSpacerRule(80)" class="py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center" style="background-color: var(--primary);">依圖面標註 (80 支)</button>
-              <button id="btn-rule-spacer-120" onclick="setSpacerRule(120)" class="py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center" style="border-color: var(--border-color); color: var(--text-muted);">依工務習慣 (120 支)</button>
+              <button id="btn-rule-spacer-80" onclick="setSpacerRule(80)"
+                      class="py-1.5 px-2 rounded-md text-xs font-bold shadow-xs text-center border cursor-pointer transition-all"
+                      style="background-color: var(--primary); color: #ffffff; border-color: var(--primary);">
+                依圖面標註 (80 支)
+              </button>
+              <button id="btn-rule-spacer-120" onclick="setSpacerRule(120)"
+                      class="py-1.5 px-2 rounded-md text-xs font-medium text-center border cursor-pointer transition-all hover:bg-slate-50"
+                      style="background-color: #ffffff; color: var(--text-main); border-color: var(--border-color);">
+                依工務習慣 (120 支)
+              </button>
             </div>
           </div>
           <div class="p-3 sm:p-3.5 rounded-lg border flex flex-col justify-between"
@@ -601,8 +589,16 @@
             </div>
             <p class="text-[11px] mb-2.5" style="color: var(--text-subtle);">圖面實長為 231cm，現場叫料常取整數 230cm。</p>
             <div class="grid grid-cols-2 gap-2">
-              <button id="btn-rule-hook-exact" onclick="setHookRule('exact')" class="py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center" style="background-color: var(--primary);">依圖面實長 (231cm)</button>
-              <button id="btn-rule-hook-nominal" onclick="setHookRule('nominal')" class="py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center" style="border-color: var(--border-color); color: var(--text-muted);">叫料整數 (230cm)</button>
+              <button id="btn-rule-hook-exact" onclick="setHookRule('exact')"
+                      class="py-1.5 px-2 rounded-md text-xs font-bold shadow-xs text-center border cursor-pointer transition-all"
+                      style="background-color: var(--primary); color: #ffffff; border-color: var(--primary);">
+                依圖面實長 (231cm)
+              </button>
+              <button id="btn-rule-hook-nominal" onclick="setHookRule('nominal')"
+                      class="py-1.5 px-2 rounded-md text-xs font-medium text-center border cursor-pointer transition-all hover:bg-slate-50"
+                      style="background-color: #ffffff; color: var(--text-main); border-color: var(--border-color);">
+                叫料整數 (230cm)
+              </button>
             </div>
           </div>
         `;
@@ -616,8 +612,16 @@
             </div>
             <p class="text-[11px] mb-2.5" style="color: var(--text-subtle);">包含柱寬 60cm 與標準搭接長度，每跨定尺叫料。</p>
             <div class="grid grid-cols-2 gap-2">
-              <button id="btn-rule-lap-std" onclick="setBeamRule('std')" class="py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center" style="background-color: var(--primary);">標準施工 (480cm)</button>
-              <button id="btn-rule-lap-net" onclick="setBeamRule('net')" class="py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center" style="border-color: var(--border-color); color: var(--text-muted);">純淨跨距 (420cm)</button>
+              <button id="btn-rule-lap-std" onclick="setBeamRule('std')"
+                      class="py-1.5 px-2 rounded-md text-xs font-bold shadow-xs text-center border cursor-pointer transition-all"
+                      style="background-color: var(--primary); color: #ffffff; border-color: var(--primary);">
+                標準施工 (480cm)
+              </button>
+              <button id="btn-rule-lap-net" onclick="setBeamRule('net')"
+                      class="py-1.5 px-2 rounded-md text-xs font-medium text-center border cursor-pointer transition-all hover:bg-slate-50"
+                      style="background-color: #ffffff; color: var(--text-main); border-color: var(--border-color);">
+                純淨跨距 (420cm)
+              </button>
             </div>
           </div>
           <div class="p-3 sm:p-3.5 rounded-lg border flex flex-col justify-between"
@@ -628,8 +632,16 @@
             </div>
             <p class="text-[11px] mb-2.5" style="color: var(--text-subtle);">耐震彎折 135°（長度+30cm）或一般彎折 90°（長度+20cm）。</p>
             <div class="grid grid-cols-2 gap-2">
-              <button id="btn-rule-hook-135" onclick="setStirrupHook('135')" class="py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center" style="background-color: var(--primary);">耐震彎鉤 (135°)</button>
-              <button id="btn-rule-hook-90" onclick="setStirrupHook('90')" class="py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center" style="border-color: var(--border-color); color: var(--text-muted);">一般彎鉤 (90°)</button>
+              <button id="btn-rule-hook-135" onclick="setStirrupHook('135')"
+                      class="py-1.5 px-2 rounded-md text-xs font-bold shadow-xs text-center border cursor-pointer transition-all"
+                      style="background-color: var(--primary); color: #ffffff; border-color: var(--primary);">
+                耐震彎鉤 (135°)
+              </button>
+              <button id="btn-rule-hook-90" onclick="setStirrupHook('90')"
+                      class="py-1.5 px-2 rounded-md text-xs font-medium text-center border cursor-pointer transition-all hover:bg-slate-50"
+                      style="background-color: #ffffff; color: var(--text-main); border-color: var(--border-color);">
+                一般彎鉤 (90°)
+              </button>
             </div>
           </div>
         `;
@@ -744,17 +756,11 @@
       const badge = document.getElementById('spacer-diff-badge');
       const spacerRow = youaiData.find(d => d.cat === '牆筋');
       if (val === 80) {
-        b80.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        b80.style.backgroundColor = 'var(--primary)';
-        b120.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        b120.style.color = 'var(--text-muted)';
+        updateToggleButtons(b80, b120);
         badge.textContent = '依圖面 80 支';
         if (spacerRow) { spacerRow.qty = 80; spacerRow.wt = 24.64; spacerRow.status = 'inferred'; }
       } else {
-        b120.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        b120.style.backgroundColor = 'var(--primary)';
-        b80.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        b80.style.color = 'var(--text-muted)';
+        updateToggleButtons(b120, b80);
         badge.textContent = '依習慣 120 支';
         if (spacerRow) { spacerRow.qty = 120; spacerRow.wt = 36.96; spacerRow.status = 'confirmed'; }
       }
@@ -768,18 +774,12 @@
       const r231 = youaiData.find(d => d.len === 231 || d.len === 230);
       const r151 = youaiData.find(d => d.len === 151 || d.len === 150);
       if (mode === 'exact') {
-        be.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        be.style.backgroundColor = 'var(--primary)';
-        bn.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        bn.style.color = 'var(--text-muted)';
+        updateToggleButtons(be, bn);
         badge.textContent = '依圖面 231/151cm';
         if (r231) { r231.len = 231; r231.wt = 168.538; }
         if (r151) { r151.len = 151; r151.wt = 110.179; }
       } else {
-        bn.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        bn.style.backgroundColor = 'var(--primary)';
-        be.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        be.style.color = 'var(--text-muted)';
+        updateToggleButtons(bn, be);
         badge.textContent = '叫料整數 230/150cm';
         if (r231) { r231.len = 230; r231.wt = 167.808; }
         if (r151) { r151.len = 150; r151.wt = 109.440; }
@@ -792,17 +792,11 @@
       const bn = document.getElementById('btn-rule-lap-net');
       const badge = document.getElementById('lap-diff-badge');
       if (mode === 'std') {
-        bs.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        bs.style.backgroundColor = 'var(--primary)';
-        bn.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        bn.style.color = 'var(--text-muted)';
+        updateToggleButtons(bs, bn);
         badge.textContent = '標準施工 (480cm)';
         document.getElementById('kpiTotalWeight').textContent = '16,847.27';
       } else {
-        bn.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        bn.style.backgroundColor = 'var(--primary)';
-        bs.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        bs.style.color = 'var(--text-muted)';
+        updateToggleButtons(bn, bs);
         badge.textContent = '純跨距 (420cm)';
         document.getElementById('kpiTotalWeight').textContent = '14,741.37';
       }
@@ -813,16 +807,10 @@
       const b90 = document.getElementById('btn-rule-hook-90');
       const badge = document.getElementById('stirrup-diff-badge');
       if (hook === '135') {
-        b135.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        b135.style.backgroundColor = 'var(--primary)';
-        b90.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        b90.style.color = 'var(--text-muted)';
+        updateToggleButtons(b135, b90);
         badge.textContent = '耐震彎鉤 (135°)';
       } else {
-        b90.className = 'py-1.5 px-2 rounded-md text-xs font-semibold text-white shadow-xs text-center';
-        b90.style.backgroundColor = 'var(--primary)';
-        b135.className = 'py-1.5 px-2 rounded-md text-xs border font-medium bg-white text-center';
-        b135.style.color = 'var(--text-muted)';
+        updateToggleButtons(b90, b135);
         badge.textContent = '一般彎鉤 (90°)';
       }
     }
