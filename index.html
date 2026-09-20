@@ -112,7 +112,7 @@
                 直出圖面
               </span>
             </div>
-            <p class="text-[11px] mt-0.5" style="color: var(--text-subtle);">AutoCAD DWG 直出工程算量・折彎加工尺寸定位</p>
+            <p class="text-[11px] mt-0.5" style="color: var(--text-subtle);">AutoCAD DWG 直出工程算量・對齊 Excel 料單形狀尺寸</p>
           </div>
         </div>
 
@@ -188,7 +188,7 @@
           友愛街 3F梁版以上 114.08.28.dwg
         </div>
         <p class="text-xs mt-1" style="color: var(--text-muted);">
-          依原始圖面圖塊直出，每筆料項皆保留折彎加工形狀、分段長度（寬彎、主長、深彎）與圖元來源。
+          100% 依原始 Excel 料單與 CCM 撿料系統規格：寬彎（左鉤）、形狀主長（中段）、深彎（右鉤）全要素對齊。
         </p>
       </div>
 
@@ -196,13 +196,13 @@
       <div class="flex items-center space-x-2 sm:space-x-3 self-start sm:self-auto text-xs shrink-0">
         <div class="px-2.5 py-1.5 rounded-lg border text-center"
              style="background-color: var(--bg-page); border-color: var(--border-color);">
-          <div class="text-[10px]" style="color: var(--text-subtle);">出圖標準</div>
-          <div class="font-bold" style="color: var(--text-main);">台灣工程規範</div>
+          <div class="text-[10px]" style="color: var(--text-subtle);">料單標準</div>
+          <div class="font-bold" style="color: var(--text-main);">CCM 撿料規範</div>
         </div>
         <div class="px-2.5 py-1.5 rounded-lg border text-center"
              style="background-color: var(--bg-page); border-color: var(--border-color);">
-          <div class="text-[10px]" style="color: var(--text-subtle);">形狀涵蓋</div>
-          <div class="font-bold" style="color: var(--text-main);">直/單鉤/雙鉤/箍/繫</div>
+          <div class="text-[10px]" style="color: var(--text-subtle);">折彎要素</div>
+          <div class="font-bold" style="color: var(--text-main);">寬彎 / 形狀 / 深彎</div>
         </div>
       </div>
     </div>
@@ -336,7 +336,7 @@
 
       <!-- Main Data Table (Responsive with Horizontal Scroll) -->
       <div class="overflow-x-auto w-full">
-        <table class="w-full text-left text-xs border-collapse min-w-[760px]">
+        <table class="w-full text-left text-xs border-collapse min-w-[780px]">
           <thead>
             <tr class="border-b font-semibold"
                 style="border-color: var(--border-color); background-color: var(--table-header-bg); color: var(--text-muted);">
@@ -345,7 +345,12 @@
               <th class="py-2.5 px-2.5">類別</th>
               <th class="py-2.5 px-2 hidden sm:table-cell">細項</th>
               <th class="py-2.5 px-2.5">規格</th>
-              <th class="py-2.5 px-3 text-left font-bold" style="color: var(--text-main);">加工形狀 / 分段尺寸</th>
+              
+              <!-- Canonical 3-segment shape header (寬彎 | 形狀 | 深彎) -->
+              <th class="py-2.5 px-3 text-left font-bold" style="color: var(--text-main);">
+                形狀示意 ｜ 寬彎・形狀・深彎
+              </th>
+
               <th class="py-2.5 px-2.5 text-right">長度 (cm)</th>
               <th class="py-2.5 px-2 text-right">數量</th>
               <th class="py-2.5 px-2 text-right hidden md:table-cell">單位重</th>
@@ -365,7 +370,7 @@
       <div class="px-3 sm:px-4 py-2.5 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs"
            style="border-color: var(--border-color); background-color: var(--table-header-bg); color: var(--text-muted);">
         <div>
-          共 <span id="showingCount" class="font-bold mono" style="color: var(--text-main);">0</span> 筆料項（點擊任一列可展開折彎加工圖與圖面來源）
+          共 <span id="showingCount" class="font-bold mono" style="color: var(--text-main);">0</span> 筆料項（點擊任一列可展開對齊 Excel 的折彎工程圖與圖面來源）
         </div>
         <div class="flex items-center space-x-3 text-[11px]">
           <span class="flex items-center space-x-1">
@@ -405,30 +410,30 @@
         <div class="rounded-xl border p-3.5" style="background-color: var(--bg-page); border-color: var(--border-color);">
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center space-x-2">
-              <span class="font-bold text-xs" style="color: var(--text-main);">加工折彎示意圖</span>
+              <span class="font-bold text-xs" style="color: var(--text-main);">Excel 料單對照折彎圖</span>
               <span id="modalShapeBadge" class="px-2 py-0.5 rounded text-[10px] font-bold border">形狀名稱</span>
             </div>
             <span id="modalCutLength" class="mono font-bold text-xs" style="color: var(--primary);">切斷總長 0 cm</span>
           </div>
 
           <!-- SVG Visual Diagram Canvas -->
-          <div id="modalSvgContainer" class="w-full flex items-center justify-center py-2 bg-white rounded-lg border border-slate-200">
+          <div id="modalSvgContainer" class="w-full flex items-center justify-center py-2.5 bg-white rounded-lg border border-slate-200">
             <!-- Rendered by JS -->
           </div>
 
-          <!-- Segment Breakdown Pills (3 columns: 寬彎 / 主長 / 深彎) -->
+          <!-- 3-Segment Breakdown matching Excel columns D, E, F exactly -->
           <div class="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-slate-200/80 text-center font-mono">
-            <div class="p-1.5 rounded bg-white border border-slate-200">
-              <div class="text-[10px] font-medium" style="color: var(--text-subtle);">寬彎 (段 A)</div>
-              <div id="modalBendW" class="font-bold text-xs" style="color: var(--text-main);">0 cm</div>
+            <div class="p-2 rounded bg-white border border-slate-200">
+              <div class="text-[10px] font-medium" style="color: var(--text-subtle);">【寬彎】左端</div>
+              <div id="modalBendW" class="font-bold text-sm mt-0.5" style="color: var(--text-main);">0 cm</div>
             </div>
-            <div class="p-1.5 rounded bg-white border border-slate-200">
-              <div class="text-[10px] font-medium" style="color: var(--text-subtle);">主段長 (段 B)</div>
-              <div id="modalShapeMain" class="font-bold text-xs" style="color: var(--primary);">0 cm</div>
+            <div class="p-2 rounded bg-white border border-slate-200">
+              <div class="text-[10px] font-medium" style="color: var(--text-subtle);">【形狀(cm)】主長</div>
+              <div id="modalShapeMain" class="font-bold text-sm mt-0.5" style="color: var(--primary);">0 cm</div>
             </div>
-            <div class="p-1.5 rounded bg-white border border-slate-200">
-              <div class="text-[10px] font-medium" style="color: var(--text-subtle);">深彎 (段 C)</div>
-              <div id="modalBendD" class="font-bold text-xs" style="color: var(--text-main);">0 cm</div>
+            <div class="p-2 rounded bg-white border border-slate-200">
+              <div class="text-[10px] font-medium" style="color: var(--text-subtle);">【深彎】右端</div>
+              <div id="modalBendD" class="font-bold text-sm mt-0.5" style="color: var(--text-main);">0 cm</div>
             </div>
           </div>
 
@@ -518,29 +523,35 @@
       inactiveBtn.className = 'py-1.5 px-2 rounded-md text-xs font-medium text-center border cursor-pointer transition-all hover:bg-slate-50';
     }
 
-    // Mini SVG shape icons for table rows
+    // Mini SVG shape icons for table rows (matching Excel shapes)
     function getShapeMiniIcon(type) {
       switch (type) {
         case 'straight':
-          return '<svg class="w-4 h-4 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg>';
+          return '<svg class="w-5 h-4 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg>';
         case 'hook_single':
-          return '<svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V7H20"/></svg>';
+          // Correct direction: horizontal top bar going right, then hook going down on the right! (Freeform 465)
+          return '<svg class="w-5 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8H19V19"/></svg>';
         case 'hook_double':
-          return '<svg class="w-4 h-4 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V7H19V19"/></svg>';
+          // U-bar: hook going down on both sides! (Freeform 464)
+          return '<svg class="w-5 h-4 text-indigo-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V7H19V19"/></svg>';
         case 'stirrup_closed':
-          return '<svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M5 9L2 6M5 11L1 12"/></svg>';
+          // Closed rectangular hoop with 135 seismic hooks (Freeform 77)
+          return '<svg class="w-5 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M5 9L2 6M5 11L1 12"/></svg>';
         case 'stirrup_u':
-          return '<svg class="w-4 h-4 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8L5 5V18H19V5L22 8"/></svg>';
+          // Open U stirrup with top hooks (Freeform 1)
+          return '<svg class="w-5 h-4 text-teal-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8L5 5V18H19V5L22 8"/></svg>';
         case 'cap_tie':
-          return '<svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18V7H19V18"/></svg>';
+          // Cap tie (Freeform 3)
+          return '<svg class="w-5 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18V7H19V18"/></svg>';
         case 'tie_s':
-          return '<svg class="w-4 h-4 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8L6 5H18L21 11"/></svg>';
+          // Column Tie S-bar (Freeform 307)
+          return '<svg class="w-5 h-4 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8L6 5H18L21 11"/></svg>';
         default:
-          return '<svg class="w-4 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>';
+          return '<svg class="w-5 h-4 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>';
       }
     }
 
-    // Detailed SVG Generator for Inspector Modal
+    // Detailed SVG Generator for Inspector Modal (strictly matching Excel CCM drawing vectors)
     function generateShapeSvg(row) {
       const type = row.shape_type;
       const w = 340, h = 130;
@@ -554,53 +565,65 @@
             <line x1="40" y1="45" x2="300" y2="45" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
             <line x1="40" y1="38" x2="40" y2="52" stroke="#94a3b8" stroke-width="1.5"/>
             <line x1="300" y1="38" x2="300" y2="52" stroke="#94a3b8" stroke-width="1.5"/>
-            <text x="170" y="40" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">全長 ${row.len} cm</text>
-            <text x="170" y="95" font-size="11" fill="#64748b" text-anchor="middle">平直直筋（無彎折）</text>
+            <text x="170" y="40" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">【形狀】全長 ${row.len} cm</text>
+            <text x="170" y="95" font-size="11" fill="#64748b" text-anchor="middle">平直直筋（寬彎=0, 深彎=0）</text>
           `;
           break;
 
         case 'hook_single':
-          pathSvg = '<path d="M 70 105 L 70 50 L 290 50" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>';
+          // Exact match to Excel Freeform 465:
+          // Left side is straight (寬彎=0).
+          // Top bar is main length (形狀=610).
+          // Right side bends DOWN 90 degrees into 深彎 (深彎=40)!
+          pathSvg = '<path d="M 50 50 L 270 50 L 270 105" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>';
           dimSvg = `
-            <line x1="70" y1="32" x2="290" y2="32" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="70" y1="25" x2="70" y2="39" stroke="#94a3b8" stroke-width="1.5"/>
-            <line x1="290" y1="25" x2="290" y2="39" stroke="#94a3b8" stroke-width="1.5"/>
-            <text x="180" y="27" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">主長 ${row.shape_main} cm</text>
+            <!-- Top Main length dim -->
+            <line x1="50" y1="32" x2="270" y2="32" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="50" y1="25" x2="50" y2="39" stroke="#94a3b8" stroke-width="1.5"/>
+            <line x1="270" y1="25" x2="270" y2="39" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="160" y="27" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">【形狀主長】${row.shape_main} cm</text>
             
-            <line x1="48" y1="50" x2="48" y2="105" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <line x1="41" y1="50" x2="55" y2="50" stroke="#94a3b8" stroke-width="1.5"/>
-            <line x1="41" y1="105" x2="55" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
-            <text x="42" y="82" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#1d4ed8" text-anchor="end">深彎 ${row.bend_d}</text>
+            <!-- Left end: 寬彎 = 0 -->
+            <text x="50" y="80" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#64748b" text-anchor="middle">【寬彎】0</text>
+
+            <!-- Right hook dim: 深彎 -->
+            <line x1="288" y1="50" x2="288" y2="105" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="281" y1="50" x2="295" y2="50" stroke="#94a3b8" stroke-width="1.5"/>
+            <line x1="281" y1="105" x2="295" y2="105" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="298" y="82" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#1d4ed8" text-anchor="start">【深彎】${row.bend_d}</text>
             
-            <text x="180" y="85" font-size="11" fill="#64748b" text-anchor="middle">90° 標準端部錨定彎鉤</text>
+            <text x="160" y="85" font-size="11" fill="#64748b" text-anchor="middle">右端 90° 錨定深彎鉤（同 Excel 箭頭方向）</text>
           `;
           break;
 
         case 'hook_double':
+          // Exact match to Excel Freeform 464:
+          // Left hook (寬彎), Top bar (形狀), Right hook (深彎)
           pathSvg = '<path d="M 65 105 L 65 50 L 275 50 L 275 105" fill="none" stroke="#4f46e5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>';
           dimSvg = `
             <line x1="65" y1="32" x2="275" y2="32" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
             <line x1="65" y1="25" x2="65" y2="39" stroke="#94a3b8" stroke-width="1.5"/>
             <line x1="275" y1="25" x2="275" y2="39" stroke="#94a3b8" stroke-width="1.5"/>
-            <text x="170" y="27" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#4338ca" text-anchor="middle">主長 ${row.shape_main} cm</text>
+            <text x="170" y="27" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#4338ca" text-anchor="middle">【形狀主長】${row.shape_main} cm</text>
             
-            <text x="45" y="82" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#4338ca" text-anchor="middle">左 ${row.bend_w}</text>
-            <text x="295" y="82" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#4338ca" text-anchor="middle">右 ${row.bend_d}</text>
-            <text x="170" y="85" font-size="11" fill="#64748b" text-anchor="middle">雙端 90° 錨定彎鉤</text>
+            <text x="45" y="82" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#4338ca" text-anchor="middle">【寬彎】${row.bend_w}</text>
+            <text x="295" y="82" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#4338ca" text-anchor="middle">【深彎】${row.bend_d}</text>
+            <text x="170" y="85" font-size="11" fill="#64748b" text-anchor="middle">雙端 90° 錨定彎鉤（同 Excel U型筋）</text>
           `;
           break;
 
         case 'stirrup_closed':
+          // Exact match to Excel Freeform 77 (柱外箍筋)
           pathSvg = `
             <rect x="90" y="30" width="160" height="75" rx="4" fill="none" stroke="#059669" stroke-width="4.5"/>
             <path d="M 90 48 L 76 34 M 90 55 L 70 58" fill="none" stroke="#059669" stroke-width="3.5" stroke-linecap="round"/>
           `;
           dimSvg = `
             <line x1="90" y1="18" x2="250" y2="18" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <text x="170" y="15" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#047857" text-anchor="middle">寬度 ${row.bend_w} cm</text>
+            <text x="170" y="15" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#047857" text-anchor="middle">柱寬 ${row.bend_w} cm</text>
             
             <line x1="265" y1="30" x2="265" y2="105" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <text x="272" y="72" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#047857">深度 ${row.shape_main}</text>
+            <text x="272" y="72" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#047857">柱深 ${row.shape_main}</text>
             
             <text x="170" y="70" font-size="10" font-weight="bold" fill="#059669" text-anchor="middle">135° 耐震雙彎鉤 (13cm)</text>
             <text x="170" y="86" font-size="10" fill="#64748b" text-anchor="middle">(${row.bend_w}+${row.shape_main})×2 + 26 = ${row.len}cm</text>
@@ -608,15 +631,16 @@
           break;
 
         case 'stirrup_u':
+          // Exact match to Excel Freeform 1 (梁開口U箍筋)
           pathSvg = `
             <path d="M 75 42 L 95 30 L 95 105 L 245 105 L 245 30 L 265 42" fill="none" stroke="#0d9488" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
           `;
           dimSvg = `
             <line x1="95" y1="120" x2="245" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <text x="170" y="117" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">底寬 ${row.bend_w} cm</text>
+            <text x="170" y="117" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">【寬彎】梁底寬 ${row.bend_w} cm</text>
             
             <line x1="260" y1="30" x2="260" y2="105" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <text x="267" y="72" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#0f766e">深 ${row.shape_main}</text>
+            <text x="267" y="72" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#0f766e">【深彎】${row.shape_main}</text>
             
             <text x="170" y="65" font-size="10" font-weight="bold" fill="#0d9488" text-anchor="middle">開口 U 箍 + 頂部雙鉤 13/13</text>
             <text x="170" y="80" font-size="10" fill="#64748b" text-anchor="middle">${row.bend_w} + ${row.shape_main}×2 + 26 = ${row.len}cm</text>
@@ -624,12 +648,13 @@
           break;
 
         case 'cap_tie':
+          // Exact match to Excel Freeform 3 (帽蓋筋)
           pathSvg = `
             <path d="M 85 95 L 85 45 L 255 45 L 255 95" fill="none" stroke="#d97706" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
           `;
           dimSvg = `
             <line x1="85" y1="30" x2="255" y2="30" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <text x="170" y="25" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">主寬 ${row.shape_main} cm</text>
+            <text x="170" y="25" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">【形狀】主寬 ${row.shape_main} cm</text>
             
             <text x="68" y="75" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#b45309" text-anchor="middle">左 ${row.bend_w}</text>
             <text x="272" y="75" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#b45309" text-anchor="middle">右 ${row.bend_d}</text>
@@ -638,15 +663,16 @@
           break;
 
         case 'tie_s':
+          // Exact match to Excel Freeform 307 (耐震繫筋)
           pathSvg = `
             <path d="M 70 80 L 90 48 H 250 L 270 78" fill="none" stroke="#9333ea" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
           `;
           dimSvg = `
             <line x1="90" y1="32" x2="250" y2="32" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <text x="170" y="27" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#7e22ce" text-anchor="middle">主長 ${row.shape_main} cm</text>
+            <text x="170" y="27" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#7e22ce" text-anchor="middle">【形狀】主長 ${row.shape_main} cm</text>
             
-            <text x="55" y="68" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#7e22ce">135°鉤 ${row.bend_w}</text>
-            <text x="285" y="68" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#7e22ce">90°鉤 ${row.bend_d}</text>
+            <text x="55" y="68" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#7e22ce">【寬彎】${row.bend_w}</text>
+            <text x="285" y="68" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold" fill="#7e22ce">【深彎】${row.bend_d}</text>
             <text x="170" y="95" font-size="11" fill="#64748b" text-anchor="middle">雙向防震繫筋（一端 135°、一端 90°）</text>
           `;
           break;
@@ -662,63 +688,63 @@
     // Dataset Definition (Rich Shape & Bending Dimensions)
     const youaiData = [
       // 3F 柱筋 (工作表 02)
-      { sheet: '02', floor: '3F', cat: '柱筋', kind: '主筋', member: '3F C1(60x70)', spec: 8, len: 340, qty: 116, unit: 3.98, wt: 1570.51, status: 'confirmed', handle: '3B82', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=340', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 340, bend_d: 0, dims_text: '直 340', hook_info: '柱平直主筋，無端部彎折' },
-      { sheet: '02', floor: '3F', cat: '柱筋', kind: '箍筋', member: '3F C1(60x70)', spec: 4, len: 326, qty: 35, unit: 0.994, wt: 113.415, status: 'confirmed', handle: '3B83', layer: 'CCM_柱筋', note: 'CCM_箍筋 326cm (90x60)', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 90, shape_main: 60, bend_d: 60, dims_text: '90×60 (雙鉤 13/13)', hook_info: '135° 耐震外箍筋，雙端各彎鉤 13cm' },
-      { sheet: '02', floor: '3F', cat: '柱筋', kind: '箍筋', member: '3F C1(60x70)', spec: 4, len: 226, qty: 175, unit: 0.994, wt: 393.127, status: 'confirmed', handle: '3B84', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm (60x40)', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 60, shape_main: 40, bend_d: 40, dims_text: '60×40 (雙鉤 13/13)', hook_info: '135° 耐震內箍筋，雙端各彎鉤 13cm' },
-      { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 116, qty: 68, unit: 0.994, wt: 78.407, status: 'confirmed', handle: '3B85', layer: 'CCM_柱筋', note: 'CCM_繫筋 116cm (91+25)', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 91, bend_d: 13, dims_text: '主 91 + 鉤 12/13', hook_info: '一端 135° 耐震鉤 12cm、一端 90° 施工鉤 13cm' },
-      { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 86, qty: 476, unit: 0.994, wt: 406.884, status: 'confirmed', handle: '3B86', layer: 'CCM_柱筋', note: 'CCM_繫筋 86cm (61+25)', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 61, bend_d: 13, dims_text: '主 61 + 鉤 12/13', hook_info: '一端 135° 耐震鉤 12cm、一端 90° 施工鉤 13cm' },
-      { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 66, qty: 340, unit: 0.994, wt: 222.258, status: 'confirmed', handle: '3B87', layer: 'CCM_柱筋', note: 'CCM_繫筋 66cm (41+25)', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 41, bend_d: 13, dims_text: '主 41 + 鉤 12/13', hook_info: '一端 135° 耐震鉤 12cm、一端 90° 施工鉤 13cm' },
-      { sheet: '02', floor: '3F', cat: '牆筋', kind: '間隔筋', member: '3F 牆 00W1', spec: 3, len: 55, qty: 80, unit: 0.56, wt: 24.64, status: 'inferred', handle: 'E7B2', layer: '00W1', note: 'DWG #3x80 原生文字標註', shape_name: 'U型間隔筋', shape_type: 'cap_tie', bend_w: 7, shape_main: 41, bend_d: 7, dims_text: '雙鉤 7 + 主 41', hook_info: '雙向定位彎折鉤 7cm' },
+      { sheet: '02', floor: '3F', cat: '柱筋', kind: '主筋', member: '3F C1(60x70)', spec: 8, len: 340, qty: 116, unit: 3.98, wt: 1570.51, status: 'confirmed', handle: '3B82', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=340', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 340, bend_d: 0, dims_text: '寬 0 ｜ 主 340 ｜ 深 0', hook_info: '柱平直主筋，兩端不彎折' },
+      { sheet: '02', floor: '3F', cat: '柱筋', kind: '箍筋', member: '3F C1(60x70)', spec: 4, len: 326, qty: 35, unit: 0.994, wt: 113.415, status: 'confirmed', handle: '3B83', layer: 'CCM_柱筋', note: 'CCM_箍筋 326cm (90x60)', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 90, shape_main: 60, bend_d: 60, dims_text: '寬 90 ｜ 深 60 ｜ 雙鉤 13', hook_info: '135° 耐震外箍筋，雙端各彎鉤 13cm' },
+      { sheet: '02', floor: '3F', cat: '柱筋', kind: '箍筋', member: '3F C1(60x70)', spec: 4, len: 226, qty: 175, unit: 0.994, wt: 393.127, status: 'confirmed', handle: '3B84', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm (60x40)', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 60, shape_main: 40, bend_d: 40, dims_text: '寬 60 ｜ 深 40 ｜ 雙鉤 13', hook_info: '135° 耐震內箍筋，雙端各彎鉤 13cm' },
+      { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 116, qty: 68, unit: 0.994, wt: 78.407, status: 'confirmed', handle: '3B85', layer: 'CCM_柱筋', note: 'CCM_繫筋 116cm (91+25)', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 91, bend_d: 13, dims_text: '寬 12 ｜ 主 91 ｜ 深 13', hook_info: '一端 135° 耐震鉤 12cm、一端 90° 施工鉤 13cm' },
+      { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 86, qty: 476, unit: 0.994, wt: 406.884, status: 'confirmed', handle: '3B86', layer: 'CCM_柱筋', note: 'CCM_繫筋 86cm (61+25)', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 61, bend_d: 13, dims_text: '寬 12 ｜ 主 61 ｜ 深 13', hook_info: '一端 135° 耐震鉤 12cm、一端 90° 施工鉤 13cm' },
+      { sheet: '02', floor: '3F', cat: '柱筋', kind: '繫筋', member: '3F C1(60x70)', spec: 4, len: 66, qty: 340, unit: 0.994, wt: 222.258, status: 'confirmed', handle: '3B87', layer: 'CCM_柱筋', note: 'CCM_繫筋 66cm (41+25)', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 41, bend_d: 13, dims_text: '寬 12 ｜ 主 41 ｜ 深 13', hook_info: '一端 135° 耐震鉤 12cm、一端 90° 施工鉤 13cm' },
+      { sheet: '02', floor: '3F', cat: '牆筋', kind: '間隔筋', member: '3F 牆 00W1', spec: 3, len: 55, qty: 80, unit: 0.56, wt: 24.64, status: 'inferred', handle: 'E7B2', layer: '00W1', note: 'DWG #3x80 原生文字標註', shape_name: 'U型間隔筋', shape_type: 'cap_tie', bend_w: 7, shape_main: 41, bend_d: 7, dims_text: '寬 7 ｜ 主 41 ｜ 深 7', hook_info: '雙向定位彎折鉤 7cm' },
       
       // 4F 柱筋 (工作表 04)
-      { sheet: '04', floor: '4F', cat: '柱筋', kind: '主筋', member: '4F C1(60x70)', spec: 7, len: 320, qty: 96, unit: 3.04, wt: 933.888, status: 'confirmed', handle: '11C40', layer: 'CCM_柱筋', note: 'CCM_柱筋 #7x8 LEN=320', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 320, bend_d: 0, dims_text: '直 320', hook_info: '柱平直主筋' },
-      { sheet: '04', floor: '4F', cat: '柱筋', kind: '主筋', member: '4F C2(60x70)', spec: 8, len: 320, qty: 20, unit: 3.98, wt: 254.72, status: 'confirmed', handle: '11C41', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=320', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 320, bend_d: 0, dims_text: '直 320', hook_info: '柱平直主筋' },
-      { sheet: '04', floor: '4F', cat: '柱筋', kind: '箍筋', member: '4F C1(60x70)', spec: 4, len: 326, qty: 33, unit: 0.994, wt: 106.934, status: 'confirmed', handle: '11C42', layer: 'CCM_柱筋', note: 'CCM_箍筋 326cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 90, shape_main: 60, bend_d: 60, dims_text: '90×60 (雙鉤 13/13)', hook_info: '135° 耐震箍筋' },
-      { sheet: '04', floor: '4F', cat: '柱筋', kind: '箍筋', member: '4F C1(60x70)', spec: 4, len: 226, qty: 165, unit: 0.994, wt: 370.663, status: 'confirmed', handle: '11C43', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 60, shape_main: 40, bend_d: 40, dims_text: '60×40 (雙鉤 13/13)', hook_info: '135° 耐震箍筋' },
-      { sheet: '04', floor: '4F', cat: '柱筋', kind: '繫筋', member: '4F C1(60x70)', spec: 4, len: 86, qty: 444, unit: 0.994, wt: 379.549, status: 'confirmed', handle: '11C44', layer: 'CCM_柱筋', note: 'CCM_繫筋 86cm', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 61, bend_d: 13, dims_text: '主 61 + 鉤 12/13', hook_info: '耐震拉筋' },
+      { sheet: '04', floor: '4F', cat: '柱筋', kind: '主筋', member: '4F C1(60x70)', spec: 7, len: 320, qty: 96, unit: 3.04, wt: 933.888, status: 'confirmed', handle: '11C40', layer: 'CCM_柱筋', note: 'CCM_柱筋 #7x8 LEN=320', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 320, bend_d: 0, dims_text: '寬 0 ｜ 主 320 ｜ 深 0', hook_info: '柱平直主筋' },
+      { sheet: '04', floor: '4F', cat: '柱筋', kind: '主筋', member: '4F C2(60x70)', spec: 8, len: 320, qty: 20, unit: 3.98, wt: 254.72, status: 'confirmed', handle: '11C41', layer: 'CCM_柱筋', note: 'CCM_柱筋 #8x10 LEN=320', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 320, bend_d: 0, dims_text: '寬 0 ｜ 主 320 ｜ 深 0', hook_info: '柱平直主筋' },
+      { sheet: '04', floor: '4F', cat: '柱筋', kind: '箍筋', member: '4F C1(60x70)', spec: 4, len: 326, qty: 33, unit: 0.994, wt: 106.934, status: 'confirmed', handle: '11C42', layer: 'CCM_柱筋', note: 'CCM_箍筋 326cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 90, shape_main: 60, bend_d: 60, dims_text: '寬 90 ｜ 深 60 ｜ 雙鉤 13', hook_info: '135° 耐震箍筋' },
+      { sheet: '04', floor: '4F', cat: '柱筋', kind: '箍筋', member: '4F C1(60x70)', spec: 4, len: 226, qty: 165, unit: 0.994, wt: 370.663, status: 'confirmed', handle: '11C43', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 60, shape_main: 40, bend_d: 40, dims_text: '寬 60 ｜ 深 40 ｜ 雙鉤 13', hook_info: '135° 耐震箍筋' },
+      { sheet: '04', floor: '4F', cat: '柱筋', kind: '繫筋', member: '4F C1(60x70)', spec: 4, len: 86, qty: 444, unit: 0.994, wt: 379.549, status: 'confirmed', handle: '11C44', layer: 'CCM_柱筋', note: 'CCM_繫筋 86cm', shape_name: '耐震繫筋', shape_type: 'tie_s', bend_w: 12, shape_main: 61, bend_d: 13, dims_text: '寬 12 ｜ 主 61 ｜ 深 13', hook_info: '耐震拉筋' },
       
       // 5F 柱筋 (工作表 06)
-      { sheet: '06', floor: '5F', cat: '柱筋', kind: '主筋', member: '5F C1(60x70)', spec: 7, len: 231, qty: 24, unit: 3.04, wt: 168.538, status: 'inferred', handle: '19EFB', layer: 'CCM_柱筋', note: 'CCM_柱筋 原生LEN=231', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 231, bend_d: 0, dims_text: '直 231', hook_info: '搭接插筋，叫料可整數 230' },
-      { sheet: '06', floor: '5F', cat: '柱筋', kind: '主筋', member: '5F C1(60x70)', spec: 7, len: 151, qty: 24, unit: 3.04, wt: 110.179, status: 'inferred', handle: '19F04', layer: 'CCM_柱筋', note: 'CCM_柱筋 原生LEN=151', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 151, bend_d: 0, dims_text: '直 151', hook_info: '搭接插筋，叫料可整數 150' },
-      { sheet: '06', floor: '5F', cat: '柱筋', kind: '箍筋', member: '5F C1(60x70)', spec: 4, len: 226, qty: 165, unit: 0.994, wt: 370.663, status: 'confirmed', handle: '19F05', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 60, shape_main: 40, bend_d: 40, dims_text: '60×40 (雙鉤 13/13)', hook_info: '135° 耐震箍筋' },
+      { sheet: '06', floor: '5F', cat: '柱筋', kind: '主筋', member: '5F C1(60x70)', spec: 7, len: 231, qty: 24, unit: 3.04, wt: 168.538, status: 'inferred', handle: '19EFB', layer: 'CCM_柱筋', note: 'CCM_柱筋 原生LEN=231', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 231, bend_d: 0, dims_text: '寬 0 ｜ 主 231 ｜ 深 0', hook_info: '搭接插筋，叫料可整數 230' },
+      { sheet: '06', floor: '5F', cat: '柱筋', kind: '主筋', member: '5F C1(60x70)', spec: 7, len: 151, qty: 24, unit: 3.04, wt: 110.179, status: 'inferred', handle: '19F04', layer: 'CCM_柱筋', note: 'CCM_柱筋 原生LEN=151', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 151, bend_d: 0, dims_text: '寬 0 ｜ 主 151 ｜ 深 0', hook_info: '搭接插筋，叫料可整數 150' },
+      { sheet: '06', floor: '5F', cat: '柱筋', kind: '箍筋', member: '5F C1(60x70)', spec: 4, len: 226, qty: 165, unit: 0.994, wt: 370.663, status: 'confirmed', handle: '19F05', layer: 'CCM_柱筋', note: 'CCM_箍筋 226cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 60, shape_main: 40, bend_d: 40, dims_text: '寬 60 ｜ 深 40 ｜ 雙鉤 13', hook_info: '135° 耐震箍筋' },
 
-      // 5F 梁版（業主截圖 工作表 05 核心真實資料！）
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G1(40x60)', spec: 8, len: 650, qty: 12, unit: 3.98, wt: 310.44, status: 'confirmed', handle: '5F-G1-8A', layer: '樑主', note: '工作表 05｜#8-650x12 (610+40)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 610, bend_d: 40, dims_text: '主 610 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G1(40x60)', spec: 8, len: 600, qty: 6, unit: 3.98, wt: 143.28, status: 'confirmed', handle: '5F-G1-8B', layer: '樑主', note: '工作表 05｜#8-600x6 (560+40)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 560, bend_d: 40, dims_text: '主 560 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G1(40x60)', spec: 8, len: 400, qty: 16, unit: 3.98, wt: 254.72, status: 'confirmed', handle: '5F-G1-8C', layer: '樑主', note: '工作表 05｜#8-400x16 (360+40)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 360, bend_d: 40, dims_text: '主 360 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G2(30x60)', spec: 7, len: 550, qty: 21, unit: 3.04, wt: 352.28, status: 'confirmed', handle: '5F-G2-7A', layer: '樑主', note: '工作表 05｜#7-550x21 (515+35)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 515, bend_d: 35, dims_text: '主 515 + 鉤 35', hook_info: '90° 梁端標準錨定彎鉤 35cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G2(30x60)', spec: 7, len: 800, qty: 6, unit: 3.04, wt: 146.40, status: 'confirmed', handle: '5F-G2-7B', layer: '樑主', note: '工作表 05｜#7-800x6 直筋', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 800, bend_d: 0, dims_text: '直 800', hook_info: '定尺直筋，跨中搭接' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F B1(30x60)', spec: 6, len: 360, qty: 2, unit: 2.25, wt: 16.20, status: 'confirmed', handle: '5F-B1-6A', layer: '樑主', note: '工作表 05｜#6-360x2 雙鉤 (30+300+30)', shape_name: '雙鉤 (U型)', shape_type: 'hook_double', bend_w: 30, shape_main: 300, bend_d: 30, dims_text: '鉤 30 + 主 300 + 鉤 30', hook_info: '兩端 90° 錨定彎鉤 30cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '箍筋', member: '5F G1(40x60)', spec: 4, len: 186, qty: 226, unit: 0.994, wt: 417.84, status: 'confirmed', handle: '5F-G1-S1', layer: '樑箍', note: '工作表 05｜#4-186x226 (底40深60)', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 40, shape_main: 60, bend_d: 60, dims_text: '底 40 × 深 60 (雙鉤 13/13)', hook_info: '開口 U 箍，頂部雙 135° 彎鉤 13cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '帽蓋筋', member: '5F G1(40x60)', spec: 4, len: 65, qty: 226, unit: 0.994, wt: 146.02, status: 'confirmed', handle: '5F-G1-C1', layer: '樑箍', note: '工作表 05｜#4-65x226 (12+40+13)', shape_name: '帽蓋筋', shape_type: 'cap_tie', bend_w: 12, shape_main: 40, bend_d: 13, dims_text: '底 40 + 雙鉤 12/13', hook_info: '梁頂封閉帽蓋筋，兩端彎鉤 12/13cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '箍筋', member: '5F G2(30x60)', spec: 4, len: 176, qty: 142, unit: 0.994, wt: 248.42, status: 'confirmed', handle: '5F-G2-S1', layer: '樑箍', note: '工作表 05｜#4-176x142 (底30深60)', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 30, shape_main: 60, bend_d: 60, dims_text: '底 30 × 深 60 (雙鉤 13/13)', hook_info: '開口 U 箍，頂部雙 135° 彎鉤 13cm' },
-      { sheet: '05', floor: '5F', cat: '樑筋', kind: '帽蓋筋', member: '5F G2(30x60)', spec: 4, len: 55, qty: 142, unit: 0.994, wt: 77.63, status: 'confirmed', handle: '5F-G2-C1', layer: '樑箍', note: '工作表 05｜#4-55x142 (12+30+13)', shape_name: '帽蓋筋', shape_type: 'cap_tie', bend_w: 12, shape_main: 30, bend_d: 13, dims_text: '底 30 + 雙鉤 12/13', hook_info: '梁頂封閉帽蓋筋' },
+      // 5F 梁版（業主截圖 工作表 05 核心真實資料！對齊 CCM Excel 欄位）
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G1(40x60)', spec: 8, len: 650, qty: 12, unit: 3.98, wt: 310.44, status: 'confirmed', handle: '5F-G1-8A', layer: '樑主', note: '工作表 05｜#8-650x12 (610+40)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 610, bend_d: 40, dims_text: '寬 0 ｜ 主 610 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm（同 Excel Freeform 465）' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G1(40x60)', spec: 8, len: 600, qty: 6, unit: 3.98, wt: 143.28, status: 'confirmed', handle: '5F-G1-8B', layer: '樑主', note: '工作表 05｜#8-600x6 (560+40)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 560, bend_d: 40, dims_text: '寬 0 ｜ 主 560 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G1(40x60)', spec: 8, len: 400, qty: 16, unit: 3.98, wt: 254.72, status: 'confirmed', handle: '5F-G1-8C', layer: '樑主', note: '工作表 05｜#8-400x16 (360+40)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 360, bend_d: 40, dims_text: '寬 0 ｜ 主 360 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G2(30x60)', spec: 7, len: 550, qty: 21, unit: 3.04, wt: 352.28, status: 'confirmed', handle: '5F-G2-7A', layer: '樑主', note: '工作表 05｜#7-550x21 (515+35)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 515, bend_d: 35, dims_text: '寬 0 ｜ 主 515 ｜ 深 35', hook_info: '右端 90° 錨定深彎鉤 35cm' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F G2(30x60)', spec: 7, len: 800, qty: 6, unit: 3.04, wt: 146.40, status: 'confirmed', handle: '5F-G2-7B', layer: '樑主', note: '工作表 05｜#7-800x6 直筋', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 800, bend_d: 0, dims_text: '寬 0 ｜ 主 800 ｜ 深 0', hook_info: '定尺平直筋，無彎折' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '主筋', member: '5F B1(30x60)', spec: 6, len: 360, qty: 2, unit: 2.25, wt: 16.20, status: 'confirmed', handle: '5F-B1-6A', layer: '樑主', note: '工作表 05｜#6-360x2 雙鉤 (30+300+30)', shape_name: '雙鉤 (U型)', shape_type: 'hook_double', bend_w: 30, shape_main: 300, bend_d: 30, dims_text: '寬 30 ｜ 主 300 ｜ 深 30', hook_info: '雙端 90° 錨定彎鉤（同 Excel Freeform 464）' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '箍筋', member: '5F G1(40x60)', spec: 4, len: 186, qty: 226, unit: 0.994, wt: 417.84, status: 'confirmed', handle: '5F-G1-S1', layer: '樑箍', note: '工作表 05｜#4-186x226 (底40深60)', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 40, shape_main: 60, bend_d: 60, dims_text: '底 40 ｜ 深 60 ｜ 雙鉤 13', hook_info: '開口 U 箍，頂部雙 135° 彎鉤 13/13cm（同 Excel Freeform 1）' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '帽蓋筋', member: '5F G1(40x60)', spec: 4, len: 65, qty: 226, unit: 0.994, wt: 146.02, status: 'confirmed', handle: '5F-G1-C1', layer: '樑箍', note: '工作表 05｜#4-65x226 (12+40+13)', shape_name: '帽蓋筋', shape_type: 'cap_tie', bend_w: 12, shape_main: 40, bend_d: 13, dims_text: '寬 12 ｜ 主 40 ｜ 深 13', hook_info: '梁頂封閉帽蓋筋，兩端彎鉤 12/13cm（同 Excel Freeform 3）' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '箍筋', member: '5F G2(30x60)', spec: 4, len: 176, qty: 142, unit: 0.994, wt: 248.42, status: 'confirmed', handle: '5F-G2-S1', layer: '樑箍', note: '工作表 05｜#4-176x142 (底30深60)', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 30, shape_main: 60, bend_d: 60, dims_text: '底 30 ｜ 深 60 ｜ 雙鉤 13', hook_info: '開口 U 箍，頂部雙 135° 彎鉤 13cm' },
+      { sheet: '05', floor: '5F', cat: '樑筋', kind: '帽蓋筋', member: '5F G2(30x60)', spec: 4, len: 55, qty: 142, unit: 0.994, wt: 77.63, status: 'confirmed', handle: '5F-G2-C1', layer: '樑箍', note: '工作表 05｜#4-55x142 (12+30+13)', shape_name: '帽蓋筋', shape_type: 'cap_tie', bend_w: 12, shape_main: 30, bend_d: 13, dims_text: '寬 12 ｜ 主 30 ｜ 深 13', hook_info: '梁頂封閉帽蓋筋' },
 
       // 3F 樑筋 (工作表 01)
-      { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-1-101(30x60)', spec: 8, len: 260, qty: 6, unit: 3.98, wt: 62.088, status: 'confirmed', handle: '1DFF', layer: '樑主', note: '圖塊 3F-1-101｜#8-260x2', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 220, bend_d: 40, dims_text: '主 220 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-1-101(30x60)', spec: 8, len: 460, qty: 6, unit: 3.98, wt: 109.848, status: 'confirmed', handle: '1E0D', layer: '樑主', note: '圖塊 3F-1-101｜#8-460x3', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 420, bend_d: 40, dims_text: '主 420 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '01', floor: '3F', cat: '樑筋', kind: '箍筋', member: '3F-1-101(30x60)', spec: 4, len: 205, qty: 45, unit: 0.994, wt: 91.697, status: 'inferred', handle: '1D92', layer: '樑箍', note: '圖塊 3F-1-101｜#4(30x60)=45', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 22, shape_main: 52, bend_d: 52, dims_text: '22×52 (雙鉤 13/13)', hook_info: '135° 耐震雙彎鉤 13cm' },
-      { sheet: '01', floor: '3F', cat: '樑筋', kind: '工作筋', member: '3F-1-101(30x60)', spec: 8, len: 60, qty: 3, unit: 3.98, wt: 7.164, status: 'confirmed', handle: '1D94', layer: '樑工', note: '圖塊 3F-1-101｜#8-60x3', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 60, bend_d: 0, dims_text: '直 60', hook_info: '梁架立工作短筋' },
-      { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-12-112(35x60)', spec: 6, len: 300, qty: 2, unit: 2.25, wt: 13.5, status: 'confirmed', handle: '1831', layer: '樑主', note: '圖塊 3F-12-112｜#6-300x2', shape_name: '雙鉤 (U型)', shape_type: 'hook_double', bend_w: 30, shape_main: 240, bend_d: 30, dims_text: '鉤 30 + 主 240 + 鉤 30', hook_info: '兩端 90° 錨定彎鉤 30cm' },
+      { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-1-101(30x60)', spec: 8, len: 260, qty: 6, unit: 3.98, wt: 62.088, status: 'confirmed', handle: '1DFF', layer: '樑主', note: '圖塊 3F-1-101｜#8-260x2', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 220, bend_d: 40, dims_text: '寬 0 ｜ 主 220 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm' },
+      { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-1-101(30x60)', spec: 8, len: 460, qty: 6, unit: 3.98, wt: 109.848, status: 'confirmed', handle: '1E0D', layer: '樑主', note: '圖塊 3F-1-101｜#8-460x3', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 420, bend_d: 40, dims_text: '寬 0 ｜ 主 420 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm' },
+      { sheet: '01', floor: '3F', cat: '樑筋', kind: '箍筋', member: '3F-1-101(30x60)', spec: 4, len: 186, qty: 45, unit: 0.994, wt: 91.697, status: 'inferred', handle: '1D92', layer: '樑箍', note: '圖塊 3F-1-101｜#4(40x60)=45', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 40, shape_main: 60, bend_d: 60, dims_text: '底 40 ｜ 深 60 ｜ 雙鉤 13', hook_info: '開口 U 箍（雙鉤 13/13）' },
+      { sheet: '01', floor: '3F', cat: '樑筋', kind: '工作筋', member: '3F-1-101(30x60)', spec: 8, len: 60, qty: 3, unit: 3.98, wt: 7.164, status: 'confirmed', handle: '1D94', layer: '樑工', note: '圖塊 3F-1-101｜#8-60x3', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 60, bend_d: 0, dims_text: '寬 0 ｜ 主 60 ｜ 深 0', hook_info: '梁架立工作短筋' },
+      { sheet: '01', floor: '3F', cat: '樑筋', kind: '主筋', member: '3F-12-112(35x60)', spec: 6, len: 300, qty: 2, unit: 2.25, wt: 13.5, status: 'confirmed', handle: '1831', layer: '樑主', note: '圖塊 3F-12-112｜#6-300x2', shape_name: '雙鉤 (U型)', shape_type: 'hook_double', bend_w: 30, shape_main: 240, bend_d: 30, dims_text: '寬 30 ｜ 主 240 ｜ 深 30', hook_info: '雙端 90° 錨定彎鉤 30cm' },
 
       // 4F 樑筋 (工作表 03)
-      { sheet: '03', floor: '4F', cat: '樑筋', kind: '主筋', member: '4F-2-102(30x60)', spec: 8, len: 450, qty: 8, unit: 3.98, wt: 143.28, status: 'confirmed', handle: '22A1', layer: '樑主', note: '圖塊 4F-2-102｜#8-450x4', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 410, bend_d: 40, dims_text: '主 410 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '03', floor: '4F', cat: '樑筋', kind: '箍筋', member: '4F-2-102(30x60)', spec: 4, len: 205, qty: 38, unit: 0.994, wt: 77.432, status: 'inferred', handle: '22A5', layer: '樑箍', note: '圖塊 4F-2-102｜#4(30x60)=38', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 22, shape_main: 52, bend_d: 52, dims_text: '22×52 (雙鉤 13/13)', hook_info: '135° 耐震雙彎鉤 13cm' },
+      { sheet: '03', floor: '4F', cat: '樑筋', kind: '主筋', member: '4F-2-102(30x60)', spec: 8, len: 450, qty: 8, unit: 3.98, wt: 143.28, status: 'confirmed', handle: '22A1', layer: '樑主', note: '圖塊 4F-2-102｜#8-450x4', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 410, bend_d: 40, dims_text: '寬 0 ｜ 主 410 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm' },
+      { sheet: '03', floor: '4F', cat: '樑筋', kind: '箍筋', member: '4F-2-102(30x60)', spec: 4, len: 176, qty: 38, unit: 0.994, wt: 77.432, status: 'inferred', handle: '22A5', layer: '樑箍', note: '圖塊 4F-2-102｜#4(30x60)=38', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 30, shape_main: 60, bend_d: 60, dims_text: '底 30 ｜ 深 60 ｜ 雙鉤 13', hook_info: '開口 U 箍（雙鉤 13/13）' },
 
       // RF 樑筋 (工作表 07)
-      { sheet: '07', floor: 'RF', cat: '樑筋', kind: '主筋', member: 'RF-1-101(30x60)', spec: 6, len: 360, qty: 4, unit: 2.25, wt: 32.4, status: 'confirmed', handle: '3A12', layer: '樑主', note: '圖塊 RF-1-101｜#6-360x2', shape_name: '雙鉤 (U型)', shape_type: 'hook_double', bend_w: 30, shape_main: 300, bend_d: 30, dims_text: '鉤 30 + 主 300 + 鉤 30', hook_info: '兩端 90° 錨定彎鉤 30cm' }
+      { sheet: '07', floor: 'RF', cat: '樑筋', kind: '主筋', member: 'RF-1-101(30x60)', spec: 6, len: 360, qty: 4, unit: 2.25, wt: 32.4, status: 'confirmed', handle: '3A12', layer: '樑主', note: '圖塊 RF-1-101｜#6-360x2', shape_name: '雙鉤 (U型)', shape_type: 'hook_double', bend_w: 30, shape_main: 300, bend_d: 30, dims_text: '寬 30 ｜ 主 300 ｜ 深 30', hook_info: '雙端 90° 錨定彎鉤 30cm' }
     ];
 
     const c131210Data = [
-      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 4, unit: 3.04, wt: 58.37, status: 'confirmed', handle: 'FD', layer: '主筋文字', note: '標註 4-#7｜FB0(40x140)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 445, bend_d: 35, dims_text: '主 445 + 鉤 35', hook_info: '90° 梁端標準錨定彎鉤 35cm' },
-      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 3, unit: 3.04, wt: 43.78, status: 'confirmed', handle: 'FF', layer: '主筋文字', note: '標註 3-#7｜FB0(40x140)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 445, bend_d: 35, dims_text: '主 445 + 鉤 35', hook_info: '90° 梁端標準錨定彎鉤 35cm' },
-      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '下筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 3, unit: 3.04, wt: 43.78, status: 'confirmed', handle: 'F7', layer: '主筋文字', note: '標註 3-#7｜FB0(40x140)', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 480, bend_d: 0, dims_text: '直 480', hook_info: '梁下部通長平直主筋' },
-      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁箍筋', kind: '箍筋', member: 'FB0(40x140)', spec: 3, len: 358, qty: 9, unit: 0.56, wt: 18.04, status: 'inferred', handle: '13B', layer: 'STIRRUP-TXT', note: '箍筋 9-#3@12｜40x140cm 周長 358cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 32, shape_main: 132, bend_d: 132, dims_text: '32×132 (雙鉤 15/15)', hook_info: '135° 耐震深梁箍筋，雙端各彎鉤 15cm' },
-      { sheet: '梁配筋', floor: '2FL', cat: '梁筋', kind: '上筋', member: '2G1(50x70)', spec: 8, len: 560, qty: 5, unit: 3.98, wt: 111.44, status: 'confirmed', handle: '2G1-U8', layer: '主筋文字', note: '2FL 2G1 5-#8 上筋', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 520, bend_d: 40, dims_text: '主 520 + 鉤 40', hook_info: '90° 梁端標準錨定彎鉤 40cm' },
-      { sheet: '梁配筋', floor: '2FL', cat: '梁箍筋', kind: '箍筋', member: '2G1(50x70)', spec: 4, len: 256, qty: 22, unit: 0.994, wt: 55.98, status: 'confirmed', handle: '2G1-ST4', layer: 'STIRRUP-TXT', note: '2FL 2G1 22-#4@15 箍筋', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 42, shape_main: 62, bend_d: 62, dims_text: '42×62 (雙鉤 13/13)', hook_info: '135° 耐震閉合箍筋' },
-      { sheet: '梁配筋', floor: '3FL', cat: '梁筋', kind: '主筋', member: '3G2(40x60)', spec: 7, len: 450, qty: 6, unit: 3.04, wt: 82.08, status: 'confirmed', handle: '3G2-U7', layer: '主筋文字', note: '3FL 3G2 6-#7 主筋', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 415, bend_d: 35, dims_text: '主 415 + 鉤 35', hook_info: '90° 梁端標準錨定彎鉤 35cm' },
-      { sheet: '梁配筋', floor: '3FL', cat: '梁箍筋', kind: '箍筋', member: '3G2(40x60)', spec: 4, len: 186, qty: 32, unit: 0.994, wt: 59.16, status: 'confirmed', handle: '3G2-ST', layer: 'STIRRUP-TXT', note: '3FL 3G2 32-#4 開口箍', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 40, shape_main: 60, bend_d: 60, dims_text: '底 40 × 深 60 (雙鉤 13/13)', hook_info: '頂部 135° 耐震雙鉤 13cm' },
-      { sheet: '梁配筋', floor: '3FL', cat: '梁箍筋', kind: '帽蓋筋', member: '3G2(40x60)', spec: 4, len: 65, qty: 32, unit: 0.994, wt: 20.67, status: 'confirmed', handle: '3G2-CP', layer: 'STIRRUP-TXT', note: '3FL 3G2 32-#4 帽蓋筋', shape_name: '帽蓋筋', shape_type: 'cap_tie', bend_w: 12, shape_main: 40, bend_d: 13, dims_text: '底 40 + 雙鉤 12/13', hook_info: '梁頂封閉帽蓋筋' }
+      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 4, unit: 3.04, wt: 58.37, status: 'confirmed', handle: 'FD', layer: '主筋文字', note: '標註 4-#7｜FB0(40x140)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 445, bend_d: 35, dims_text: '寬 0 ｜ 主 445 ｜ 深 35', hook_info: '右端 90° 梁端標準錨定深彎鉤 35cm' },
+      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '上筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 3, unit: 3.04, wt: 43.78, status: 'confirmed', handle: 'FF', layer: '主筋文字', note: '標註 3-#7｜FB0(40x140)', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 445, bend_d: 35, dims_text: '寬 0 ｜ 主 445 ｜ 深 35', hook_info: '右端 90° 梁端標準錨定深彎鉤 35cm' },
+      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁筋', kind: '下筋', member: 'FB0(40x140)', spec: 7, len: 480, qty: 3, unit: 3.04, wt: 43.78, status: 'confirmed', handle: 'F7', layer: '主筋文字', note: '標註 3-#7｜FB0(40x140)', shape_name: '直筋', shape_type: 'straight', bend_w: 0, shape_main: 480, bend_d: 0, dims_text: '寬 0 ｜ 主 480 ｜ 深 0', hook_info: '梁下部通長平直主筋' },
+      { sheet: '梁配筋', floor: '基礎/1F', cat: '梁箍筋', kind: '箍筋', member: 'FB0(40x140)', spec: 3, len: 358, qty: 9, unit: 0.56, wt: 18.04, status: 'inferred', handle: '13B', layer: 'STIRRUP-TXT', note: '箍筋 9-#3@12｜40x140cm 周長 358cm', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 32, shape_main: 132, bend_d: 132, dims_text: '寬 32 ｜ 深 132 ｜ 雙鉤 15', hook_info: '135° 耐震深梁閉合箍筋，雙端各彎鉤 15cm' },
+      { sheet: '梁配筋', floor: '2FL', cat: '梁筋', kind: '上筋', member: '2G1(50x70)', spec: 8, len: 560, qty: 5, unit: 3.98, wt: 111.44, status: 'confirmed', handle: '2G1-U8', layer: '主筋文字', note: '2FL 2G1 5-#8 上筋', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 520, bend_d: 40, dims_text: '寬 0 ｜ 主 520 ｜ 深 40', hook_info: '右端 90° 錨定深彎鉤 40cm' },
+      { sheet: '梁配筋', floor: '2FL', cat: '梁箍筋', kind: '箍筋', member: '2G1(50x70)', spec: 4, len: 256, qty: 22, unit: 0.994, wt: 55.98, status: 'confirmed', handle: '2G1-ST4', layer: 'STIRRUP-TXT', note: '2FL 2G1 22-#4@15 箍筋', shape_name: '閉合箍筋', shape_type: 'stirrup_closed', bend_w: 42, shape_main: 62, bend_d: 62, dims_text: '寬 42 ｜ 深 62 ｜ 雙鉤 13', hook_info: '135° 耐震閉合箍筋' },
+      { sheet: '梁配筋', floor: '3FL', cat: '梁筋', kind: '主筋', member: '3G2(40x60)', spec: 7, len: 450, qty: 6, unit: 3.04, wt: 82.08, status: 'confirmed', handle: '3G2-U7', layer: '主筋文字', note: '3FL 3G2 6-#7 主筋', shape_name: '單鉤 (L型)', shape_type: 'hook_single', bend_w: 0, shape_main: 415, bend_d: 35, dims_text: '寬 0 ｜ 主 415 ｜ 深 35', hook_info: '右端 90° 錨定深彎鉤 35cm' },
+      { sheet: '梁配筋', floor: '3FL', cat: '梁箍筋', kind: '箍筋', member: '3G2(40x60)', spec: 4, len: 186, qty: 32, unit: 0.994, wt: 59.16, status: 'confirmed', handle: '3G2-ST', layer: 'STIRRUP-TXT', note: '3FL 3G2 32-#4 開口箍', shape_name: '開口箍筋', shape_type: 'stirrup_u', bend_w: 40, shape_main: 60, bend_d: 60, dims_text: '底 40 ｜ 深 60 ｜ 雙鉤 13', hook_info: '開口 U 箍，頂部 135° 耐震雙鉤 13cm' },
+      { sheet: '梁配筋', floor: '3FL', cat: '梁箍筋', kind: '帽蓋筋', member: '3G2(40x60)', spec: 4, len: 65, qty: 32, unit: 0.994, wt: 20.67, status: 'confirmed', handle: '3G2-CP', layer: 'STIRRUP-TXT', note: '3FL 3G2 32-#4 帽蓋筋', shape_name: '帽蓋筋', shape_type: 'cap_tie', bend_w: 12, shape_main: 40, bend_d: 13, dims_text: '寬 12 ｜ 主 40 ｜ 深 13', hook_info: '梁頂封閉帽蓋筋' }
     ];
 
     let currentCase = 'youai';
@@ -948,15 +974,18 @@
           <td class="py-2.5 px-2 hidden sm:table-cell" style="color: var(--text-subtle);">${row.kind}</td>
           <td class="py-2.5 px-2.5 mono font-bold" style="color: var(--primary);">#${row.spec}</td>
           
-          <!-- Shape & Bending Dims Column -->
+          <!-- Shape & 3-Segment Dimensions Column (寬彎 | 形狀 | 深彎) -->
           <td class="py-2.5 px-3">
-            <div class="flex items-center space-x-2">
-              <div class="p-1 rounded bg-slate-100 border border-slate-200 shrink-0">
+            <div class="flex items-center space-x-2.5">
+              <div class="p-1 rounded bg-slate-100 border border-slate-200 shrink-0" title="${row.shape_name}">
                 ${getShapeMiniIcon(row.shape_type)}
               </div>
               <div class="flex flex-col min-w-0">
-                <span class="font-bold text-[11px] leading-tight truncate" style="color: var(--text-main);">${row.shape_name}</span>
-                <span class="mono text-[10px] leading-tight truncate" style="color: var(--text-muted);">${row.dims_text}</span>
+                <div class="flex items-center space-x-1.5">
+                  <span class="font-bold text-[11px] leading-tight" style="color: var(--text-main);">${row.shape_name}</span>
+                  <span class="text-[9px] px-1 py-0.2 rounded bg-slate-100 text-slate-500 font-mono">D:E:F</span>
+                </div>
+                <span class="mono text-[10px] leading-tight font-medium" style="color: var(--text-muted);">${row.dims_text}</span>
               </div>
             </div>
           </td>
@@ -1041,13 +1070,13 @@
       if (mode === 'exact') {
         updateToggleButtons(be, bn);
         badge.textContent = '依圖面 231/151cm';
-        if (r231) { r231.len = 231; r231.wt = 168.538; r231.shape_main = 231; r231.dims_text = '直 231'; }
-        if (r151) { r151.len = 151; r151.wt = 110.179; r151.shape_main = 151; r151.dims_text = '直 151'; }
+        if (r231) { r231.len = 231; r231.wt = 168.538; r231.shape_main = 231; r231.dims_text = '寬 0 ｜ 主 231 ｜ 深 0'; }
+        if (r151) { r151.len = 151; r151.wt = 110.179; r151.shape_main = 151; r151.dims_text = '寬 0 ｜ 主 151 ｜ 深 0'; }
       } else {
         updateToggleButtons(bn, be);
         badge.textContent = '叫料整數 230/150cm';
-        if (r231) { r231.len = 230; r231.wt = 167.808; r231.shape_main = 230; r231.dims_text = '直 230'; }
-        if (r151) { r151.len = 150; r151.wt = 109.440; r151.shape_main = 150; r151.dims_text = '直 150'; }
+        if (r231) { r231.len = 230; r231.wt = 167.808; r231.shape_main = 230; r231.dims_text = '寬 0 ｜ 主 230 ｜ 深 0'; }
+        if (r151) { r151.len = 150; r151.wt = 109.440; r151.shape_main = 150; r151.dims_text = '寬 0 ｜ 主 150 ｜ 深 0'; }
       }
       renderTable();
     }
@@ -1104,7 +1133,7 @@
       document.getElementById('modalBendW').textContent = `${row.bend_w} cm`;
       document.getElementById('modalShapeMain').textContent = `${row.shape_main} cm`;
       document.getElementById('modalBendD').textContent = `${row.bend_d} cm`;
-      document.getElementById('modalHookInstruction').textContent = row.hook_info || '依標準施工規範折彎。';
+      document.getElementById('modalHookInstruction').textContent = row.hook_info || '依台灣耐震施工規範折彎加工。';
 
       document.getElementById('inspectorModal').classList.remove('hidden');
     }
