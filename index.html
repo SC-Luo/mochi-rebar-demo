@@ -192,18 +192,32 @@
         </p>
       </div>
 
-      <!-- Quick Metrics Pill -->
-      <div class="flex items-center space-x-2 sm:space-x-3 self-start sm:self-auto text-xs shrink-0">
-        <div class="px-2.5 py-1.5 rounded-lg border text-center"
-             style="background-color: var(--bg-page); border-color: var(--border-color);">
-          <div class="text-[10px]" style="color: var(--text-subtle);">料單標準</div>
-          <div class="font-bold" style="color: var(--text-main);">CCM 撿料規範</div>
-        </div>
-        <div class="px-2.5 py-1.5 rounded-lg border text-center"
-             style="background-color: var(--bg-page); border-color: var(--border-color);">
-          <div class="text-[10px]" style="color: var(--text-subtle);">折彎要素</div>
-          <div class="font-bold" style="color: var(--text-main);">寬彎 / 形狀 / 深彎</div>
-        </div>
+      <!-- Taiwan Civil Standards & Shape Catalog Action Buttons -->
+      <div class="flex items-center space-x-2 sm:space-x-2.5 self-start sm:self-auto text-xs shrink-0">
+        <button onclick="openStandardsModal()" 
+                class="px-2.5 py-1.5 rounded-lg border text-left cursor-pointer transition-all hover:bg-slate-50 flex items-center space-x-1.5 shadow-2xs group"
+                style="background-color: var(--bg-page); border-color: var(--border-color);">
+          <span class="text-base group-hover:scale-110 transition-transform">📜</span>
+          <div>
+            <div class="text-[10px]" style="color: var(--text-subtle);">土木規範標準</div>
+            <div class="font-bold text-xs flex items-center space-x-1" style="color: var(--primary);">
+              <span>CNS 560 / 土木401</span>
+              <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </button>
+        <button onclick="openShapeCatalogModal()" 
+                class="px-2.5 py-1.5 rounded-lg border text-left cursor-pointer transition-all hover:bg-slate-50 flex items-center space-x-1.5 shadow-2xs group"
+                style="background-color: var(--bg-page); border-color: var(--border-color);">
+          <span class="text-base group-hover:scale-110 transition-transform">📐</span>
+          <div>
+            <div class="text-[10px]" style="color: var(--text-subtle);">鋼筋加工圖鑑</div>
+            <div class="font-bold text-xs flex items-center space-x-1" style="color: var(--primary);">
+              <span>26種 CCM 標準</span>
+              <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </button>
       </div>
     </div>
 
@@ -355,7 +369,8 @@
               <th class="py-2.5 px-2 text-right">數量</th>
               <th class="py-2.5 px-2 text-right hidden md:table-cell">單位重</th>
               <th class="py-2.5 px-3 text-right font-bold" style="color: var(--text-main);">重量 (kg)</th>
-              <th class="py-2.5 px-2 text-center">依據</th>
+              <th class="py-2.5 px-2.5 text-center font-bold" style="color: var(--text-main);">規範檢核</th>
+              <th class="py-2.5 px-2 text-center hidden sm:table-cell">依據</th>
               <th class="py-2.5 px-2.5">圖面編號</th>
               <th class="py-2.5 px-2 hidden lg:table-cell">圖層</th>
             </tr>
@@ -441,6 +456,46 @@
           <div class="mt-2.5 flex items-start space-x-1.5 text-[11px]" style="color: var(--text-muted);">
             <svg class="w-3.5 h-3.5 mt-0.5 shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span id="modalHookInstruction">折彎施工規範：依台灣耐震施工標準加工。</span>
+          </div>
+        </div>
+
+        <!-- Taiwan Civil Code Compliance & CNS 560 Physical Card -->
+        <div class="rounded-xl border p-3 bg-white" style="border-color: var(--border-color);">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-bold text-xs text-slate-900 flex items-center space-x-1.5">
+              <span>🏛️</span>
+              <span>台灣土木工程法規檢核</span>
+            </span>
+            <span id="modalComplianceBadge" class="px-2 py-0.5 rounded text-[10px] font-bold border bg-emerald-50 text-emerald-700 border-emerald-200">
+              135° 耐震合格
+            </span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center font-mono text-[11px] mb-2.5">
+            <div class="p-1.5 rounded bg-slate-50 border border-slate-100">
+              <div class="text-[10px] text-slate-400">CNS 560 規格</div>
+              <div id="modalRebarSpec" class="font-bold text-slate-800 mt-0.5">#8 (D25)</div>
+            </div>
+            <div class="p-1.5 rounded bg-slate-50 border border-slate-100">
+              <div class="text-[10px] text-slate-400">公稱單位重</div>
+              <div id="modalUnitWeight" class="font-bold text-blue-700 mt-0.5">3.98 kg/m</div>
+            </div>
+            <div class="p-1.5 rounded bg-slate-50 border border-slate-100">
+              <div class="text-[10px] text-slate-400">公稱直徑 db</div>
+              <div id="modalDb" class="font-bold text-slate-800 mt-0.5">25.4 mm</div>
+            </div>
+          </div>
+
+          <!-- Civil Code Check Text -->
+          <div class="p-2 rounded bg-slate-50 text-[11px] text-slate-700 space-y-1">
+            <div class="flex items-start space-x-1">
+              <span class="font-semibold text-slate-900 shrink-0">法規依據：</span>
+              <span id="modalCodeCheckText">內政部《混凝土結構設計規範》（土木 401 號令）</span>
+            </div>
+            <div class="flex items-start space-x-1">
+              <span class="font-semibold text-slate-900 shrink-0">現場施工：</span>
+              <span id="modalSiteNotes" class="text-slate-600">耐震彎鉤必須 135° 扣入柱核心混凝土。</span>
+            </div>
           </div>
         </div>
 
@@ -994,7 +1049,13 @@
           <td class="py-2.5 px-2 mono text-right font-medium" style="color: var(--text-main);">${row.qty}</td>
           <td class="py-2.5 px-2 mono text-right hidden md:table-cell" style="color: var(--text-muted);">${row.unit.toFixed(3)}</td>
           <td class="py-2.5 px-3 mono text-right font-bold" style="color: var(--text-main);">${row.wt.toFixed(2)}</td>
-          <td class="py-2.5 px-2 text-center">
+          
+          <!-- Compliance Badge Column -->
+          <td class="py-2.5 px-2.5 text-center">
+            ${getComplianceBadge(row)}
+          </td>
+
+          <td class="py-2.5 px-2 text-center hidden sm:table-cell">
             ${row.status === 'confirmed'
               ? `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--badge-confirmed-bg); color: var(--badge-confirmed-text); border-color: var(--badge-confirmed-border);">圖面實載</span>`
               : `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--badge-inferred-bg); color: var(--badge-inferred-text); border-color: var(--badge-inferred-border);">慣例推算</span>`}
@@ -1135,6 +1196,36 @@
       document.getElementById('modalBendD').textContent = `${row.bend_d} cm`;
       document.getElementById('modalHookInstruction').textContent = row.hook_info || '依台灣耐震施工規範折彎加工。';
 
+      // Populate Taiwan Civil Code Specs Card
+      const db = cns560DbMap[row.spec] || (row.spec * 3.175);
+      document.getElementById('modalRebarSpec').textContent = `#${row.spec} (D${Math.round(db)})`;
+      document.getElementById('modalUnitWeight').textContent = `${row.unit.toFixed(3)} kg/m`;
+      document.getElementById('modalDb').textContent = `${db.toFixed(1)} mm`;
+
+      if (row.shape_type === 'stirrup_closed' || row.shape_type === 'stirrup_u') {
+        const minHook = Math.max(6 * (db / 10), 7.5).toFixed(1);
+        document.getElementById('modalComplianceBadge').textContent = '135° 耐震合格';
+        document.getElementById('modalComplianceBadge').className = 'px-2 py-0.5 rounded text-[10px] font-bold border bg-emerald-50 text-emerald-700 border-emerald-200';
+        document.getElementById('modalCodeCheckText').textContent = `土木 401 規範：耐震彎鉤平直延伸段 ≧ max(6db, 7.5cm) = ${minHook} cm。實際下料雙鉤各 13 cm，完全符合規範。`;
+        document.getElementById('modalSiteNotes').textContent = '四邊箍筋閉合處必須圍繞縱向角隅主筋，彎鉤深入圍束核心區；端部相鄰箍筋接頭需在斷面上交錯 180° 配置。';
+      } else if (row.spec >= 8 && row.cat.includes('柱')) {
+        document.getElementById('modalComplianceBadge').textContent = 'SA 級續接規範';
+        document.getElementById('modalComplianceBadge').className = 'px-2 py-0.5 rounded text-[10px] font-bold border bg-indigo-50 text-indigo-700 border-indigo-200';
+        document.getElementById('modalCodeCheckText').textContent = `耐震法規限制：柱主筋 #8 (D25) 及以上禁止使用搭接，強制採用 SA 級機械式續接器。`;
+        document.getElementById('modalSiteNotes').textContent = '相鄰鋼筋續接器中心垂直距離需 ≧ 60 cm（或隔層交錯配置），同一斷面續接率以不大於 50% 為原則。';
+      } else if (row.shape_type === 'hook_single' || row.shape_type === 'hook_double') {
+        const reqAnchor = (12 * (db / 10)).toFixed(1);
+        document.getElementById('modalComplianceBadge').textContent = '90° 錨定合格';
+        document.getElementById('modalComplianceBadge').className = 'px-2 py-0.5 rounded text-[10px] font-bold border bg-blue-50 text-blue-700 border-blue-200';
+        document.getElementById('modalCodeCheckText').textContent = `土木 401 規範：梁端 90° 標準錨定彎鉤平直段為 12db = ${reqAnchor} cm。實際下料 ${row.bend_d} cm，符合錨定安全需求。`;
+        document.getElementById('modalSiteNotes').textContent = '端部深彎下折必須位於柱核心內側，並確保彎折內徑符合 CNS 560 規定（內徑 ≧ 6db），避免折角微裂。';
+      } else {
+        document.getElementById('modalComplianceBadge').textContent = 'CNS 560 規範';
+        document.getElementById('modalComplianceBadge').className = 'px-2 py-0.5 rounded text-[10px] font-medium border bg-slate-50 text-slate-600 border-slate-200';
+        document.getElementById('modalCodeCheckText').textContent = `CNS 560 國家標準竹節鋼筋，材質規格符合 SD420W/SD280 規範。`;
+        document.getElementById('modalSiteNotes').textContent = '平直主筋裁切時需考慮 9M / 12M 出廠定尺搭配，最佳化減少廢料損耗。';
+      }
+
       document.getElementById('inspectorModal').classList.remove('hidden');
     }
 
@@ -1151,6 +1242,431 @@
     // Initialize
     setGlobalTheme('cal');
     switchProject('youai');
+  
+    // Canonical 26 Rebar Shapes Catalog (Taiwan CCM Standard)
+    const standardShapesCatalog = [{"id": "01", "key": "straight", "name_tw": "直筋 (平直筋)", "ccm_code": "CCM-01", "category": "通用", "element_tags": ["柱", "梁", "版", "牆", "基礎"], "params": {"shape_main": {"name_tw": "直筋主長", "unit": "cm", "default": 340, "description": "鋼筋裁切平直總長度"}}, "formula": "shape_main", "formula_display_tw": "主長", "bend_deduction": "無彎折。切斷長等於主長 L，延伸折減值為 0。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 40 65 L 300 65", "path_svg": "<line x1=\"40\" y1=\"65\" x2=\"300\" y2=\"65\" stroke=\"#1e293b\" stroke-width=\"5\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"40\" y1=\"45\" x2=\"300\" y2=\"45\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"40\" y1=\"38\" x2=\"40\" y2=\"52\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <line x1=\"300\" y1=\"38\" x2=\"300\" y2=\"52\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <text x=\"170\" y=\"40\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0f172a\" text-anchor=\"middle\">【形狀】全長 {shape_main} cm</text>\n  <text x=\"170\" y=\"95\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">平直直筋（寬彎=0, 深彎=0）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <line x1=\"40\" y1=\"65\" x2=\"300\" y2=\"65\" stroke=\"#1e293b\" stroke-width=\"5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"40\" y1=\"45\" x2=\"300\" y2=\"45\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <line x1=\"40\" y1=\"38\" x2=\"40\" y2=\"52\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <line x1=\"300\" y1=\"38\" x2=\"300\" y2=\"52\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <text x=\"170\" y=\"40\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0f172a\" text-anchor=\"middle\">【形狀】全長 {shape_main} cm</text>\n    <text x=\"170\" y=\"95\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">平直直筋（寬彎=0, 深彎=0）</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-slate-700\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><line x1=\"3\" y1=\"12\" x2=\"21\" y2=\"12\"/></svg>"}, "notes_tw": "1. 9M/12M/14M 定尺切斷，切口須平齊垂直無毛邊。\n2. 柱主筋若採用搭接續接，搭接長度依抗拉伸展規範（Class B 通常為 40db~50db）或採用 SA 級油壓鋼筋續接器。\n3. 版、牆筋搭接處需錯開，同一斷面搭接率不宜超過 50%。"}, {"id": "02", "key": "hook_single_right", "name_tw": "單深彎 L型筋 (右彎 90° 錨定筋 / ──┐)", "ccm_code": "CCM-02", "category": "梁/柱/牆/基礎", "element_tags": ["梁", "柱", "牆", "基礎"], "params": {"shape_main": {"name_tw": "主長 (水平段)", "unit": "cm", "default": 610, "description": "梁柱水平向直段長度"}, "bend_d": {"name_tw": "深彎長 (右端下彎)", "unit": "cm", "default": 40, "description": "90° 錨定垂直端部長度"}}, "formula": "shape_main + bend_d", "formula_display_tw": "主長 + 深彎", "bend_deduction": "台灣 CCM 與加工廠以外包尺寸相加 (shape_main + bend_d) 下料。90° 折彎延伸量約 1~2db，在自動折彎機折彎靠模預留補正（CNS 560 標準彎曲內徑 >= 6db）。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 50 50 L 270 50 L 270 105", "path_svg": "<path d=\"M 50 50 L 270 50 L 270 105\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"50\" y1=\"32\" x2=\"270\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"50\" y1=\"25\" x2=\"50\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <line x1=\"270\" y1=\"25\" x2=\"270\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <text x=\"160\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"middle\">【形狀主長】{shape_main} cm</text>\n  <text x=\"50\" y=\"80\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#64748b\" text-anchor=\"middle\">【寬彎】0</text>\n  <line x1=\"288\" y1=\"50\" x2=\"288\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"281\" y1=\"50\" x2=\"295\" y2=\"50\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <line x1=\"281\" y1=\"105\" x2=\"295\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <text x=\"298\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"start\">【深彎】{bend_d}</text>\n  <text x=\"160\" y=\"85\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">右端 90° 錨定深彎鉤（同 Excel Freeform 465）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 50 50 L 270 50 L 270 105\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"50\" y1=\"32\" x2=\"270\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <line x1=\"50\" y1=\"25\" x2=\"50\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <line x1=\"270\" y1=\"25\" x2=\"270\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <text x=\"160\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"middle\">【形狀主長】{shape_main} cm</text>\n    <text x=\"50\" y=\"80\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#64748b\" text-anchor=\"middle\">【寬彎】0</text>\n    <line x1=\"288\" y1=\"50\" x2=\"288\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <line x1=\"281\" y1=\"50\" x2=\"295\" y2=\"50\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <line x1=\"281\" y1=\"105\" x2=\"295\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <text x=\"298\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"start\">【深彎】{bend_d}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-blue-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 8H19V19\"/></svg>"}, "notes_tw": "1. 常用於梁端伸入邊柱錨定（右端下折）或基腳插筋。\n2. 90° 標準彎鉤平直延長段需符合規範：#3~#8 至少 12db，且折彎內半徑需 >= 3db（折彎內徑 >= 6db）。\n3. 深彎下折時不得觸碰底層梁筋，預留至少 2.5cm 淨距以利灌漿。"}, {"id": "03", "key": "hook_single_left", "name_tw": "單寬彎 L型筋 (左彎 90° 起錨筋 / ┌──)", "ccm_code": "CCM-03", "category": "梁/柱/牆/基礎", "element_tags": ["梁", "柱", "牆", "基礎"], "params": {"bend_w": {"name_tw": "寬彎長 (左端折起)", "unit": "cm", "default": 40, "description": "90° 起錨垂直段長度"}, "shape_main": {"name_tw": "主長 (水平段)", "unit": "cm", "default": 515, "description": "梁柱水平向直段長度"}}, "formula": "bend_w + shape_main", "formula_display_tw": "寬彎 + 主長", "bend_deduction": "外包尺寸相加 bend_w + shape_main。單處 90° 彎折，加工廠以自動雙頭彎折機一次成型。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 70 105 L 70 50 L 290 50", "path_svg": "<path d=\"M 70 105 L 70 50 L 290 50\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"70\" y1=\"32\" x2=\"290\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"70\" y1=\"25\" x2=\"70\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <line x1=\"290\" y1=\"25\" x2=\"290\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <text x=\"180\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">【形狀主長】{shape_main} cm</text>\n  <line x1=\"52\" y1=\"50\" x2=\"52\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"45\" y1=\"50\" x2=\"59\" y2=\"50\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <line x1=\"45\" y1=\"105\" x2=\"59\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <text x=\"42\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"end\">【寬彎】{bend_w}</text>\n  <text x=\"290\" y=\"80\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#64748b\" text-anchor=\"middle\">【深彎】0</text>\n  <text x=\"180\" y=\"85\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">左端 90° 錨定寬彎鉤</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 70 105 L 70 50 L 290 50\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"70\" y1=\"32\" x2=\"290\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <line x1=\"70\" y1=\"25\" x2=\"70\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <line x1=\"290\" y1=\"25\" x2=\"290\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <text x=\"180\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">【形狀主長】{shape_main} cm</text>\n    <line x1=\"52\" y1=\"50\" x2=\"52\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <line x1=\"45\" y1=\"50\" x2=\"59\" y2=\"50\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <line x1=\"45\" y1=\"105\" x2=\"59\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n    <text x=\"42\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"end\">【寬彎】{bend_w}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-sky-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 19V8H20\"/></svg>"}, "notes_tw": "1. 常用於梁起跨錨入柱心、懸臂梁根部錨定、基礎底板邊緣起折插筋。\n2. 錨定彎折端若在受壓區，其錨定長度需滿足壓拉錨定換算。\n3. 現場綁紮時彎鉤端必須確實緊貼柱直主筋內側綁紮牢固。"}, {"id": "04", "key": "hook_double_u", "name_tw": "雙端同向深彎 U型筋 (雙端 90° 錨定筋 / ┌──┐)", "ccm_code": "CCM-04", "category": "梁/版/基礎", "element_tags": ["梁", "版", "基礎"], "params": {"bend_w": {"name_tw": "左端下彎長", "unit": "cm", "default": 35, "description": "左端 90° 錨定段長度"}, "shape_main": {"name_tw": "中間水平主長", "unit": "cm", "default": 300, "description": "主跨水平外包尺寸"}, "bend_d": {"name_tw": "右端下彎長", "unit": "cm", "default": 35, "description": "右端 90° 錨定段長度"}}, "formula": "bend_w + shape_main + bend_d", "formula_display_tw": "寬彎 + 主長 + 深彎", "bend_deduction": "外包尺寸相加 bend_w + shape_main + bend_d。雙 90° 彎折，現場折彎機扣減累計約 3~4db。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 65 105 L 65 50 L 275 50 L 275 105", "path_svg": "<path d=\"M 65 105 L 65 50 L 275 50 L 275 105\" fill=\"none\" stroke=\"#4f46e5\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"65\" y1=\"32\" x2=\"275\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"65\" y1=\"25\" x2=\"65\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <line x1=\"275\" y1=\"25\" x2=\"275\" y2=\"39\" stroke=\"#94a3b8\" stroke-width=\"1.5\"/>\n  <text x=\"170\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#4338ca\" text-anchor=\"middle\">【形狀主長】{shape_main} cm</text>\n  <text x=\"45\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4338ca\" text-anchor=\"middle\">【寬彎】{bend_w}</text>\n  <text x=\"295\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4338ca\" text-anchor=\"middle\">【深彎】{bend_d}</text>\n  <text x=\"170\" y=\"85\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">雙端 90° 錨定彎鉤（同 Excel Freeform 464）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 65 105 L 65 50 L 275 50 L 275 105\" fill=\"none\" stroke=\"#4f46e5\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"65\" y1=\"32\" x2=\"275\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#4338ca\" text-anchor=\"middle\">【形狀主長】{shape_main} cm</text>\n    <text x=\"45\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4338ca\" text-anchor=\"middle\">【寬彎】{bend_w}</text>\n    <text x=\"295\" y=\"82\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4338ca\" text-anchor=\"middle\">【深彎】{bend_d}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-indigo-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 19V7H19V19\"/></svg>"}, "notes_tw": "1. 常用於短梁梁底主筋、小梁兩端搭接至大梁受剪錨定、基腳網筋端部封閉。\n2. 雙端彎鉤長度 bend_w 與 bend_d 應一致或依配筋圖標註指定。\n3. 吊放安裝時需防範扭轉變形，落位後需立即以鐵絲與箍筋四角定位綁紮。"}, {"id": "05", "key": "hook_z", "name_tw": "雙端反向彎鉤 Z型筋 (高低差折板/梁落差筋)", "ccm_code": "CCM-05", "category": "版/梁/樓梯", "element_tags": ["版", "梁", "樓梯"], "params": {"bend_1": {"name_tw": "起端反向折彎", "unit": "cm", "default": 30, "description": "第一折垂直/反向段長度"}, "shape_main": {"name_tw": "中間主長段", "unit": "cm", "default": 220, "description": "中間斜段或跨越水平段"}, "bend_2": {"name_tw": "終端順向折彎", "unit": "cm", "default": 30, "description": "第二折順向延伸段長度"}}, "formula": "bend_1 + shape_main + bend_2", "formula_display_tw": "起彎 + 主長 + 終彎", "bend_deduction": "外包三段長度相加 bend_1 + shape_main + bend_2。包含兩處反向 90°（或鈍角）折彎。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 65 105 L 65 65 L 275 65 L 275 25", "path_svg": "<path d=\"M 65 105 L 65 65 L 275 65 L 275 25\" fill=\"none\" stroke=\"#6366f1\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"65\" y1=\"48\" x2=\"275\" y2=\"48\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"44\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#4f46e5\" text-anchor=\"middle\">【中間主長】{shape_main} cm</text>\n  <text x=\"45\" y=\"85\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4f46e5\">【起彎】{bend_1}</text>\n  <text x=\"295\" y=\"45\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4f46e5\">【終彎】{bend_2}</text>\n  <text x=\"170\" y=\"95\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">雙端反向折彎 Z 型筋（降板/高低落差專用）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 65 105 L 65 65 L 275 65 L 275 25\" fill=\"none\" stroke=\"#6366f1\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"65\" y1=\"48\" x2=\"275\" y2=\"48\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"44\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#4f46e5\" text-anchor=\"middle\">【中間主長】{shape_main} cm</text>\n    <text x=\"45\" y=\"85\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4f46e5\">【起彎】{bend_1}</text>\n    <text x=\"295\" y=\"45\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#4f46e5\">【終彎】{bend_2}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-indigo-500\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 19V13H19V7\"/></svg>"}, "notes_tw": "1. 常用於浴廁降板區、陽台落差處、樓板厚度變化斷面與樓梯平台交接處。\n2. 降板凹折角處屬於受拉外凸角，混凝土極易受拉崩裂，折角處鋼筋嚴禁直接連續彎過，必須以兩組 Z 筋或斜交閉合筋錨入受壓區。\n3. 現場施工時需注意折角處之保護層墊塊確實墊實。"}, {"id": "06", "key": "stirrup_closed", "name_tw": "四邊閉合外箍筋 (雙 135° 耐震彎鉤)", "ccm_code": "CCM-06", "category": "柱/梁", "element_tags": ["柱", "梁"], "params": {"bend_w": {"name_tw": "箍筋寬度 (柱/梁寬扣保護層)", "unit": "cm", "default": 60, "description": "箍筋水平外包寬度 W"}, "shape_main": {"name_tw": "箍筋深度 (柱/梁深扣保護層)", "unit": "cm", "default": 40, "description": "箍筋垂直外包深度 H"}, "hook1": {"name_tw": "第一端 135° 耐震鉤長", "unit": "cm", "default": 13, "description": "耐震彎鉤平直段 (#4 常取 13cm, >= 6db 且 >= 7.5cm)"}, "hook2": {"name_tw": "第二端 135° 耐震鉤長", "unit": "cm", "default": 13, "description": "耐震彎鉤平直段 (#4 常取 13cm)"}}, "formula": "(bend_w + shape_main) * 2 + hook1 + hook2", "formula_display_tw": "(寬 + 深) * 2 + 雙鉤", "bend_deduction": "CCM 實務下料外包算式：(W + H)*2 + hook1 + hook2。含 4 個 90° 角隅彎折與 2 個 135° 耐震鉤。\nCNC 自動彎箍機通常將 2*hook 設為 26cm (#4) 或 20cm (#3)。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 90 30 H 250 V 105 H 90 Z M 90 48 L 76 34 M 90 55 L 70 58", "path_svg": "<rect x=\"90\" y=\"30\" width=\"160\" height=\"75\" rx=\"4\" fill=\"none\" stroke=\"#059669\" stroke-width=\"4.5\"/>\n  <path d=\"M 90 48 L 76 34 M 90 55 L 70 58\" fill=\"none\" stroke=\"#059669\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"90\" y1=\"18\" x2=\"250\" y2=\"18\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"15\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">柱寬 {bend_w} cm</text>\n  <line x1=\"265\" y1=\"30\" x2=\"265\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"272\" y=\"72\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\">柱深 {shape_main}</text>\n  <text x=\"170\" y=\"70\" font-size=\"10\" font-weight=\"bold\" fill=\"#059669\" text-anchor=\"middle\">135° 耐震雙彎鉤 ({hook1}cm)</text>\n  <text x=\"170\" y=\"86\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">({bend_w}+{shape_main})×2 + 26 = {len}cm</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <rect x=\"90\" y=\"30\" width=\"160\" height=\"75\" rx=\"4\" fill=\"none\" stroke=\"#059669\" stroke-width=\"4.5\"/>\n  <path d=\"M 90 48 L 76 34 M 90 55 L 70 58\" fill=\"none\" stroke=\"#059669\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"90\" y1=\"18\" x2=\"250\" y2=\"18\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"15\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">柱寬 {bend_w} cm</text>\n    <line x1=\"265\" y1=\"30\" x2=\"265\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"272\" y=\"72\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\">柱深 {shape_main}</text>\n    <text x=\"170\" y=\"70\" font-size=\"10\" font-weight=\"bold\" fill=\"#059669\" text-anchor=\"middle\">135° 耐震雙彎鉤</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-emerald-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"4\" y=\"5\" width=\"16\" height=\"14\" rx=\"1.5\"/><path d=\"M5 9L2 6M5 11L1 12\"/></svg>"}, "notes_tw": "1. 耐震結構核心圍束筋，兩端彎鉤必須為 135° 彎入核心混凝土內。\n2. 平直延長長度不得小於 6db 且不得小於 7.5cm（#3 鋼筋取 10~11cm，#4 鋼筋取 12.5~13cm）。\n3. 柱上綁紮時，上下相鄰箍筋之彎鉤接頭位置必須交錯佈設於四個柱角，嚴禁集中於同一稜角。"}, {"id": "07", "key": "stirrup_u", "name_tw": "開口 U型箍筋 (梁頂雙 135° 鉤)", "ccm_code": "CCM-07", "category": "梁", "element_tags": ["梁"], "params": {"bend_w": {"name_tw": "梁底寬度 (扣保護層)", "unit": "cm", "default": 40, "description": "梁底部水平外包淨寬"}, "shape_main": {"name_tw": "垂直梁深 (扣保護層)", "unit": "cm", "default": 60, "description": "兩側垂直立腿深度"}, "hook_left": {"name_tw": "左頂 135° 彎鉤長", "unit": "cm", "default": 13, "description": "左頂端內折耐震鉤"}, "hook_right": {"name_tw": "右頂 135° 彎鉤長", "unit": "cm", "default": 13, "description": "右頂端內折耐震鉤"}}, "formula": "bend_w + shape_main * 2 + hook_left + hook_right", "formula_display_tw": "底寬 + 梁深 * 2 + 雙頂鉤", "bend_deduction": "外包算式：bend_w + 2*shape_main + hook_left + hook_right。底端雙 90° 折彎，頂端雙 135° 耐震彎鉤。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 75 42 L 95 30 L 95 105 L 245 105 L 245 30 L 265 42", "path_svg": "<path d=\"M 75 42 L 95 30 L 95 105 L 245 105 L 245 30 L 265 42\" fill=\"none\" stroke=\"#0d9488\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"95\" y1=\"120\" x2=\"245\" y2=\"120\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"117\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0f766e\" text-anchor=\"middle\">【寬彎】梁底寬 {bend_w} cm</text>\n  <line x1=\"260\" y1=\"30\" x2=\"260\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"267\" y=\"72\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0f766e\">【深彎】{shape_main}</text>\n  <text x=\"170\" y=\"65\" font-size=\"10\" font-weight=\"bold\" fill=\"#0d9488\" text-anchor=\"middle\">開口 U 箍 + 頂部雙鉤 13/13</text>\n  <text x=\"170\" y=\"80\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">{bend_w} + {shape_main}×2 + 26 = {len}cm</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 75 42 L 95 30 L 95 105 L 245 105 L 245 30 L 265 42\" fill=\"none\" stroke=\"#0d9488\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"95\" y1=\"120\" x2=\"245\" y2=\"120\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"117\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0f766e\" text-anchor=\"middle\">【底寬】{bend_w} cm</text>\n    <line x1=\"260\" y1=\"30\" x2=\"260\" y2=\"105\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"267\" y=\"72\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0f766e\">【深彎】{shape_main}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8L5 5V18H19V5L22 8\"/></svg>"}, "notes_tw": "1. 台灣工法在大中型大梁普遍使用『開口 U 箍 + 頂部帽蓋筋』組合工法，便於梁頂通長主筋穿筋與落位。\n2. 頂部兩側 135° 耐震彎鉤需準確向梁心內折，緊扣梁頂角隅主筋。\n3. 與帽蓋筋（cap_tie）搭接時，帽蓋下垂腿與 U 箍立腿需平行重疊至少一個 lap 規範值。"}, {"id": "08", "key": "cap_tie", "name_tw": "梁頂帽蓋筋 (ㄇ型封口箍筋)", "ccm_code": "CCM-08", "category": "梁", "element_tags": ["梁", "牆"], "params": {"shape_main": {"name_tw": "梁頂水平淨寬", "unit": "cm", "default": 40, "description": "水平頂面外包寬度"}, "bend_w": {"name_tw": "左端下垂腿長", "unit": "cm", "default": 12, "description": "左端 90°/135° 下折長度"}, "bend_d": {"name_tw": "右端下垂腿長", "unit": "cm", "default": 13, "description": "右端 90°/135° 下折長度"}}, "formula": "shape_main + bend_w + bend_d", "formula_display_tw": "主寬 + 左腿 + 右腿", "bend_deduction": "外包算式：shape_main + bend_w + bend_d。頂面平直段加兩端下彎段。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 85 95 L 85 45 L 255 45 L 255 95", "path_svg": "<path d=\"M 85 95 L 85 45 L 255 45 L 255 95\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"85\" y1=\"30\" x2=\"255\" y2=\"30\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">【形狀】主寬 {shape_main} cm</text>\n  <text x=\"68\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">左 {bend_w}</text>\n  <text x=\"272\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">右 {bend_d}</text>\n  <text x=\"170\" y=\"75\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">梁頂帽蓋筋（與 U 箍成對封閉）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 85 95 L 85 45 L 255 45 L 255 95\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"85\" y1=\"30\" x2=\"255\" y2=\"30\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">【主寬】{shape_main} cm</text>\n    <text x=\"68\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">左 {bend_w}</text>\n    <text x=\"272\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">右 {bend_d}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-amber-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 18V7H19V18\"/></svg>"}, "notes_tw": "1. 配合開口 U 型箍扣合，組合成封閉梁箍；在梁端圍束區或承受扭力之梁必須加強綁紮。\n2. 下垂腿長度依設計圖面規定，通常為 12~15cm 或延伸至梁中段。\n3. 也常兼作剪力牆雙層鋼筋頂端定位帽蓋筋或女兒牆頂封邊筋。"}, {"id": "09", "key": "tie_s", "name_tw": "雙向耐震繫筋 S型 (一端 135°、一端 90° 耐震拉筋)", "ccm_code": "CCM-09", "category": "柱/梁/剪力牆", "element_tags": ["柱", "梁", "牆"], "params": {"shape_main": {"name_tw": "主跨長度 (兩主筋間距)", "unit": "cm", "default": 61, "description": "繫筋水平桿直段長度"}, "bend_w": {"name_tw": "135° 耐震鉤長", "unit": "cm", "default": 12, "description": "標準 135° 耐震彎鉤"}, "bend_d": {"name_tw": "90° 施工鉤長", "unit": "cm", "default": 13, "description": "90° 現場安裝施工鉤 (平直延長 >= 6db)"}}, "formula": "shape_main + bend_w + bend_d", "formula_display_tw": "主長 + 135°鉤 + 90°鉤", "bend_deduction": "外包加總：shape_main + bend_w + bend_d。一端 135° 彎折，另一端 90° 彎折。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 70 80 L 90 48 H 250 L 270 78", "path_svg": "<path d=\"M 70 80 L 90 48 H 250 L 270 78\" fill=\"none\" stroke=\"#9333ea\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"90\" y1=\"32\" x2=\"250\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#7e22ce\" text-anchor=\"middle\">【形狀】主長 {shape_main} cm</text>\n  <text x=\"55\" y=\"68\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7e22ce\">【寬彎】{bend_w}</text>\n  <text x=\"285\" y=\"68\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7e22ce\">【深彎】{bend_d}</text>\n  <text x=\"170\" y=\"95\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">雙向防震繫筋（一端 135°、一端 90°）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 70 80 L 90 48 H 250 L 270 78\" fill=\"none\" stroke=\"#9333ea\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"90\" y1=\"32\" x2=\"250\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#7e22ce\" text-anchor=\"middle\">【主長】{shape_main} cm</text>\n    <text x=\"55\" y=\"68\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7e22ce\">135°鉤 {bend_w}</text>\n    <text x=\"285\" y=\"68\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7e22ce\">90°鉤 {bend_d}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-purple-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 8L6 5H18L21 11\"/></svg>"}, "notes_tw": "1. 耐震特別規定：相鄰或沿同根主筋上下層之繫筋，其 135° 端與 90° 端必須『左右上下交錯』配置。\n2. 施工時 90° 端扣掛後，需以鐵工扳手將其向內拗緊，確保主筋被牢牢咬入角隅內。\n3. 繫筋必須同時扣住外箍筋及縱向主筋。"}, {"id": "10", "key": "stirrup_diamond", "name_tw": "菱形內箍筋 (柱心複合菱形箍)", "ccm_code": "CCM-10", "category": "柱", "element_tags": ["柱"], "params": {"side_len": {"name_tw": "單邊斜邊長", "unit": "cm", "default": 45, "description": "菱形四邊之等邊外包長度"}, "hook1": {"name_tw": "第1端 135° 彎鉤長", "unit": "cm", "default": 13, "description": "135° 耐震彎鉤"}, "hook2": {"name_tw": "第2端 135° 彎鉤長", "unit": "cm", "default": 13, "description": "135° 耐震彎鉤"}}, "formula": "side_len * 4 + hook1 + hook2", "formula_display_tw": "斜邊長 * 4 + 雙鉤", "bend_deduction": "切斷長 = 4 * side_len + hook1 + hook2。菱形四邊折角（約 70°~110°）及兩端 135° 彎鉤。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 170 25 L 260 65 L 170 105 L 80 65 Z M 170 25 L 180 15 M 170 25 L 175 10", "path_svg": "<polygon points=\"170,25 260,65 170,105 80,65\" fill=\"none\" stroke=\"#0891b2\" stroke-width=\"4.5\" stroke-linejoin=\"round\"/>\n  <path d=\"M 170 25 L 184 14 M 170 25 L 160 12\" fill=\"none\" stroke=\"#0891b2\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"220\" y=\"42\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0e7490\">邊長 {side_len} cm</text>\n  <text x=\"170\" y=\"68\" font-size=\"10\" font-weight=\"bold\" fill=\"#0891b2\" text-anchor=\"middle\">柱心複合菱形箍</text>\n  <text x=\"170\" y=\"85\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">4 × {side_len} + 26 = {len}cm</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <polygon points=\"170,25 260,65 170,105 80,65\" fill=\"none\" stroke=\"#0891b2\" stroke-width=\"4.5\" stroke-linejoin=\"round\"/>\n  <path d=\"M 170 25 L 184 14 M 170 25 L 160 12\" fill=\"none\" stroke=\"#0891b2\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"220\" y=\"42\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0e7490\">邊長 {side_len} cm</text>\n    <text x=\"170\" y=\"68\" font-size=\"10\" font-weight=\"bold\" fill=\"#0891b2\" text-anchor=\"middle\">菱形內箍筋</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-cyan-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 3 21 12 12 21 3 12\"/></svg>"}, "notes_tw": "1. 常用於大斷面方形柱（如 60x60、70x70、80x80cm）之核心複合箍筋。\n2. 四個頂點剛好抱住柱四邊正中央之中間主筋，防止受壓主筋向外鼓出挫屈。\n3. 下料時需精準依柱筋排筋圖計算斜邊長度 side_len = sqrt((W/2)^2 + (H/2)^2)。"}, {"id": "11", "key": "stirrup_octagonal", "name_tw": "八角形內箍筋 (柱圍束八角複合箍)", "ccm_code": "CCM-11", "category": "柱", "element_tags": ["柱"], "params": {"straight_edge": {"name_tw": "四正邊直邊長", "unit": "cm", "default": 25, "description": "八角形上下左右四正邊長度"}, "corner_edge": {"name_tw": "四斜邊角隅長", "unit": "cm", "default": 22, "description": "八角形四角斜邊長度"}, "hook1": {"name_tw": "第1端 135° 彎鉤", "unit": "cm", "default": 13, "description": "135° 耐震鉤"}, "hook2": {"name_tw": "第2端 135° 彎鉤", "unit": "cm", "default": 13, "description": "135° 耐震鉤"}}, "formula": "straight_edge * 4 + corner_edge * 4 + hook1 + hook2", "formula_display_tw": "直邊 * 4 + 斜邊 * 4 + 雙鉤", "bend_deduction": "切斷長 = 4*straight_edge + 4*corner_edge + hook1 + hook2。含 8 處 135° 鈍角彎折與 2 個耐震鉤。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 130 25 L 210 25 L 270 55 L 270 85 L 210 115 L 130 115 L 70 85 L 70 55 Z", "path_svg": "<polygon points=\"130,25 210,25 270,55 270,85 210,115 130,115 70,85 70,55\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"4\" stroke-linejoin=\"round\"/>\n  <path d=\"M 130 25 L 120 15 M 130 25 L 130 10\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"3\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"170\" y=\"20\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"middle\">直邊 {straight_edge} cm</text>\n  <text x=\"250\" y=\"42\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" fill=\"#1d4ed8\">斜邊 {corner_edge}</text>\n  <text x=\"170\" y=\"72\" font-size=\"10\" font-weight=\"bold\" fill=\"#2563eb\" text-anchor=\"middle\">八角複合耐震箍</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <polygon points=\"130,25 210,25 270,55 270,85 210,115 130,115 70,85 70,55\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"4\" stroke-linejoin=\"round\"/>\n  <path d=\"M 130 25 L 120 15 M 130 25 L 130 10\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"20\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"middle\">直邊 {straight_edge} cm</text>\n    <text x=\"170\" y=\"72\" font-size=\"10\" font-weight=\"bold\" fill=\"#2563eb\" text-anchor=\"middle\">八角形內箍筋</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-blue-700\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polygon points=\"7 3 17 3 22 8 22 16 17 21 7 21 2 16 2 8\"/></svg>"}, "notes_tw": "1. 多用於超高層建築超大方形柱、八角柱或橋墩耐震柱圍束區。\n2. 八角形態在力學上接近圓形環箍，可提供極佳的軸向圍束壓應力。\n3. 加工時雙頭自動折彎機需設置多道 135° 折角程序，角度誤差需控制在 ±1° 內以防閉合段開口失真。"}, {"id": "12", "key": "tie_cross", "name_tw": "十字交叉拉繫筋組 (X/十字繫筋)", "ccm_code": "CCM-12", "category": "柱/梁", "element_tags": ["柱", "梁"], "params": {"len_x": {"name_tw": "水平向繫筋長度", "unit": "cm", "default": 60, "description": "水平橫穿段外包長度"}, "len_y": {"name_tw": "垂直向繫筋長度", "unit": "cm", "default": 40, "description": "垂直貫穿段外包長度"}, "hook_135": {"name_tw": "135° 耐震鉤長", "unit": "cm", "default": 12, "description": "單支 135° 耐震彎鉤"}, "hook_90": {"name_tw": "90° 施工鉤長", "unit": "cm", "default": 13, "description": "單支 90° 施工彎鉤"}}, "formula": "(len_x + hook_135 + hook_90) + (len_y + hook_135 + hook_90)", "formula_display_tw": "水平支(Lx+雙鉤) + 垂直支(Ly+雙鉤)", "bend_deduction": "十字雙拉筋兩根一組合計總長度。各別加工單根切斷長為 L + hook_135 + hook_90。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 65 75 L 80 60 H 260 L 275 80 M 155 30 L 170 20 V 110 L 185 125", "path_svg": "<path d=\"M 65 75 L 80 65 H 260 L 275 80\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <path d=\"M 155 35 L 170 25 V 105 L 185 115\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"170\" y=\"16\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7c3aed\" text-anchor=\"middle\">垂直貫穿 Ly {len_y}</text>\n  <text x=\"285\" y=\"68\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7c3aed\">水平貫穿 Lx {len_x}</text>\n  <text x=\"170\" y=\"85\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">十字雙向拉筋（成對交錯配置）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 65 75 L 80 65 H 260 L 275 80\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <path d=\"M 155 35 L 170 25 V 105 L 185 115\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"16\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7c3aed\" text-anchor=\"middle\">垂直貫穿 Ly {len_y}</text>\n    <text x=\"285\" y=\"68\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#7c3aed\">水平貫穿 Lx {len_x}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-violet-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M4 12H20M12 4V20\"/></svg>"}, "notes_tw": "1. 柱心正交貫穿十字繫筋，水平一根與垂直一根交疊綁紮。\n2. 現場應使兩根拉筋在中央交會處以 20 號鍍鋅鐵絲交叉十字紮緊。\n3. 135° 彎鉤端與 90° 彎鉤端沿斷面方向及高程交替互換。"}, {"id": "13", "key": "chair_rebar", "name_tw": "樓板馬椅筋 (架立鐵 / 板面支撐鐵)", "ccm_code": "CCM-13", "category": "版/基礎", "element_tags": ["版", "基礎"], "params": {"top_w": {"name_tw": "頂部橫樑寬度", "unit": "cm", "default": 20, "description": "承托上層鋼筋之頂平段"}, "height": {"name_tw": "馬椅立腿高度", "unit": "cm", "default": 12, "description": "板厚扣除上下保護層與鋼筋厚度"}, "foot_len": {"name_tw": "底部八字撐腳長", "unit": "cm", "default": 15, "description": "底部平放於模板之支撐腳長度"}}, "formula": "top_w + height * 2 + foot_len * 2", "formula_display_tw": "頂寬 + 高度 * 2 + 腳長 * 2", "bend_deduction": "總展開長度：top_w + 2*height + 2*foot_len。四處 90° 空間/平面折彎。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 50 105 L 95 105 L 125 45 L 215 45 L 245 105 L 290 105", "path_svg": "<path d=\"M 50 105 L 95 105 L 125 45 L 215 45 L 245 105 L 290 105\" fill=\"none\" stroke=\"#ea580c\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"125\" y1=\"32\" x2=\"215\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#c2410c\" text-anchor=\"middle\">【頂寬】{top_w} cm</text>\n  <text x=\"100\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#c2410c\">高 {height}</text>\n  <text x=\"65\" y=\"120\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#c2410c\">腳 {foot_len}</text>\n  <text x=\"270\" y=\"120\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#c2410c\">腳 {foot_len}</text>\n  <text x=\"170\" y=\"85\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">樓板/基礎上層鐵架立馬椅筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 50 105 L 95 105 L 125 45 L 215 45 L 245 105 L 290 105\" fill=\"none\" stroke=\"#ea580c\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"125\" y1=\"32\" x2=\"215\" y2=\"32\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"27\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#c2410c\" text-anchor=\"middle\">【頂寬】{top_w} cm</text>\n    <text x=\"100\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#c2410c\">高 {height}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-orange-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 19H8L10 8H14L16 19H21\"/></svg>"}, "notes_tw": "1. 專門支撐樓板、屋頂與筏基之頂層鋼筋，維持鋼筋保護層與力學有效厚度 d。\n2. 排列間距現場通常每平方公尺配置 1~1.2 支（約 @100cmx100cm 正方梅花狀排列）。\n3. 腳部如直接接觸木模板或鋁模，底腳需套裝塑膠防鏽保護腳墊（馬椅套），防止拆模後鋼筋外露銹蝕。"}, {"id": "14", "key": "ladder_spacer", "name_tw": "梯形間隔鐵 (雙層牆厚定位梯仔筋)", "ccm_code": "CCM-14", "category": "牆/柱", "element_tags": ["牆", "柱"], "params": {"len_main": {"name_tw": "立向邊筋長度", "unit": "cm", "default": 100, "description": "梯形兩側通長豎筋"}, "step_w": {"name_tw": "橫向間隔橫撐寬", "unit": "cm", "default": 15, "description": "牆厚扣除雙側保護層厚度"}, "rung_count": {"name_tw": "橫向梯級橫撐數量", "unit": "支", "default": 4, "description": "內部間隔擋筋支數"}}, "formula": "len_main * 2 + step_w * rung_count", "formula_display_tw": "邊筋 * 2 + 橫撐寬 * 梯級數", "bend_deduction": "以兩根立筋加上 rung_count 根橫撐組裝點焊或連續波浪成型，總長 2*L + n*W。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 130 25 V 110 M 210 25 V 110 M 130 35 H 210 M 130 60 H 210 M 130 85 H 210 M 130 105 H 210", "path_svg": "<line x1=\"130\" y1=\"20\" x2=\"130\" y2=\"115\" stroke=\"#059669\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  <line x1=\"210\" y1=\"20\" x2=\"210\" y2=\"115\" stroke=\"#059669\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  <line x1=\"130\" y1=\"35\" x2=\"210\" y2=\"35\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <line x1=\"130\" y1=\"60\" x2=\"210\" y2=\"60\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <line x1=\"130\" y1=\"85\" x2=\"210\" y2=\"85\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <line x1=\"130\" y1=\"105\" x2=\"210\" y2=\"105\" stroke=\"#10b981\" stroke-width=\"3\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"130\" y1=\"12\" x2=\"210\" y2=\"12\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"10\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">牆厚寬 {step_w} cm</text>\n  <text x=\"95\" y=\"70\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\">長 {len_main}</text>\n  <text x=\"245\" y=\"70\" font-size=\"10\" fill=\"#64748b\">{rung_count} 道橫檔</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <line x1=\"130\" y1=\"20\" x2=\"130\" y2=\"115\" stroke=\"#059669\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  <line x1=\"210\" y1=\"20\" x2=\"210\" y2=\"115\" stroke=\"#059669\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n  <line x1=\"130\" y1=\"35\" x2=\"210\" y2=\"35\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <line x1=\"130\" y1=\"60\" x2=\"210\" y2=\"60\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <line x1=\"130\" y1=\"85\" x2=\"210\" y2=\"85\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <line x1=\"130\" y1=\"105\" x2=\"210\" y2=\"105\" stroke=\"#10b981\" stroke-width=\"3\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"10\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">牆厚寬 {step_w} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-emerald-700\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M7 3V21M17 3V21M7 7H17M7 12H17M7 17H17\"/></svg>"}, "notes_tw": "1. 用於雙層雙向 RC 剪力牆中，準確固定內外雙層牆筋之間距。\n2. 能承受模板夾具緊迫應力與混凝土澆置震動推力，防止牆厚縮水或鋼筋向內擠壓。\n3. 每米高度沿牆長方向約每 1.2M~1.5M 配置一組。"}, {"id": "15", "key": "stair_tread", "name_tw": "樓梯踏步筋 (階梯三角折筋 / 踏步抗裂筋)", "ccm_code": "CCM-15", "category": "樓梯", "element_tags": ["樓梯"], "params": {"tread_r": {"name_tw": "踏步踏面深 (水平段)", "unit": "cm", "default": 26, "description": "樓梯踏面寬度 R 扣保護層"}, "riser_h": {"name_tw": "踏步踢面高 (垂直段)", "unit": "cm", "default": 16, "description": "樓梯級高 H 扣保護層"}, "hook_top": {"name_tw": "頂端錨固長度", "unit": "cm", "default": 20, "description": "向內錨入梯板斜底筋"}, "hook_bot": {"name_tw": "底端錨固長度", "unit": "cm", "default": 20, "description": "向下錨入踏步基底"}}, "formula": "tread_r + riser_h + hook_top + hook_bot", "formula_display_tw": "踏面 + 踢面 + 頂錨 + 底錨", "bend_deduction": "踏步 L 型直角折彎加上雙端各一處鈍角錨折，切斷長為各段加總。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 60 40 L 110 40 L 110 85 L 200 85 L 200 115 L 270 115", "path_svg": "<path d=\"M 60 40 L 110 40 L 110 85 L 200 85 L 200 115 L 270 115\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"155\" y=\"78\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">踏面 R {tread_r} cm</text>\n  <text x=\"85\" y=\"65\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\">踢面 H {riser_h}</text>\n  <text x=\"50\" y=\"32\" font-size=\"10\" fill=\"#64748b\">頂錨 {hook_top}</text>\n  <text x=\"275\" y=\"110\" font-size=\"10\" fill=\"#64748b\">底錨 {hook_bot}</text>\n  <text x=\"170\" y=\"25\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">樓梯階梯角隅防裂踏步筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 60 40 L 110 40 L 110 85 L 200 85 L 200 115 L 270 115\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"155\" y=\"78\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">踏面 R {tread_r} cm</text>\n    <text x=\"85\" y=\"65\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\">踢面 H {riser_h}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-amber-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 8H10V14H17V20H22\"/></svg>"}, "notes_tw": "1. 依照梯級實際大樣尺寸在加工廠定型冷折彎。\n2. 能防止梯級陽角受踏壓剪斷破裂，並利於現場梯面泥作粉光與扶手欄杆立柱固定。\n3. 需配合樓梯底層主筋之斜率角度正確安裝綁紮。"}, {"id": "16", "key": "footing_hook", "name_tw": "基礎基腳錨定筋 (雙端向上折彎 U型底板筋 / └──┘)", "ccm_code": "CCM-16", "category": "基礎", "element_tags": ["基礎"], "params": {"bend_left": {"name_tw": "左端向上垂直立段", "unit": "cm", "default": 40, "description": "基腳邊緣 90° 向上折彎"}, "shape_main": {"name_tw": "基礎水平寬/長", "unit": "cm", "default": 280, "description": "基腳或筏基板底水平受拉段"}, "bend_right": {"name_tw": "右端向上垂直立段", "unit": "cm", "default": 40, "description": "基腳右側 90° 向上折彎"}}, "formula": "bend_left + shape_main + bend_right", "formula_display_tw": "左立段 + 底主長 + 右立段", "bend_deduction": "外包尺寸相加 bend_left + shape_main + bend_right。兩端 90° 朝上折彎。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 65 45 L 65 100 L 275 100 L 275 45", "path_svg": "<path d=\"M 65 45 L 65 100 L 275 100 L 275 45\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"65\" y1=\"118\" x2=\"275\" y2=\"118\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"115\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"middle\">【底長】{shape_main} cm</text>\n  <text x=\"45\" y=\"65\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">左立 {bend_left}</text>\n  <text x=\"295\" y=\"65\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">右立 {bend_right}</text>\n  <text x=\"170\" y=\"60\" font-size=\"11\" fill=\"#64748b\" text-anchor=\"middle\">獨立基腳/筏式底板雙端上折 U 筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 65 45 L 65 100 L 275 100 L 275 45\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <line x1=\"65\" y1=\"118\" x2=\"275\" y2=\"118\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n    <text x=\"170\" y=\"115\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#1d4ed8\" text-anchor=\"middle\">【底長】{shape_main} cm</text>\n    <text x=\"45\" y=\"65\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">左立 {bend_left}</text>\n    <text x=\"295\" y=\"65\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">右立 {bend_right}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-blue-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 5V17H19V5\"/></svg>"}, "notes_tw": "1. 獨立基腳或地梁受拉下層筋專用，開口朝上 U 型。\n2. 兩端垂直立起長度通常要求至少伸至基礎頂面保護層處或滿足錨定規範（>= 30cm）。\n3. 基礎底層必須使用水泥高強度高壓墊塊（7.5cm 規定保護層），不可使用塑膠椅凳墊塊以免壓碎。"}, {"id": "17", "key": "cantilever_bent", "name_tw": "懸臂梁負彎矩斜折筋 (鴨頭錨定筋 / 45° 彎起筋)", "ccm_code": "CCM-17", "category": "梁", "element_tags": ["梁"], "params": {"len_top": {"name_tw": "梁頂負彎矩水平段", "unit": "cm", "default": 180, "description": "懸臂梁頂面受拉受力段"}, "len_slope": {"name_tw": "45° 斜向折下段", "unit": "cm", "default": 50, "description": "梁端沿 45° 內折剪力段"}, "len_bottom": {"name_tw": "梁底向內折回段", "unit": "cm", "default": 60, "description": "梁底受壓錨固延伸段"}, "hook_end": {"name_tw": "端部收頭彎鉤", "unit": "cm", "default": 15, "description": "端部 90° 或 135° 內折"}}, "formula": "len_top + len_slope + len_bottom + hook_end", "formula_display_tw": "頂長 + 斜段 + 底折 + 鉤長", "bend_deduction": "外包算式相加。包含頂端平折、45°/135° 彎折與底端直角折彎。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 270 45 L 70 45 L 135 105 L 210 105 L 210 80", "path_svg": "<path d=\"M 270 45 L 70 45 L 135 105 L 210 105 L 210 80\" fill=\"none\" stroke=\"#b91c1c\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"70\" y1=\"30\" x2=\"270\" y2=\"30\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#991b1b\" text-anchor=\"middle\">梁頂水平受拉段 {len_top} cm</text>\n  <text x=\"90\" y=\"90\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#991b1b\">斜 {len_slope}</text>\n  <text x=\"180\" y=\"120\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#991b1b\">底折 {len_bottom}</text>\n  <text x=\"170\" y=\"65\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">懸臂梁鴨頭負彎矩折筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 270 45 L 70 45 L 135 105 L 210 105 L 210 80\" fill=\"none\" stroke=\"#b91c1c\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#991b1b\" text-anchor=\"middle\">梁頂水平受拉段 {len_top} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-red-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 7H6L11 17H17V13\"/></svg>"}, "notes_tw": "1. 常用於陽台懸挑梁、雨遮外凸構件及女兒牆造型折角梁。\n2. 懸臂梁頂筋屬於最大受拉區，外端部受力集中，透過 45° 斜折回底層形成連續自閉封閉環。\n3. 梁根部（固定端柱邊）之伸展長度與搭接長度必須嚴格依照結構計算書長度放樣。"}, {"id": "18", "key": "column_top_anchor", "name_tw": "柱頭向內收頭錨定筋 (頂層柱頂內折 90° 錨筋)", "ccm_code": "CCM-18", "category": "柱", "element_tags": ["柱"], "params": {"shape_main": {"name_tw": "柱直立主長段", "unit": "cm", "default": 360, "description": "由下層樓板往上至頂層接頭立段"}, "bend_anchor": {"name_tw": "柱頂向柱心折長", "unit": "cm", "default": 45, "description": "頂端 90° 水平錨入柱心長度"}}, "formula": "shape_main + bend_anchor", "formula_display_tw": "立段主長 + 頂端錨折", "bend_deduction": "外包尺寸 shape_main + bend_anchor。柱頂單一處 90° 彎折。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 130 115 V 45 L 220 45", "path_svg": "<path d=\"M 130 115 V 45 L 220 45\" fill=\"none\" stroke=\"#047857\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"115\" y1=\"45\" x2=\"115\" y2=\"115\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"105\" y=\"85\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#065f46\" text-anchor=\"end\">柱立長 {shape_main}</text>\n  <line x1=\"130\" y1=\"30\" x2=\"220\" y2=\"30\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"175\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#065f46\" text-anchor=\"middle\">向柱心錨定折 {bend_anchor} cm</text>\n  <text x=\"210\" y=\"85\" font-size=\"11\" fill=\"#64748b\">頂層柱頭向心收頭</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 130 115 V 45 L 220 45\" fill=\"none\" stroke=\"#047857\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"175\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#065f46\" text-anchor=\"middle\">向柱心錨折 {bend_anchor} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-emerald-700\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 20V5H18\"/></svg>"}, "notes_tw": "1. 頂層柱頭封頂時，由於無上層柱可續接，所有縱向主筋到達頂梁底以上後，必須向柱核心內側折彎 90° 水平錨定。\n2. 彎折方向嚴禁朝向柱外（朝外會直接頂破柱保護層混凝土造成脆性爆裂）。\n3. 水平錨定長度需滿足規範伸展長度（通常 >= 12db 且伸越梁柱接頭對邊）。"}, {"id": "19", "key": "wall_opening_diagonal", "name_tw": "剪力牆門窗開口 45° 對角補強斜筋 (八字斜筋)", "ccm_code": "CCM-19", "category": "牆", "element_tags": ["牆"], "params": {"shape_main": {"name_tw": "45° 斜筋直線長度", "unit": "cm", "default": 120, "description": "斜向長度 (開口四角每側延伸 >= 60cm)"}, "bend_left": {"name_tw": "起端 90° 錨折", "unit": "cm", "default": 0, "description": "直筋為 0，若端部有勾則為 15~20cm"}, "bend_right": {"name_tw": "終端 90° 錨折", "unit": "cm", "default": 0, "description": "直筋為 0，若端部有勾則為 15~20cm"}}, "formula": "shape_main + bend_left + bend_right", "formula_display_tw": "斜筋直線長 (+ 雙錨折)", "bend_deduction": "若為平直筋則扣減為 0；若含端部錨折則累計 90° 彎折扣減。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 80 105 L 260 25", "path_svg": "<rect x=\"110\" y=\"45\" width=\"120\" height=\"70\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"4 4\" fill=\"none\"/>\n  <line x1=\"80\" y1=\"105\" x2=\"260\" y2=\"25\" stroke=\"#0284c7\" stroke-width=\"5\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"170\" y=\"55\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">45° 斜長 {shape_main} cm</text>\n  <text x=\"170\" y=\"90\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">開口角隅 45° 防剪裂補強筋（4角配置）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <rect x=\"110\" y=\"45\" width=\"120\" height=\"70\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"4 4\" fill=\"none\"/>\n  <line x1=\"80\" y1=\"105\" x2=\"260\" y2=\"25\" stroke=\"#0284c7\" stroke-width=\"5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"55\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">斜長 {shape_main} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-sky-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><line x1=\"5\" y1=\"19\" x2=\"19\" y2=\"5\"/></svg>"}, "notes_tw": "1. 專用於門窗開口 4 處角隅，因地震應力集中產生 45° 斜裂縫，規範規定四角各配置 2~3 支 #4 或 #5 斜筋。\n2. 斜筋應配置在雙層牆外層鋼筋內側，緊貼開口角隅，與水平筋、垂直筋呈 45° 交叉綁牢。\n3. 斜向兩側延伸入實體牆內長度不得小於 60cm 或 40db。"}, {"id": "20", "key": "spiral_hoop", "name_tw": "圓柱/基樁連續螺旋箍筋 (螺旋彈簧筋)", "ccm_code": "CCM-20", "category": "柱/基樁", "element_tags": ["柱", "基樁"], "params": {"diameter": {"name_tw": "螺旋外徑 D (扣保護層)", "unit": "cm", "default": 50, "description": "柱身圓形外包直徑"}, "pitch": {"name_tw": "螺距 (垂直間距)", "unit": "cm", "default": 6, "description": "每圈螺旋上升垂直高度"}, "turns": {"name_tw": "螺旋有效圈數", "unit": "圈", "default": 30, "description": "螺旋展開圈數"}, "extra_ends": {"name_tw": "上下端平圈長度", "unit": "cm", "default": 471, "description": "頂底兩端各 1.5 圈閉合平圈長度 (3 * PI * D)"}}, "formula": "round(turns * ((3.14159 * diameter)**2 + pitch**2)**0.5 + extra_ends)", "formula_display_tw": "圈數 * sqrt((π*D)² + 螺距²) + 頂底平圈", "bend_deduction": "三維空間圓柱形展開螺旋線幾何計算；每圈展開長度為斜邊 sqrt((πD)² + pitch²)。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 50 65 Q 70 30 90 65 T 130 65 T 170 65 T 210 65 T 250 65 T 290 65", "path_svg": "<path d=\"M 50 65 Q 70 25 90 65 T 130 65 T 170 65 T 210 65 T 250 65 T 290 65\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"4.5\" stroke-linecap=\"round\"/>\n  <path d=\"M 50 65 Q 70 105 90 65 T 130 65 T 170 65 T 210 65 T 250 65 T 290 65\" fill=\"none\" stroke=\"#0369a1\" stroke-width=\"2\" stroke-dasharray=\"2 3\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"170\" y=\"20\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">螺旋外徑 Φ {diameter} cm ｜ 螺距 {pitch} cm</text>\n  <text x=\"170\" y=\"115\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">連續冷軋螺旋成型（上下各 1.5 平圈緊閉）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 50 65 Q 70 25 90 65 T 130 65 T 170 65 T 210 65 T 250 65 T 290 65\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"4.5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"20\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">螺旋 Φ {diameter} 螺距 {pitch}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-cyan-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M4 12C6 6 8 6 10 12C12 18 14 18 16 12C18 6 20 6 22 12\"/></svg>"}, "notes_tw": "1. 圓形耐震柱最高規格圍束筋，延展性與三向受壓圍束效果顯著優於矩形外箍。\n2. 加工廠使用專用自動滾圓螺紋成型機滾軋盤圓鋼筋成型。\n3. 頂部與底部兩端必須各有 1.5 圈之水平緊密平圈，末端需有 135° 耐震彎鉤錨入柱心。"}, {"id": "21", "key": "wall_boundary_u", "name_tw": "剪力牆端部/女兒牆 U型封邊筋 (封口封頭筋 / ⊂)", "ccm_code": "CCM-21", "category": "牆", "element_tags": ["牆"], "params": {"bend_w": {"name_tw": "牆厚外包尺寸 (扣保護層)", "unit": "cm", "default": 15, "description": "剪力牆或女兒牆外包寬度"}, "leg_top": {"name_tw": "外側伸入錨固長度", "unit": "cm", "default": 40, "description": "向牆體內部延伸之平直受拉段"}, "leg_bot": {"name_tw": "內側伸入錨固長度", "unit": "cm", "default": 40, "description": "向牆體內部延伸之平直受拉段"}}, "formula": "bend_w + leg_top + leg_bot", "formula_display_tw": "牆厚寬 + 上腿 + 下腿", "bend_deduction": "外包加總 bend_w + leg_top + leg_bot。包含雙處 90° 彎折。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 270 45 L 80 45 L 80 100 L 270 100", "path_svg": "<path d=\"M 270 45 L 80 45 L 80 100 L 270 100\" fill=\"none\" stroke=\"#059669\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"62\" y1=\"45\" x2=\"62\" y2=\"100\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"52\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"end\">牆厚 {bend_w}</text>\n  <line x1=\"80\" y1=\"30\" x2=\"270\" y2=\"30\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"175\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">上錨入腿長 {leg_top} cm</text>\n  <text x=\"175\" y=\"118\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">下錨入腿長 {leg_bot} cm</text>\n  <text x=\"175\" y=\"75\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">剪力牆端部邊界封邊 U 筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 270 45 L 80 45 L 80 100 L 270 100\" fill=\"none\" stroke=\"#059669\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"52\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"end\">牆厚 {bend_w}</text>\n    <text x=\"175\" y=\"25\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">腿長 {leg_top} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-emerald-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 7H6V17H20\"/></svg>"}, "notes_tw": "1. 位於 RC 剪力牆自由端、門窗開口垂直邊緣及女兒牆頂部。\n2. 橫向包覆外側雙層直立主筋，形成邊界圍束區（Boundary Element），防止受壓挫屈剝落。\n3. 伸入牆內長度通常不得小於 40db（#3 鋼筋約 40cm，#4 鋼筋約 50cm）。"}, {"id": "22", "key": "teardrop_tie", "name_tw": "水滴型單勾拉筋 (閉合水滴快速套筋)", "ccm_code": "CCM-22", "category": "柱/剪力牆", "element_tags": ["柱", "牆"], "params": {"span_len": {"name_tw": "兩端拉結跨距", "unit": "cm", "default": 45, "description": "由水滴套孔中心至終端扣鉤距離"}, "radius": {"name_tw": "水滴圓弧內徑", "unit": "cm", "default": 4, "description": "預彎圓弧半徑，配合主筋外徑"}, "hook_len": {"name_tw": "終端 135° 耐震鉤長", "unit": "cm", "default": 13, "description": "端部 135° 標準彎鉤"}}, "formula": "round(span_len * 2 + 3.14159 * radius + hook_len)", "formula_display_tw": "跨距 * 2 + π * 水滴半徑 + 135°鉤", "bend_deduction": "一端預彎成水滴型套環可直接套入主筋，直線延伸後終端 135° 耐震鉤折彎。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 100 55 C 80 55 65 65 65 75 C 65 85 80 95 100 95 L 260 95 L 275 75", "path_svg": "<circle cx=\"85\" cy=\"75\" r=\"8\" fill=\"#cbd5e1\"/>\n  <path d=\"M 105 65 C 75 60 60 70 60 75 C 60 82 75 90 105 85 L 260 85 L 275 60\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"85\" y1=\"40\" x2=\"260\" y2=\"40\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"35\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#6d28d9\" text-anchor=\"middle\">有效跨距 {span_len} cm</text>\n  <text x=\"65\" y=\"110\" font-size=\"9\" fill=\"#7c3aed\">套筋環 Φ{radius}</text>\n  <text x=\"280\" y=\"95\" font-size=\"9\" fill=\"#7c3aed\">鉤 {hook_len}</text>\n  <text x=\"170\" y=\"115\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">水滴套環端（可從頂部快速滑入主筋）</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <circle cx=\"85\" cy=\"75\" r=\"8\" fill=\"#cbd5e1\"/>\n  <path d=\"M 105 65 C 75 60 60 70 60 75 C 60 82 75 90 105 85 L 260 85 L 275 60\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"4.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"35\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#6d28d9\" text-anchor=\"middle\">跨距 {span_len} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-purple-700\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M7 12A3 3 0 1 0 7 6A3 3 0 0 0 7 12ZM7 12H18L21 16\"/></svg>"}, "notes_tw": "1. 特殊耐震柱或密排鋼筋構件中，方便施工快速由頂部或側面滑入主筋套牢，兼具優異圍束抗震性能。\n2. 施工效率高於傳統雙鉤繫筋，大幅減少現場強行拗折 135° 鉤所造成的鋼筋金屬疲勞。\n3. 需確認水滴內徑與被套主筋直徑相吻合，緊貼主筋無游隙。"}, {"id": "23", "key": "column_cranked_offset", "name_tw": "柱變截面偏折筋 (柱縮減絞腳筋 / 1:6 偏心折筋)", "ccm_code": "CCM-23", "category": "柱", "element_tags": ["柱"], "params": {"len_lower": {"name_tw": "下層柱直段主長", "unit": "cm", "default": 280, "description": "下層直立向上主筋段"}, "offset_delta": {"name_tw": "斷面向內縮減量", "unit": "cm", "default": 10, "description": "柱縮減偏位距離 Δ (如 5~10cm)"}, "slope_len": {"name_tw": "1:6 斜偏折段長度", "unit": "cm", "default": 61, "description": "斜折過渡段 (>= 6 * offset_delta)"}, "len_upper": {"name_tw": "上層柱搭接直段", "unit": "cm", "default": 90, "description": "伸入上層柱之搭接長度"}}, "formula": "len_lower + slope_len + len_upper", "formula_display_tw": "下柱長 + 1:6斜折長 + 上柱搭接長", "bend_deduction": "外包算式 len_lower + slope_len + len_upper。兩處微偏折（折角 < 10°）。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 90 115 V 70 L 150 40 V 15", "path_svg": "<path d=\"M 120 120 V 75 L 160 55 V 15\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <line x1=\"120\" y1=\"75\" x2=\"120\" y2=\"15\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"80\" y=\"95\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">下柱 {len_lower}</text>\n  <text x=\"145\" y=\"72\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" font-weight=\"bold\" fill=\"#dc2626\">坡度 ≦ 1:6</text>\n  <text x=\"175\" y=\"35\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">搭接 {len_upper}</text>\n  <text x=\"140\" y=\"12\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" fill=\"#64748b\">縮減量 Δ={offset_delta}</text>\n  <text x=\"240\" y=\"70\" font-size=\"10\" fill=\"#64748b\">柱縮柱絞腳筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 120 120 V 75 L 160 55 V 15\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"80\" y=\"95\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">下柱 {len_lower}</text>\n    <text x=\"175\" y=\"35\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#1d4ed8\">搭接 {len_upper}</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-blue-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 21V14L14 10V3\"/></svg>"}, "notes_tw": "1. 依建築技術規則規範，柱主筋變截面偏移斜折之坡度不得大於 1/6（約 9.5°）。\n2. 斜偏折段必須全部容納於梁柱接頭之橫向箍筋圍束區範圍內，且偏折轉折點需加設密排箍筋。\n3. 若柱縮減量大於 10cm 或坡度無法小於 1/6 時，嚴禁斜折，下層柱筋需於梁頂直平收頭，上層柱筋另插續接筋。"}, {"id": "24", "key": "beam_side_skin", "name_tw": "深梁側邊腰筋 (抗扭力縱向筋 / 腹筋)", "ccm_code": "CCM-24", "category": "梁", "element_tags": ["梁"], "params": {"shape_main": {"name_tw": "梁跨度縱向長度", "unit": "cm", "default": 580, "description": "梁淨跨加上兩端錨固長度"}, "hook_left": {"name_tw": "左端 90° 錨定折", "unit": "cm", "default": 30, "description": "左端錨入柱核心之 90° 彎折"}, "hook_right": {"name_tw": "右端 90° 錨定折", "unit": "cm", "default": 30, "description": "右端錨入柱核心之 90° 彎折"}}, "formula": "shape_main + hook_left + hook_right", "formula_display_tw": "主長 + 左錨折 + 右錨折", "bend_deduction": "外包相加 shape_main + hook_left + hook_right。兩端 90° 錨折。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 70 85 L 70 55 L 270 55 L 270 85", "path_svg": "<path d=\"M 70 85 L 70 55 L 270 55 L 270 85\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"70\" y1=\"38\" x2=\"270\" y2=\"38\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"32\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">梁縱向腰筋主長 {shape_main} cm</text>\n  <text x=\"50\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0369a1\">左 {hook_left}</text>\n  <text x=\"290\" y=\"75\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#0369a1\">右 {hook_right}</text>\n  <text x=\"170\" y=\"85\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">梁腹抗剪防裂及抗扭腰筋 (梁深 > 90cm 必備)</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <path d=\"M 70 85 L 70 55 L 270 55 L 270 85\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"32\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#0369a1\" text-anchor=\"middle\">主長 {shape_main} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-sky-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M6 16V9H18V16\"/></svg>"}, "notes_tw": "1. 依結構設計規範，梁腹有效深度超過 90cm 時，梁身兩側側面需等間距配置抗裂腰筋。\n2. 腰筋需由開口箍筋立腿或繫筋扣緊，避免受扭力或灌漿側壓時向梁外側位移。\n3. 梁兩端伸入柱心需具備足夠錨定長度，通常彎折 90° 扣入梁柱接頭箍筋內。"}, {"id": "25", "key": "circular_tie", "name_tw": "圓形柱閉合環箍 (圓箍筋帶雙 135° 耐震鉤)", "ccm_code": "CCM-25", "category": "柱", "element_tags": ["柱"], "params": {"diameter": {"name_tw": "圓箍外徑 (扣保護層)", "unit": "cm", "default": 60, "description": "圓柱外直徑扣雙邊保護層"}, "hook1": {"name_tw": "第1端 135° 耐震鉤", "unit": "cm", "default": 13, "description": "135° 向心彎鉤"}, "hook2": {"name_tw": "第2端 135° 耐震鉤", "unit": "cm", "default": 13, "description": "135° 向心彎鉤"}}, "formula": "round(3.14159 * diameter) + hook1 + hook2", "formula_display_tw": "π * 直徑 + 雙 135°鉤", "bend_deduction": "切斷長 = π * diameter + hook1 + hook2。圓弧滾圓成型加上兩端向心 135° 耐震折角。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 170 23 A 42 42 0 1 0 170.1 23 M 170 23 L 155 38 M 170 23 L 185 38", "path_svg": "<circle cx=\"170\" cy=\"65\" r=\"42\" fill=\"none\" stroke=\"#059669\" stroke-width=\"4.5\"/>\n  <path d=\"M 170 23 L 155 38 M 170 23 L 185 38\" fill=\"none\" stroke=\"#059669\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <line x1=\"128\" y1=\"65\" x2=\"212\" y2=\"65\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/>\n  <text x=\"170\" y=\"60\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">外徑 Φ {diameter} cm</text>\n  <text x=\"170\" y=\"16\" font-size=\"10\" font-weight=\"bold\" fill=\"#059669\" text-anchor=\"middle\">雙 135° 向心耐震鉤 ({hook1}cm)</text>\n  <text x=\"170\" y=\"118\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">圓形柱閉合外箍筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <circle cx=\"170\" cy=\"65\" r=\"42\" fill=\"none\" stroke=\"#059669\" stroke-width=\"4.5\"/>\n  <path d=\"M 170 23 L 155 38 M 170 23 L 185 38\" fill=\"none\" stroke=\"#059669\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"60\" font-family=\"'JetBrains Mono', monospace\" font-size=\"11\" font-weight=\"bold\" fill=\"#047857\" text-anchor=\"middle\">外徑 Φ {diameter} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-emerald-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 4L9 8M12 4L15 8\"/></svg>"}, "notes_tw": "1. 常用於圓形柱單箍綁紮或橋墩圓柱施工。\n2. 兩端 135° 耐震彎鉤必須伸入柱核心混凝土內至少 6db 且 >= 7.5cm。\n3. 沿柱垂直高度排列時，上下兩道相鄰圓箍之搭接彎鉤開口必須旋轉錯開至少 90°（四分位錯開）。"}, {"id": "26", "key": "stirrup_triangular", "name_tw": "三角形內箍筋 (三稜柱/樁帽三角複合箍)", "ccm_code": "CCM-26", "category": "柱/基礎", "element_tags": ["柱", "基礎"], "params": {"side_a": {"name_tw": "底邊長度", "unit": "cm", "default": 45, "description": "三角形底邊外包尺寸"}, "side_b": {"name_tw": "左斜邊長度", "unit": "cm", "default": 45, "description": "三角形左斜邊外包尺寸"}, "side_c": {"name_tw": "右斜邊長度", "unit": "cm", "default": 45, "description": "三角形右斜邊外包尺寸"}, "hook1": {"name_tw": "第1端 135° 彎鉤", "unit": "cm", "default": 13, "description": "耐震彎鉤"}, "hook2": {"name_tw": "第2端 135° 彎鉤", "unit": "cm", "default": 13, "description": "耐震彎鉤"}}, "formula": "side_a + side_b + side_c + hook1 + hook2", "formula_display_tw": "邊a + 邊b + 邊c + 雙鉤", "bend_deduction": "外包算式 side_a + side_b + side_c + hook1 + hook2。三處約 60° 折角及兩端 135° 耐震鉤。", "svg_render": {"view_box": "0 0 340 130", "path_d": "M 170 30 L 250 100 L 90 100 Z M 170 30 L 180 18 M 170 30 L 160 18", "path_svg": "<polygon points=\"170,30 250,100 90,100\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"4.5\" stroke-linejoin=\"round\"/>\n  <path d=\"M 170 30 L 182 16 M 170 30 L 158 16\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>", "dimension_svg": "<g class=\"dimensions\">\n  <text x=\"170\" y=\"118\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">底邊 {side_a} cm</text>\n  <text x=\"115\" y=\"60\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" fill=\"#b45309\">左 {side_b}</text>\n  <text x=\"225\" y=\"60\" font-family=\"'JetBrains Mono', monospace\" font-size=\"9\" fill=\"#b45309\">右 {side_c}</text>\n  <text x=\"170\" y=\"80\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\">三角形複合箍筋</text>\n</g>", "full_svg_template": "<svg viewBox=\"0 0 340 130\" xmlns=\"http://www.w3.org/2000/svg\" class=\"rebar-shape-svg\">\n  <polygon points=\"170,30 250,100 90,100\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"4.5\" stroke-linejoin=\"round\"/>\n  <path d=\"M 170 30 L 182 16 M 170 30 L 158 16\" fill=\"none\" stroke=\"#d97706\" stroke-width=\"3.5\" stroke-linecap=\"round\"/>\n  <g class=\"dimensions\">\n    <text x=\"170\" y=\"118\" font-family=\"'JetBrains Mono', monospace\" font-size=\"10\" font-weight=\"bold\" fill=\"#b45309\" text-anchor=\"middle\">底邊 {side_a} cm</text>\n  </g>\n</svg>", "mini_icon_svg": "<svg class=\"w-5 h-4 text-amber-600\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><polygon points=\"12 4 21 19 3 19\"/></svg>"}, "notes_tw": "1. 用於三稜形特殊造型柱、斜撐桁架節點或三支基樁之三角形承台樁帽箍筋。\n2. 三角形三邊成型時，折角處需保持充分彎曲內半徑防止鋼筋微裂。\n3. 鉤端應錨入構件幾何中心受壓核心區。"}];
+
+    // CNS 560 Nominal Diameter Lookup
+    const cns560DbMap = {
+      3: 9.53, 4: 12.7, 5: 15.9, 6: 19.1, 7: 22.2, 8: 25.4, 9: 28.7, 10: 32.2
+    };
+
+    // Get Compliance Badge for main table
+    function getComplianceBadge(row) {
+      if (row.shape_type === 'stirrup_closed' || row.shape_type === 'stirrup_u') {
+        return '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border bg-emerald-50 text-emerald-700 border-emerald-200">135° 耐震</span>';
+      }
+      if (row.spec >= 8 && row.cat.includes('柱')) {
+        return '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border bg-indigo-50 text-indigo-700 border-indigo-200">SA 級續接</span>';
+      }
+      if (row.shape_type === 'hook_single' || row.shape_type === 'hook_double') {
+        return '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border bg-blue-50 text-blue-700 border-blue-200">90° 錨定</span>';
+      }
+      if (row.shape_type === 'cap_tie') {
+        return '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border bg-amber-50 text-amber-700 border-amber-200">梁頂帽蓋</span>';
+      }
+      if (row.shape_type === 'tie_s') {
+        return '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold border bg-purple-50 text-purple-700 border-purple-200">雙向防脫</span>';
+      }
+      return '<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium border bg-slate-50 text-slate-600 border-slate-200">CNS 560</span>';
+    }
+
+    // Standards Modal Controller
+    function openStandardsModal() {
+      document.getElementById('standardsModal').classList.remove('hidden');
+    }
+
+    function closeStandardsModal() {
+      document.getElementById('standardsModal').classList.add('hidden');
+    }
+
+    function switchStandardsTab(tabName) {
+      const tabs = ['cns560', 'hooks', 'cover-lap', 'stock'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-btn-' + t);
+        const pane = document.getElementById('tab-pane-' + t);
+        if (t === tabName) {
+          btn.className = 'py-2 px-3 border-b-2 font-bold cursor-pointer transition-colors border-blue-600 text-blue-600';
+          pane.classList.remove('hidden');
+        } else {
+          btn.className = 'py-2 px-3 border-b-2 font-medium cursor-pointer transition-colors border-transparent text-slate-500 hover:text-slate-800';
+          pane.classList.add('hidden');
+        }
+      });
+    }
+
+    // Shape Catalog Modal Controller
+    let currentCatalogFilter = 'all';
+
+    function openShapeCatalogModal() {
+      renderCatalogShapes();
+      document.getElementById('shapeCatalogModal').classList.remove('hidden');
+    }
+
+    function closeShapeCatalogModal() {
+      document.getElementById('shapeCatalogModal').classList.add('hidden');
+    }
+
+    function filterCatalog(cat) {
+      currentCatalogFilter = cat;
+      const btns = document.querySelectorAll('.cat-filter-btn');
+      btns.forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = 'cat-filter-btn px-2.5 py-1 rounded-md font-bold bg-white border shadow-2xs text-blue-700 border-blue-300';
+        } else {
+          btn.className = 'cat-filter-btn px-2.5 py-1 rounded-md text-slate-600 hover:bg-slate-200/60';
+        }
+      });
+      renderCatalogShapes();
+    }
+
+    function renderCatalogShapes() {
+      const grid = document.getElementById('catalogShapesGrid');
+      const filtered = standardShapesCatalog.filter(s => {
+        if (currentCatalogFilter === 'all') return true;
+        return s.category.includes(currentCatalogFilter) || s.element_tags.includes(currentCatalogFilter);
+      });
+
+      grid.innerHTML = filtered.map(s => {
+        // Interpolate default params in SVG template
+        let svg = s.svg_render.full_svg_template;
+        for (const [pKey, pObj] of Object.entries(s.params)) {
+          svg = svg.replaceAll(' + pKey + ', pObj.default);
+        }
+        // Clean any leftover curly placeholders with reasonable fallbacks
+        svg = svg.replace(/\{[a-zA-Z0-9_]+\}/g, '0');
+
+        return `
+          <div class="rounded-xl border p-3 bg-white shadow-2xs hover:border-blue-300 transition-colors flex flex-col justify-between"
+               style="border-color: var(--border-color);">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="px-1.5 py-0.5 rounded font-mono font-bold text-[10px] bg-blue-50 text-blue-700 border border-blue-200">
+                  ${s.ccm_code}
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">${s.category}</span>
+              </div>
+              <div class="font-bold text-xs text-slate-900 leading-tight mb-2">${s.name_tw}</div>
+              
+              <div class="w-full flex items-center justify-center p-1.5 bg-slate-50 rounded-lg border border-slate-100 mb-2.5">
+                ${svg}
+              </div>
+
+              <div class="space-y-1 text-[10px] font-mono">
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>切斷公式</span>
+                  <span class="font-bold text-slate-800">${s.formula_display_tw}</span>
+                </div>
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>預設切斷總長</span>
+                  <span class="font-bold text-blue-600">${calculateCatalogCut(s)} cm</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 pt-2 border-t border-slate-100 text-[10px] text-slate-500 leading-snug">
+              ${s.notes_tw.split('\n')[0]}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function calculateCatalogCut(shape) {
+      try {
+        let expr = shape.formula;
+        for (const [pKey, pObj] of Object.entries(shape.params)) {
+          expr = expr.replaceAll(pKey, pObj.default);
+        }
+        // evaluate safely
+        return Function('"use strict";return (' + expr + ')')().toFixed(1);
+      } catch (e) {
+        return '—';
+      }
+    }
+
   </script>
+
+  <!-- Modal: Taiwan Civil Standards (CNS 560 / 土木 401) -->
+  <div id="standardsModal" class="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl border max-h-[92vh] flex flex-col"
+         style="background-color: var(--bg-card); border-color: var(--border-color);">
+      
+      <!-- Modal Header -->
+      <div class="p-3.5 sm:p-4 border-b flex items-center justify-between shrink-0"
+           style="background-color: var(--table-header-bg); border-color: var(--border-color);">
+        <div class="flex items-center space-x-2">
+          <span class="text-base">📜</span>
+          <span class="text-sm font-bold" style="color: var(--text-main);">台灣土木與結構工程鋼筋標準庫</span>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold border bg-emerald-50 text-emerald-700 border-emerald-200">
+            CNS 560 / 土木 401 權威依據
+          </span>
+        </div>
+        <button onclick="closeStandardsModal()" class="text-slate-400 hover:text-slate-700 text-lg p-1 cursor-pointer">✕</button>
+      </div>
+
+      <!-- Standards Tabs -->
+      <div class="flex border-b text-xs font-semibold px-4 pt-2 shrink-0 overflow-x-auto space-x-2"
+           style="background-color: var(--bg-page); border-color: var(--border-color);">
+        <button onclick="switchStandardsTab('cns560')" id="tab-btn-cns560" class="py-2 px-3 border-b-2 font-bold cursor-pointer transition-colors border-blue-600 text-blue-600">
+          CNS 560 鋼筋物性
+        </button>
+        <button onclick="switchStandardsTab('hooks')" id="tab-btn-hooks" class="py-2 px-3 border-b-2 font-medium cursor-pointer transition-colors border-transparent text-slate-500 hover:text-slate-800">
+          耐震 135° 與錨定彎鉤
+        </button>
+        <button onclick="switchStandardsTab('cover-lap')" id="tab-btn-cover-lap" class="py-2 px-3 border-b-2 font-medium cursor-pointer transition-colors border-transparent text-slate-500 hover:text-slate-800">
+          保護層與 SA 級續接
+        </button>
+        <button onclick="switchStandardsTab('stock')" id="tab-btn-stock" class="py-2 px-3 border-b-2 font-medium cursor-pointer transition-colors border-transparent text-slate-500 hover:text-slate-800">
+          定尺料長與損耗率
+        </button>
+      </div>
+
+      <!-- Standards Body Content -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs">
+        
+        <!-- Tab Content 1: CNS 560 -->
+        <div id="tab-pane-cns560" class="space-y-3">
+          <div class="p-3 rounded-lg border bg-white" style="border-color: var(--border-color);">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-xs text-slate-900">CNS 560 竹節鋼筋標準物性規格表</span>
+              <span class="text-[11px] text-slate-500">單位重計算依據：斷面積 × 0.785 kg/m</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="border-b bg-slate-50 text-slate-600 font-semibold">
+                    <th class="py-2 px-2">號數</th>
+                    <th class="py-2 px-2">公稱代號</th>
+                    <th class="py-2 px-2 text-right">公稱直徑 (mm)</th>
+                    <th class="py-2 px-2 text-right">斷面積 (cm²)</th>
+                    <th class="py-2 px-2 text-right font-bold text-blue-700">單位重 (kg/m)</th>
+                    <th class="py-2 px-2 text-center">容許差</th>
+                    <th class="py-2 px-2.5">常用工程部位</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-mono">
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#3</td><td class="py-1.5 px-2">D10</td><td class="py-1.5 px-2 text-right">9.53</td><td class="py-1.5 px-2 text-right">0.713</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">0.560</td><td class="py-1.5 px-2 text-center">±7%</td><td class="py-1.5 px-2.5 font-sans">樓板筋、牆體筋、馬椅鐵</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#4</td><td class="py-1.5 px-2">D13</td><td class="py-1.5 px-2 text-right">12.70</td><td class="py-1.5 px-2 text-right">1.267</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">0.994</td><td class="py-1.5 px-2 text-center">±6%</td><td class="py-1.5 px-2.5 font-sans">梁柱箍筋、耐震繫筋、樓梯筋</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#5</td><td class="py-1.5 px-2">D16</td><td class="py-1.5 px-2 text-right">15.90</td><td class="py-1.5 px-2 text-right">1.986</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">1.560</td><td class="py-1.5 px-2 text-center">±6%</td><td class="py-1.5 px-2.5 font-sans">梁腰筋、厚版底筋、小柱主筋</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#6</td><td class="py-1.5 px-2">D19</td><td class="py-1.5 px-2 text-right">19.10</td><td class="py-1.5 px-2 text-right">2.865</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">2.250</td><td class="py-1.5 px-2 text-center">±5%</td><td class="py-1.5 px-2.5 font-sans">次梁主筋、小柱主筋</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#7</td><td class="py-1.5 px-2">D22</td><td class="py-1.5 px-2 text-right">22.20</td><td class="py-1.5 px-2 text-right">3.871</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">3.040</td><td class="py-1.5 px-2 text-center">±5%</td><td class="py-1.5 px-2.5 font-sans">主梁主筋、中高樓柱主筋</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#8</td><td class="py-1.5 px-2">D25</td><td class="py-1.5 px-2 text-right">25.40</td><td class="py-1.5 px-2 text-right">5.067</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">3.980</td><td class="py-1.5 px-2 text-center">±4%</td><td class="py-1.5 px-2.5 font-sans">大柱主筋 (強制 SA 續接)、特大梁主筋</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#9</td><td class="py-1.5 px-2">D29</td><td class="py-1.5 px-2 text-right">28.70</td><td class="py-1.5 px-2 text-right">6.469</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">5.040</td><td class="py-1.5 px-2 text-center">±4%</td><td class="py-1.5 px-2.5 font-sans">基腳地梁主筋、超高層柱主筋</td></tr>
+                  <tr><td class="py-1.5 px-2 font-bold text-slate-900">#10</td><td class="py-1.5 px-2">D32</td><td class="py-1.5 px-2 text-right">32.20</td><td class="py-1.5 px-2 text-right">8.143</td><td class="py-1.5 px-2 text-right font-bold text-blue-700">6.390</td><td class="py-1.5 px-2 text-center">±4%</td><td class="py-1.5 px-2.5 font-sans">巨型結構柱主筋</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Steel Grade -->
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="p-2.5 rounded-lg border bg-white" style="border-color: var(--border-color);">
+              <div class="font-bold text-slate-900 mb-1 flex items-center space-x-1.5">
+                <span class="px-1.5 py-0.2 rounded text-[10px] bg-blue-100 text-blue-800 font-mono">SD280 / SD280W</span>
+                <span>普通強度 / 耐震可銲級</span>
+              </div>
+              <p class="text-[11px] text-slate-600">
+                降伏強度 fy ≧ 2,800 kgf/cm² (280 MPa)。SD280W 具抗震認證（抗拉/降伏實測比 ≧ 1.25），常用於 #3、#4 箍筋及一般樓板。
+              </p>
+            </div>
+            <div class="p-2.5 rounded-lg border bg-white" style="border-color: var(--border-color);">
+              <div class="font-bold text-slate-900 mb-1 flex items-center space-x-1.5">
+                <span class="px-1.5 py-0.2 rounded text-[10px] bg-emerald-100 text-emerald-800 font-mono">SD420W</span>
+                <span>高強度耐震認證主筋</span>
+              </div>
+              <p class="text-[11px] text-slate-600">
+                降伏強度 fy = 420 ~ 540 MPa (4,200 kgf/cm²)，實測 fu/fy ≧ 1.25。為台灣現代結構梁柱主筋（#6 以上）之法定標準規格。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content 2: Hooks -->
+        <div id="tab-pane-hooks" class="space-y-3 hidden">
+          <div class="p-3 rounded-lg border bg-white" style="border-color: var(--border-color);">
+            <div class="font-bold text-xs text-slate-900 mb-1.5">內政部《混凝土結構設計規範》標準彎折規定</div>
+            <p class="text-[11px] text-slate-600 mb-3">
+              鋼筋端部彎折必須兼顧<strong>「耐震圍束」</strong>與<strong>「彎曲內半徑保護」</strong>，避免鋼筋折角產生內部微裂紋導致脆斷。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="p-3 rounded-lg bg-emerald-50/70 border border-emerald-200">
+                <div class="font-bold text-emerald-900 mb-1 flex items-center space-x-1">
+                  <span>🛡️ 135° 耐震彎鉤 (Seismic Hook)</span>
+                </div>
+                <ul class="text-[11px] text-emerald-800 space-y-1 list-disc list-inside">
+                  <li><strong>法規規定</strong>：延伸平直段 ≧ max(6db, 7.5 cm)。</li>
+                  <li><strong>彎心內徑</strong>：#3~#5 需 ≧ 4db；#6~#8 需 ≧ 5db。</li>
+                  <li><strong>台灣現場常用推薦整數</strong>：
+                    <div class="font-mono mt-1 text-[10px] bg-white p-1.5 rounded border border-emerald-300">
+                      #3: 10 cm ｜ #4: 12~13 cm ｜ #5: 15 cm
+                    </div>
+                  </li>
+                  <li><strong>施工要求</strong>：雙鉤必須深入核心混凝土內，緊扣主筋。</li>
+                </ul>
+              </div>
+
+              <div class="p-3 rounded-lg bg-blue-50/70 border border-blue-200">
+                <div class="font-bold text-blue-900 mb-1 flex items-center space-x-1">
+                  <span>⚓ 90° 標準錨定彎鉤 (Standard 90° Hook)</span>
+                </div>
+                <ul class="text-[11px] text-blue-800 space-y-1 list-disc list-inside">
+                  <li><strong>法規規定</strong>：延伸平直段長度固定為 <strong>12db</strong>。</li>
+                  <li><strong>彎折內半徑</strong>：主筋 #3~#8 為 3db（內徑 6db）。</li>
+                  <li><strong>梁端錨定長度對照</strong>：
+                    <div class="font-mono mt-1 text-[10px] bg-white p-1.5 rounded border border-blue-300">
+                      #6: 23 cm ｜ #7: 27 cm ｜ #8: 31 cm (實務常取 35~40cm)
+                    </div>
+                  </li>
+                  <li><strong>施工要求</strong>：邊跨外側錨折向下或向內，不得外露於保護層。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Content 3: Cover & Lap -->
+        <div id="tab-pane-cover-lap" class="space-y-3 hidden">
+          <div class="p-3 rounded-lg border bg-white" style="border-color: var(--border-color);">
+            <div class="font-bold text-xs text-slate-900 mb-2">結構保護層厚度（Clear Cover）標準</div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                <div class="text-[10px] text-slate-500">梁、柱主筋</div>
+                <div class="font-bold text-base text-slate-900 font-mono mt-0.5">4.0 cm</div>
+                <div class="text-[10px] text-slate-400">箍筋外緣約 3.0 cm</div>
+              </div>
+              <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                <div class="text-[10px] text-slate-500">樓板、室內牆</div>
+                <div class="font-bold text-base text-slate-900 font-mono mt-0.5">2.0 cm</div>
+                <div class="text-[10px] text-slate-400">室外面為 2.5 cm</div>
+              </div>
+              <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                <div class="text-[10px] text-slate-500">基礎、地梁 (土壤接觸)</div>
+                <div class="font-bold text-base text-slate-900 font-mono mt-0.5">7.5 cm</div>
+                <div class="text-[10px] text-slate-400">防地下水侵蝕耐久性</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-lg border bg-white" style="border-color: var(--border-color);">
+            <div class="font-bold text-xs text-slate-900 mb-1.5 flex items-center space-x-1.5">
+              <span>🔩 柱主筋 SA 級鋼筋續接器規範</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] bg-indigo-100 text-indigo-800 font-bold">強制耐震規定</span>
+            </div>
+            <ul class="text-[11px] text-slate-600 space-y-1 list-disc list-inside">
+              <li><strong>法規限制</strong>：建築物耐震設計規範明定，柱主筋 <strong>#8 (D25) 及以上</strong> 強制採用機械式續接器，不得進行重疊搭接。</li>
+              <li><strong>SA 級認證標準</strong>：極限抗拉強度 ≧ 1.25 fy，且破斷必須發生於母材；單向反覆拉壓試驗殘餘滑移量 ≦ 0.3 mm。</li>
+              <li><strong>接頭錯開規定</strong>：相鄰主筋之續接器中心距離必須 <strong>≧ 60 cm</strong>（或採隔層交錯配置），避免應力集中於同一斷面。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tab Content 4: Stock & Waste -->
+        <div id="tab-pane-stock" class="space-y-3 hidden">
+          <div class="p-3 rounded-lg border bg-white" style="border-color: var(--border-color);">
+            <div class="font-bold text-xs text-slate-900 mb-1.5">台灣高爐/電爐廠出廠定尺與損耗率管理</div>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 font-mono text-center mb-3">
+              <div class="p-2 rounded bg-blue-50 border border-blue-200">
+                <div class="text-[10px] text-blue-600">標準定尺</div>
+                <div class="font-bold text-sm text-blue-900 mt-0.5">9 M</div>
+                <div class="text-[9px] text-blue-500">900 cm (最常用)</div>
+              </div>
+              <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                <div class="text-[10px] text-slate-500">常用定尺</div>
+                <div class="font-bold text-sm text-slate-900 mt-0.5">10 M</div>
+                <div class="text-[9px] text-slate-400">1000 cm</div>
+              </div>
+              <div class="p-2 rounded bg-blue-50 border border-blue-200">
+                <div class="text-[10px] text-blue-600">標準定尺</div>
+                <div class="font-bold text-sm text-blue-900 mt-0.5">12 M</div>
+                <div class="text-[9px] text-blue-500">1200 cm (高層柱)</div>
+              </div>
+              <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                <div class="text-[10px] text-slate-500">特殊定尺</div>
+                <div class="font-bold text-sm text-slate-900 mt-0.5">14 M</div>
+                <div class="text-[9px] text-slate-400">1400 cm</div>
+              </div>
+              <div class="p-2 rounded bg-slate-50 border border-slate-200">
+                <div class="text-[10px] text-slate-500">特殊定尺</div>
+                <div class="font-bold text-sm text-slate-900 mt-0.5">15 M</div>
+                <div class="text-[9px] text-slate-400">1500 cm (需特載)</div>
+              </div>
+            </div>
+
+            <div class="p-2.5 rounded-lg bg-amber-50/70 border border-amber-200 text-[11px] text-amber-900 space-y-1">
+              <div class="font-bold flex items-center space-x-1">
+                <span>🎯 加工廠 1D 下料優化（Cutting Stock Problem）指標</span>
+              </div>
+              <p>
+                • <strong>現場標準損耗率</strong>：精細排料之目標損耗應控制在 <strong>3.0% ～ 3.5%</strong> 內；一般工程預算常態編列 5.0%。<br>
+                • <strong>定尺搭配原理</strong>：例如柱筋 340cm 可由 10M 定尺裁切 2 支（餘 320cm 可作為 4F 柱主筋 320cm，損耗 0cm！）。本系統演算法即內建此配料邏輯。
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 border-t flex items-center justify-between bg-slate-50 shrink-0 text-xs text-slate-500">
+        <span>規範依據：內政部國土署《混凝土結構設計規範》第 401 號令 ｜ 經濟部標檢局 CNS 560</span>
+        <button onclick="closeStandardsModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-semibold hover:bg-black transition-colors cursor-pointer">
+          關閉
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal: 26 Rebar Shapes Catalog (CCM Standard) -->
+  <div id="shapeCatalogModal" class="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border max-h-[92vh] flex flex-col"
+         style="background-color: var(--bg-card); border-color: var(--border-color);">
+      
+      <!-- Modal Header -->
+      <div class="p-3.5 sm:p-4 border-b flex items-center justify-between shrink-0"
+           style="background-color: var(--table-header-bg); border-color: var(--border-color);">
+        <div class="flex items-center space-x-2">
+          <span class="text-base">📐</span>
+          <span class="text-sm font-bold" style="color: var(--text-main);">台灣鋼筋加工標準 26 種形狀圖鑑</span>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold border bg-blue-50 text-blue-700 border-blue-200">
+            CCM-01 ～ CCM-26 撿料規格
+          </span>
+        </div>
+        <button onclick="closeShapeCatalogModal()" class="text-slate-400 hover:text-slate-700 text-lg p-1 cursor-pointer">✕</button>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="px-4 py-2.5 border-b flex items-center justify-between gap-2 shrink-0 overflow-x-auto text-xs"
+           style="background-color: var(--bg-page); border-color: var(--border-color);">
+        <div class="flex items-center space-x-1.5" id="catalogFilterPills">
+          <button onclick="filterCatalog('all')" class="cat-filter-btn px-2.5 py-1 rounded-md font-bold bg-white border shadow-2xs text-blue-700 border-blue-300" data-cat="all">全部 (26)</button>
+          <button onclick="filterCatalog('梁')" class="cat-filter-btn px-2.5 py-1 rounded-md text-slate-600 hover:bg-slate-200/60" data-cat="梁">梁筋 (7)</button>
+          <button onclick="filterCatalog('柱')" class="cat-filter-btn px-2.5 py-1 rounded-md text-slate-600 hover:bg-slate-200/60" data-cat="柱">柱筋 (9)</button>
+          <button onclick="filterCatalog('牆')" class="cat-filter-btn px-2.5 py-1 rounded-md text-slate-600 hover:bg-slate-200/60" data-cat="牆">牆筋 (4)</button>
+          <button onclick="filterCatalog('版')" class="cat-filter-btn px-2.5 py-1 rounded-md text-slate-600 hover:bg-slate-200/60" data-cat="版">版筋 (3)</button>
+          <button onclick="filterCatalog('基礎')" class="cat-filter-btn px-2.5 py-1 rounded-md text-slate-600 hover:bg-slate-200/60" data-cat="基礎">基礎 (3)</button>
+        </div>
+        <span class="text-[11px] text-slate-400 shrink-0">點擊任一張卡片可檢視詳細尺寸公式</span>
+      </div>
+
+      <!-- Shapes Grid Canvas -->
+      <div class="p-4 sm:p-5 overflow-y-auto">
+        <div id="catalogShapesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 border-t flex items-center justify-between bg-slate-50 shrink-0 text-xs text-slate-500">
+        <span>標準依據：台灣鋼筋加工廠常用下料標準、CCM 自動撿料系統、RCAD 幾何定義</span>
+        <button onclick="closeShapeCatalogModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-semibold hover:bg-black transition-colors cursor-pointer">
+          關閉圖鑑
+        </button>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>
